@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+
+    <color name="White">#FFFFFF</color>
+    <color name="Black">#000000</color>
+
+    <color name="Cyan50">#E0F7FA</color>
+    <color name="Cyan100">#b2ebf2</color>
+    <color name="Cyan200">#80deea</color>
+    <color name="Cyan300">#4dd0e1</color>
+    <color name="Cyan400">#26C6DA</color>
+    <color name="Cyan500">#00BCD4</color>
+    <color name="Cyan600">#00ACC1</color>
+    <color name="Cyan700">#0097A7</color>
+    <color name="Cyan800">#00838F</color>
+    <color name="Cyan900">#006064</color>
+    <color name="CyanA100">#84FFFF</color>
+    <color name="CyanA200">#18FFFF</color>
+    <color name="CyanA400">#00E5FF</color>
+    <color name="CyanA700">#00B8D4</color>
+    <color name="Orange1">#FF9640</color>
+    <color name="Orange2">#FFB273</color>
+
+    <color name="Indigo500">#3F51B5</color>ฺ
+
+    <color name="LightBlue300">#4FC3F7</color>
+</resources>
