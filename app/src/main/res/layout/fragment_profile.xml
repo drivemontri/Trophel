@@ -53,12 +53,25 @@
            <TextView
                android:layout_width="wrap_content"
                android:layout_height="wrap_content"
+               android:id="@+id/caption_Profile"
                android:textColor="@color/colorPrimaryDark"
                android:textSize="15dp"
                android:textStyle="italic"
                android:layout_centerHorizontal="true"
                android:layout_below="@+id/name_Profile"
                android:text="( The Soul of Wind )"/>
+
+           <TextView
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:id="@+id/id_Profile"
+               android:textColor="@color/Cyan500"
+               android:textSize="15dp"
+               android:textStyle="italic"
+               android:layout_centerHorizontal="true"
+               android:layout_below="@+id/caption_Profile"
+               android:text="id:"/>
+
 
        </RelativeLayout>
 
