@@ -48,7 +48,7 @@
                android:textStyle="bold"
                android:layout_centerHorizontal="true"
                android:layout_marginTop="10dp"
-               android:text="Bhurivat Monti"/>
+               android:text="xxxx xxxx"/>
 
            <TextView
                android:layout_width="wrap_content"
@@ -59,7 +59,7 @@
                android:textStyle="italic"
                android:layout_centerHorizontal="true"
                android:layout_below="@+id/name_Profile"
-               android:text="( The Soul of Wind )"/>
+               android:text="( ---- )"/>
 
            <TextView
                android:layout_width="wrap_content"
@@ -92,7 +92,7 @@
                    android:id="@+id/star_count"
                    android:layout_toRightOf="@+id/star_Profile"
                    android:textSize="20dp"
-                   android:text=" : 23"
+                   android:text=" : 0"
                    android:textColor="@color/Cyan900"/>
 
            </RelativeLayout>
@@ -117,7 +117,7 @@
                    android:id="@+id/trophel_northern_count"
                    android:layout_toRightOf="@+id/trophel_northern_Profile"
                    android:textSize="20dp"
-                   android:text=" : 12"
+                   android:text=" : 0"
                    android:textColor="@color/Cyan900"/>
 
                <ImageView
@@ -134,7 +134,7 @@
                    android:id="@+id/trophel_central_count"
                    android:layout_toRightOf="@+id/trophel_central_Profile"
                    android:textSize="20dp"
-                   android:text=" : 8"
+                   android:text=" : 0"
                    android:textColor="@color/Cyan900"/>
 
                <ImageView
@@ -151,7 +151,7 @@
                    android:id="@+id/trophel_northeastern_count"
                    android:layout_toRightOf="@+id/trophel_northeastern_Profile"
                    android:textSize="20dp"
-                   android:text=" : 3"
+                   android:text=" : 0"
                    android:textColor="@color/Cyan900"/>
 
            </RelativeLayout>
@@ -176,7 +176,7 @@
                    android:id="@+id/trophel_western_count"
                    android:layout_toRightOf="@+id/trophel_western_Profile"
                    android:textSize="20dp"
-                   android:text=" : 1"
+                   android:text=" : 0"
                    android:textColor="@color/Cyan900"/>
 
                <ImageView
@@ -193,7 +193,7 @@
                    android:id="@+id/trophel_southern_count"
                    android:layout_toRightOf="@+id/trophel_southern_Profile"
                    android:textSize="20dp"
-                   android:text=" : 8"
+                   android:text=" : 0"
                    android:textColor="@color/Cyan900"/>
 
                <ImageView
@@ -224,7 +224,7 @@
                android:id="@+id/detail_count"
                android:textSize="20dp"
                android:text="Discovery"
-               android:textColor="@color/hint_text"/>
+               android:textColor="@color/colorPrimaryDark"/>
 
            <RelativeLayout
                android:layout_width="wrap_content"
@@ -238,6 +238,7 @@
                    android:layout_width="100dp"
                    android:layout_height="wrap_content"
                    android:id="@+id/button_northern"
+                   android:backgroundTint="@color/md_blue_700"
                    android:textSize="10dp"
                    android:text="Northern"/>
 
@@ -246,6 +247,7 @@
                    android:layout_height="wrap_content"
                    android:layout_toRightOf="@id/button_northern"
                    android:id="@+id/button_central"
+                   android:backgroundTint="@color/md_blue_700"
                    android:textSize="10dp"
                    android:text="Central"/>
 
@@ -254,6 +256,7 @@
                    android:layout_height="wrap_content"
                    android:layout_toRightOf="@id/button_central"
                    android:id="@+id/button_northeastern"
+                   android:backgroundTint="@color/md_blue_700"
                    android:textSize="10dp"
                    android:text="Norteastern"/>
 
@@ -271,6 +274,7 @@
                    android:layout_width="100dp"
                    android:layout_height="wrap_content"
                    android:id="@+id/button_western"
+                   android:backgroundTint="@color/md_blue_700"
                    android:textSize="10dp"
                    android:text="Western"/>
 
@@ -279,6 +283,8 @@
                    android:layout_height="wrap_content"
                    android:layout_toRightOf="@id/button_western"
                    android:id="@+id/button_southern"
+                   android:textColor="@color/White"
+                   android:backgroundTint="@color/md_blue_700"
                    android:textSize="10dp"
                    android:text="Southern"/>
 
@@ -287,6 +293,7 @@
                    android:layout_height="wrap_content"
                    android:layout_toRightOf="@id/button_southern"
                    android:id="@+id/button_eastern"
+                   android:backgroundTint="@color/md_blue_700"
                    android:textSize="10dp"
                    android:text="Eastern"/>
 
@@ -294,6 +301,9 @@
 
        </RelativeLayout>
 
+       <LinearLayout
+           android:layout_width="wrap_content"
+           android:layout_height="50dp"></LinearLayout>
    </LinearLayout>
 
 </android.support.v4.widget.NestedScrollView>
