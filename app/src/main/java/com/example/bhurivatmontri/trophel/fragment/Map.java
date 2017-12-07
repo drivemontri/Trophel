@@ -26,8 +26,10 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 
@@ -37,9 +39,11 @@ import com.google.android.gms.maps.model.MarkerOptions;
 public class Map extends Fragment implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, LocationListener {
 
     GoogleMap mGoogleMap;
+    Marker mMarker;
     MapView mMapView;
     View mView;
     GoogleApiClient googleApiClient;
+    boolean chkFirstTime = true;
 
     public Map() {
         // Required empty public constructor
@@ -106,7 +110,7 @@ public class Map extends Fragment implements OnMapReadyCallback, GoogleApiClient
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {
-        Toast.makeText(getActivity(), "Map Connect!!", Toast.LENGTH_SHORT);
+        //Toast.makeText(getActivity(), "Map Connect!!", Toast.LENGTH_SHORT);
         LocationRequest lr = new LocationRequest()
                 .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
                 .setInterval(5000);
@@ -131,8 +135,21 @@ public class Map extends Fragment implements OnMapReadyCallback, GoogleApiClient
         //float bearing = location.getBearing();
         //float speed = location.getSpeed();
         //long time = location.getTime();
-        mGoogleMap.addMarker(new MarkerOptions().position(new LatLng(latitude,longitude)).title("Location Current").snippet("I am coding myProject"));
-        CameraPosition Liberty = CameraPosition.builder().target(new LatLng(latitude,longitude)).zoom(16).bearing(0).tilt(45).build();
-        mGoogleMap.moveCamera(CameraUpdateFactory.newCameraPosition(Liberty));
+        if(chkFirstTime == true){
+            CameraPosition Liberty = CameraPosition.builder().target(new LatLng(latitude,longitude)).zoom(16).bearing(0).tilt(45).build();
+            mGoogleMap.moveCamera(CameraUpdateFactory.newCameraPosition(Liberty));
+            chkFirstTime = false;
+        }
+        if(mGoogleMap != null){
+            mGoogleMap.clear();
+        }
+        mMarker = mGoogleMap.addMarker(new MarkerOptions().position(new LatLng(latitude,longitude)).title("Location Current").snippet("I am coding myProject").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
+        mMarker = mGoogleMap.addMarker(new MarkerOptions().position(new LatLng(latitude+0.002,longitude)).title("Building1"));
+        mMarker = mGoogleMap.addMarker(new MarkerOptions().position(new LatLng(latitude+0.003,longitude+0.007)).title("Building2"));
+        mMarker = mGoogleMap.addMarker(new MarkerOptions().position(new LatLng(latitude-0.007,longitude-0.008)).title("Building3"));
+       // mGoogleMap.addMarker(new MarkerOptions().position(new LatLng(latitude,longitude+0.0000003)).title("Building2"));
+       // mGoogleMap.addMarker(new MarkerOptions().position(new LatLng(latitude+0.0000002,longitude-0.0000002)).title("Building3"));
+
+
     }
 }

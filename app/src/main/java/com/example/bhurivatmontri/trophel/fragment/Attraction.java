@@ -3,6 +3,7 @@ package com.example.bhurivatmontri.trophel.fragment;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -11,6 +12,7 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.bhurivatmontri.trophel.Home;
 import com.example.bhurivatmontri.trophel.R;
 import com.example.bhurivatmontri.trophel.adapter.GridAdapter;
 
@@ -23,6 +25,7 @@ public class Attraction extends Fragment {
     RecyclerView mRecyclerView;
     RecyclerView.LayoutManager mLayoutManager;
     RecyclerView.Adapter mAdapter;
+
     public Attraction() {
         // Required empty public constructor
     }
@@ -31,6 +34,7 @@ public class Attraction extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+
     }
 
     @Override

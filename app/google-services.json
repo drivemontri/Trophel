@@ -1,0 +1,59 @@
+{
+  "project_info": {
+    "project_number": "1079209986340",
+    "firebase_url": "https://trophel-application.firebaseio.com",
+    "project_id": "trophel-application",
+    "storage_bucket": "trophel-application.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1079209986340:android:7ccbeb789c860bdd",
+        "android_client_info": {
+          "package_name": "com.example.bhurivatmontri.trophel"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1079209986340-mijard4rktesaeu5fumi1d9vh7e54t60.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.bhurivatmontri.trophel",
+            "certificate_hash": "38cc497b93a7337b098e615fa2fd91bbd609b189"
+          }
+        },
+        {
+          "client_id": "1079209986340-0bqb4at7qt2diqvgrl98g5vjrtlgus2m.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "1079209986340-5ihvnieh8sotdc7k7fc9g8h81viiadi8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA7Y36f8ppLKqc_iAQ06pz9ExHiAiuM7sQ"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1079209986340-0bqb4at7qt2diqvgrl98g5vjrtlgus2m.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

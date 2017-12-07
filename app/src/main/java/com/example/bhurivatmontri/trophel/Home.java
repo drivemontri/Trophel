@@ -12,6 +12,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
+import android.support.v7.widget.util.SortedListAdapterCallback;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
@@ -36,7 +37,7 @@ import static android.graphics.PorterDuff.Mode.SRC_IN;
 public class Home extends AppCompatActivity {
 
     private Toolbar toolbar;
-    private ViewPager mViewPager;
+    public ViewPager mViewPager;
     private TabLayout tabLayout;
     private int[] tabIcons = {
             R.drawable.ic_attraction_144dp,
@@ -247,10 +248,16 @@ public class Home extends AppCompatActivity {
             mFragmentTitleList.add(title);
         }
 
+        public void setmFragment(Fragment fragment,String title,int index){
+            mFragmentList.set(index,fragment);
+            mFragmentTitleList.set(index,title);
+        }
+
         @Override
         public CharSequence getPageTitle(int position) {
             // return null to display only the icon
             return mFragmentTitleList.get(position);
         }
     }
+
 }
