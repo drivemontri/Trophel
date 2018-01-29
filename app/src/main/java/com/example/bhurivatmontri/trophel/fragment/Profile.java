@@ -76,7 +76,8 @@ public class Profile extends Fragment {
                 captionUser.setText("("+caption+")");
                 northernUser.setText(" : "+countNorthern);
                 northeasternUser.setText(" : "+countNortheastern);
-                centralUser.setText(" : "+countCentral);
+                centralUser.setText(" : " +
+                        ""+countCentral);
                 southernUser.setText(" : "+countSouthern);
                 easternUser.setText(" : "+countEastern);
                 westernUser.setText(" : "+countWestern);
