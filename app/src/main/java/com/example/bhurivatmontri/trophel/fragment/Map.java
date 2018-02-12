@@ -2,6 +2,7 @@ package com.example.bhurivatmontri.trophel.fragment;
 
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
@@ -16,6 +17,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.example.bhurivatmontri.trophel.Camera;
+import com.example.bhurivatmontri.trophel.Home;
 import com.example.bhurivatmontri.trophel.R;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
@@ -84,6 +87,19 @@ public class Map extends Fragment implements OnMapReadyCallback, GoogleApiClient
             return;
         }
         mGoogleMap.setMyLocationEnabled(true);
+        mGoogleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            public boolean onMarkerClick(Marker arg0) {
+                if(arg0.getTitle().equals("Location Current")){
+                    Toast.makeText(getContext(),arg0.getTitle(),Toast.LENGTH_SHORT).show();
+                }else{
+                    Toast.makeText(getContext(),arg0.getId(),Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(getActivity(),Camera.class);
+                    intent.putExtra("Title",arg0.getTitle());
+                    startActivity(intent);
+                }
+                return true;
+            }
+        });
         buildClient();
 
         /*googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
@@ -143,6 +159,7 @@ public class Map extends Fragment implements OnMapReadyCallback, GoogleApiClient
         if(mGoogleMap != null){
             mGoogleMap.clear();
         }
+
         mMarker = mGoogleMap.addMarker(new MarkerOptions().position(new LatLng(latitude,longitude)).title("Location Current").snippet("I am coding myProject").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
         mMarker = mGoogleMap.addMarker(new MarkerOptions().position(new LatLng(latitude+0.002,longitude)).title("Building1"));
         mMarker = mGoogleMap.addMarker(new MarkerOptions().position(new LatLng(latitude+0.003,longitude+0.007)).title("Building2"));
@@ -150,6 +167,6 @@ public class Map extends Fragment implements OnMapReadyCallback, GoogleApiClient
        // mGoogleMap.addMarker(new MarkerOptions().position(new LatLng(latitude,longitude+0.0000003)).title("Building2"));
        // mGoogleMap.addMarker(new MarkerOptions().position(new LatLng(latitude+0.0000002,longitude-0.0000002)).title("Building3"));
 
-
     }
+
 }

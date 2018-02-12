@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 25
-    buildToolsVersion "26.0.1"
+    buildToolsVersion "26.0.2"
     defaultConfig {
         applicationId "com.example.bhurivatmontri.trophel"
         minSdkVersion 21
@@ -17,6 +17,8 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    //sourceSets { main { jni.srcDirs = ['src/main/jni', 'src/main/jniLibs/'] } }
+    sourceSets { main { assets.srcDirs = ['src/main/assets', 'src/main/assets/'] } }
 }
 
 dependencies {
@@ -34,10 +36,11 @@ dependencies {
     compile 'com.google.android.gms:play-services-location:11.6.0'
     compile 'com.google.firebase:firebase-core:11.6.0'
     compile 'com.google.firebase:firebase-database:11.6.0'
-
     compile 'com.mikepenz.materialdrawer:library:2.9.8'
     compile 'de.hdodenhof:circleimageview:2.2.0'
     testCompile 'junit:junit:4.12'
+    implementation project(':openCVLibrary340')
 }
+
 
 apply plugin: 'com.google.gms.google-services'
