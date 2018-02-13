@@ -1,10 +1,12 @@
 package com.example.bhurivatmontri.trophel;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -12,6 +14,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Surface;
 import android.view.SurfaceView;
+import android.view.View;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,6 +39,7 @@ import org.opencv.core.MatOfKeyPoint;
 import org.opencv.core.MatOfPoint2f;
 import org.opencv.core.Point;
 import org.opencv.core.Scalar;
+import org.opencv.core.Size;
 import org.opencv.features2d.DescriptorExtractor;
 import org.opencv.features2d.DescriptorMatcher;
 import org.opencv.features2d.FeatureDetector;
@@ -52,6 +58,7 @@ import static android.Manifest.permission.CAMERA;
 public class Camera extends AppCompatActivity implements CameraBridgeViewBase.CvCameraViewListener2 {
 
     private static final String TAG = "OpenCVCamera";
+    private static final String AsyncTAG = "AsyncTAG";
     private CameraBridgeViewBase cameraBridgeViewBase;
     Mat rgba,rgbaT,rgbaF;
     private int w, h;
@@ -63,8 +70,15 @@ public class Camera extends AppCompatActivity implements CameraBridgeViewBase.Cv
     Mat descriptors2,descriptors1,descriptors3;
     Mat img1,img2;
     MatOfKeyPoint keypoints1,keypoints2;
-    MatOfDMatch goodMatches_chk = new MatOfDMatch();
 
+    boolean isMatch = false;
+    boolean firstRun = true;
+    AsyncTask FrameProcessing;
+    //MatOfDMatch goodMatches_chk = new MatOfDMatch();
+    String title;
+    TextView tv_title;
+    ImageButton ib_success;
+    int numberOfMatch;
     static {
         if(!OpenCVLoader.initDebug()){
             Log.d(TAG,"OpenCV not loaded (Test)");
@@ -100,17 +114,22 @@ public class Camera extends AppCompatActivity implements CameraBridgeViewBase.Cv
         matcher = DescriptorMatcher.create(DescriptorMatcher.BRUTEFORCE_HAMMING);
         img1 = new Mat();
         AssetManager assetManager = getAssets();
-        InputStream istr = assetManager.open("bank20.jpg");
+        InputStream istr;
+        switch (title){
+            case "Building1" : istr = assetManager.open("temple02_1.JPG"); break;
+            case "Building2" : istr = assetManager.open("temple03_1.jpg"); break;
+            case "Building3" : istr = assetManager.open("temple04_1.JPG"); break;
+            default: istr = assetManager.open("yasub_1");break;
+        }
+        //InputStream istr = assetManager.open("temple02_1.JPG");
         Bitmap bitmap = BitmapFactory.decodeStream(istr);
         Utils.bitmapToMat(bitmap, img1);
 //        InputStream test1 = getResources().get(R.drawable.zzz);
-
 //        Bitmap bitmap1 = BitmapFactory.decodeResource(getResources(),R.drawable.bank20);
 //        Utils.bitmapToMat(bitmap1, img1);
 
-//        Size sz = new Size(1024,768);
-//        Imgproc.resize( img1, img1, sz );
-//        Imgproc.resize( img2, img2, sz );
+        Size size = new Size(800,600);
+        Imgproc.resize( img1, img1, size );
         Imgproc.cvtColor(img1, img1, Imgproc.COLOR_RGB2GRAY);
         img1.convertTo(img1, 0); //converting the image to match with the type of the cameras image
         descriptors1 = new Mat();
@@ -123,7 +142,7 @@ public class Camera extends AppCompatActivity implements CameraBridgeViewBase.Cv
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_camera);
-        String title;
+        //System.loadLibrary("opencv_java3");
         Bundle extras = getIntent().getExtras();
         if(extras == null) {
             title = null;
@@ -139,8 +158,9 @@ public class Camera extends AppCompatActivity implements CameraBridgeViewBase.Cv
         cameraBridgeViewBase.setVisibility(SurfaceView.VISIBLE);
         cameraBridgeViewBase.setCvCameraViewListener(this);
 
-        TextView tv_title = (TextView) findViewById(R.id.title1);
+        tv_title = (TextView) findViewById(R.id.title1);
         tv_title.setText("Activating via OpenCV : " + title);
+        ib_success = (ImageButton) findViewById(R.id.ib_camera_success);
         Log.d(TAG,"onCreate passed successfully");
     }
 
@@ -202,20 +222,25 @@ public class Camera extends AppCompatActivity implements CameraBridgeViewBase.Cv
         Core.flip(rgbaT,rgbaT,1);
         Imgproc.resize(rgbaT,rgbaT,rgba.size());
         return rgbaT;*/
-        return recognize(rgba);
-    }
 
-    public Mat recognizeTest(Mat inputFrame){
-        Mat outputFrame = new Mat();
-        Imgproc.cvtColor(inputFrame,outputFrame,Imgproc.COLOR_RGB2GRAY);
-        return outputFrame;
+        if (firstRun && !isMatch) {
+            FrameProcessing = new MatchFrame().execute();
+            firstRun = false;
+        }
+
+        try{
+            if(!isMatch && FrameProcessing.getStatus() != AsyncTask.Status.RUNNING){
+                Log.d(AsyncTAG, "AsyncTask is executing");
+                FrameProcessing = new MatchFrame().execute();
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+        return rgba;
     }
 
     public Mat recognize2(Mat aInputFrame) {
-        //Mat aInputFrame = InputFrame;
-        //Mat aInputFrame = new Mat();
-        //Bitmap bitmap1 = BitmapFactory.decodeResource(getResources(),R.drawable.test1);
-        //Utils.bitmapToMat(bitmap1, aInputFrame);
         Imgproc.cvtColor(aInputFrame, aInputFrame, Imgproc.COLOR_RGB2GRAY);
         descriptors2 = new Mat();
         keypoints2 = new MatOfKeyPoint();
@@ -260,24 +285,21 @@ public class Camera extends AppCompatActivity implements CameraBridgeViewBase.Cv
         return outputImg;
     }
 
-    public Mat recognize(Mat aInputFrame) {
-
-        Imgproc.cvtColor(aInputFrame, aInputFrame, Imgproc.COLOR_RGB2GRAY);
+    public boolean recognize() {
+        Mat InputFrame = rgba;
+        Imgproc.cvtColor(InputFrame, InputFrame, Imgproc.COLOR_RGB2GRAY);
         descriptors2 = new Mat();
         keypoints2 = new MatOfKeyPoint();
-        detector.detect(aInputFrame, keypoints2);
-        descriptor.compute(aInputFrame, keypoints2, descriptors2);
-
+        detector.detect(InputFrame, keypoints2);
+        descriptor.compute(InputFrame, keypoints2, descriptors2);
         List<MatOfDMatch> matches = new ArrayList<MatOfDMatch>();
 
-        if (img1.type() == aInputFrame.type()&& (!descriptors2.empty())) {
+        /*if (img1.type() == InputFrame.type()&& (!descriptors2.empty())) {
             matcher.knnMatch(descriptors1, descriptors2, matches, 5);
         } else {
-            return aInputFrame;
-        }
-        Log.d(TAG,"dddd");
-        //matcher.knnMatch(descriptors1, descriptors2, matches, 5);
-
+            return InputFrame;
+        }*/
+        matcher.knnMatch(descriptors1, descriptors2, matches, 5);
         Mat outputImg = new Mat();
         MatOfByte drawnMatches = new MatOfByte();
 
@@ -317,10 +339,52 @@ public class Camera extends AppCompatActivity implements CameraBridgeViewBase.Cv
         }
         MatOfDMatch better_matches_mat = new MatOfDMatch();
         better_matches_mat.fromList(better_matches);
-        Features2d.drawMatches(img1, keypoints1, aInputFrame, keypoints2, better_matches_mat, outputImg, RED, RED, drawnMatches, Features2d.NOT_DRAW_SINGLE_POINTS);
-        Imgproc.resize(outputImg, outputImg, aInputFrame.size());
+        numberOfMatch = better_matches.size();
+        //tv_title.setText("number of match : "+better_matches.size());
+        Log.d(AsyncTAG,"number of match : " + better_matches.size());
+        //Features2d.drawMatches(img1, keypoints1, aInputFrame, keypoints2, better_matches_mat, outputImg, RED, RED, drawnMatches, Features2d.NOT_DRAW_SINGLE_POINTS);
+        //Imgproc.resize(outputImg, outputImg, aInputFrame.size());
+        if(numberOfMatch > 80){
+            return true;
+        }
+        return false;
+    }
 
-        return outputImg;
+    private class MatchFrame extends AsyncTask<Void, Void, Boolean> {
+
+        @Override
+        protected synchronized Boolean doInBackground(Void... voids) {
+            boolean chkMatch = false;
+            try {
+                if (recognize())
+                    chkMatch = true;
+                else
+                    chkMatch = false;
+                this.wait(1000);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return chkMatch;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean chkMatch) {
+            tv_title.setText("number of match : " + numberOfMatch);
+            if (chkMatch == true) {
+                Log.d(AsyncTAG, "Match is Success.");
+                isMatch = true;
+                ib_success.setVisibility(View.VISIBLE);
+                ib_success.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        //Intent intent = new Intent(Camera.this,Home.class);
+                        //startActivity(intent);
+                        Camera.this.finish();
+                    }
+                });
+                this.cancel(true);
+            }
+        }
     }
 
 }
