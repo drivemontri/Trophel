@@ -6,6 +6,7 @@
 
     <color name="White">#FFFFFF</color>
     <color name="Black">#000000</color>
+    <color name="DarkSlateBlue">#172442</color>
 
     <color name="Cyan50">#E0F7FA</color>
     <color name="Cyan100">#b2ebf2</color>

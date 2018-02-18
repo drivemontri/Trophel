@@ -238,7 +238,7 @@
                    android:layout_width="100dp"
                    android:layout_height="wrap_content"
                    android:id="@+id/button_northern"
-                   android:backgroundTint="@color/md_blue_700"
+                   android:backgroundTint="@color/Cyan500"
                    android:textSize="10dp"
                    android:text="Northern"/>
 
@@ -247,7 +247,7 @@
                    android:layout_height="wrap_content"
                    android:layout_toRightOf="@id/button_northern"
                    android:id="@+id/button_central"
-                   android:backgroundTint="@color/md_blue_700"
+                   android:backgroundTint="@color/Cyan500"
                    android:textSize="10dp"
                    android:text="Central"/>
 
@@ -256,7 +256,7 @@
                    android:layout_height="wrap_content"
                    android:layout_toRightOf="@id/button_central"
                    android:id="@+id/button_northeastern"
-                   android:backgroundTint="@color/md_blue_700"
+                   android:backgroundTint="@color/Cyan500"
                    android:textSize="10dp"
                    android:text="Norteastern"/>
 
@@ -274,7 +274,7 @@
                    android:layout_width="100dp"
                    android:layout_height="wrap_content"
                    android:id="@+id/button_western"
-                   android:backgroundTint="@color/md_blue_700"
+                   android:backgroundTint="@color/Cyan500"
                    android:textSize="10dp"
                    android:text="Western"/>
 
@@ -284,7 +284,7 @@
                    android:layout_toRightOf="@id/button_western"
                    android:id="@+id/button_southern"
                    android:textColor="@color/White"
-                   android:backgroundTint="@color/md_blue_700"
+                   android:backgroundTint="@color/Cyan500"
                    android:textSize="10dp"
                    android:text="Southern"/>
 
@@ -293,7 +293,7 @@
                    android:layout_height="wrap_content"
                    android:layout_toRightOf="@id/button_southern"
                    android:id="@+id/button_eastern"
-                   android:backgroundTint="@color/md_blue_700"
+                   android:backgroundTint="@color/Cyan500"
                    android:textSize="10dp"
                    android:text="Eastern"/>
 

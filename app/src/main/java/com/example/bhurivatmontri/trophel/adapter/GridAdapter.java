@@ -1,6 +1,7 @@
 package com.example.bhurivatmontri.trophel.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -13,6 +14,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.bhurivatmontri.trophel.Camera;
+import com.example.bhurivatmontri.trophel.DetailAttraction;
 import com.example.bhurivatmontri.trophel.Home;
 import com.example.bhurivatmontri.trophel.R;
 
@@ -35,7 +38,7 @@ public class GridAdapter extends RecyclerView.Adapter<GridAdapter.ViewHolder> {
         mItems.add(nama);
 
         nama = new EndangeredItem();
-        nama.setName("DoilLuangchiangdao");
+        nama.setName("DoiLuangchiangdao");
         nama.setThumbnail(R.drawable.att_doiluangchiangdao);
         mItems.add(nama);
 
@@ -78,6 +81,9 @@ public class GridAdapter extends RecyclerView.Adapter<GridAdapter.ViewHolder> {
             @Override
             public void onClick(View v){
                 Toast.makeText(v.getContext(), "-->" + nature.getName() + "<--", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(v.getContext(),DetailAttraction.class);
+                intent.putExtra("nameOfAttraction",nature.getName());
+                v.getContext().startActivity(intent);
             }
         });
     }
