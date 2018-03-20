@@ -54,6 +54,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import static android.Manifest.permission.CAMERA;
+import static org.opencv.core.Core.addWeighted;
 
 public class Camera extends AppCompatActivity implements CameraBridgeViewBase.CvCameraViewListener2 {
 
@@ -236,7 +237,9 @@ public class Camera extends AppCompatActivity implements CameraBridgeViewBase.Cv
         }catch (Exception e){
             e.printStackTrace();
         }
-
+        //img2 = img1;
+        //Imgproc.resize( img1, img2, rgba.size() );
+        //addWeighted(img2,0.5,rgba,0.5,0.0,rgba);
         return rgba;
     }
 

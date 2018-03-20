@@ -44,7 +44,7 @@ public class ListFriend extends Fragment implements SearchView.OnQueryTextListen
     int [] icon = {R.drawable.profile_rattpong_kaewpinjai,R.drawable.profile_thatchapon_wongsri,R.drawable.profile_tananut_panyagosa,R.drawable.profile_pakin_suwannawat,R.drawable.profile_watchanan_chantapakul,R.drawable.profile_thatchai_chuaubon,R.drawable.profile_tanatat_tha,R.drawable.profile_gai_lowvapong,R.drawable.profile_aon_natjaya,R.drawable.profile_pansit_wattanaprasobsuk};
     String [] name = {"Rattpong Kaewpinjai","Thatchapon Wongsri","Tananut Panyagosa","Pakin Suwannawat","Watchanan Chantapakul","Thatchai_Chuaubon","Tanatat Tha","Gai Lowvapong","Aon Natjaya","Pansit Wattanaprasobsuk"};
     String [] detail = {"570610596","570610578","570610574","570610591","570610601","570610577","570610575","570610549","570610566","570610588"};
-
+    String [] friendID = {"aaa","bbb","ccc","ddd","eee","fff","ggg","hhh","iii","jjj"};
     ArrayList<Friend> listFriend = new ArrayList<>();
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -140,7 +140,7 @@ public class ListFriend extends Fragment implements SearchView.OnQueryTextListen
         }*/
         int i = 0;
         for (String addName : name) {
-            listFriend.add(new Friend(addName,detail[i],icon[i])) ;
+            listFriend.add(new Friend(addName,detail[i],friendID[i],icon[i])) ;
             i++;
         }
     }

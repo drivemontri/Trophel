@@ -25,7 +25,7 @@ public class DetailAttraction extends AppCompatActivity {
 
         Toolbar toolbarDetailAttr = (Toolbar) findViewById(R.id.toolbar_detail_attraction);
         setSupportActionBar(toolbarDetailAttr);
-        getSupportActionBar().setTitle("Detail Attraction");
+        getSupportActionBar().setTitle("Attraction detail");
 
         ImageView coverDetailAttraction = (ImageView) findViewById(R.id.cover_detail_attraction);
         TextView nameDetailAttraction = (TextView) findViewById(R.id.name_detail_attraction);
