@@ -1,5 +1,6 @@
 package com.example.bhurivatmontri.trophel.adapter;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -13,14 +14,16 @@ import android.widget.Toast;
 import com.example.bhurivatmontri.trophel.DetailAttraction;
 import com.example.bhurivatmontri.trophel.R;
 import com.example.bhurivatmontri.trophel.fragment.Profile;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
 public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder>{
     private static final String TAG = "CustomAdapter";
-
+    private Context mContext;
     ArrayList<Friend> listFriend = new ArrayList<>();
-    public CustomAdapter(ArrayList<Friend> listFriend){
+    public CustomAdapter(Context context , ArrayList<Friend> listFriend){
+        this.mContext = context;
         this.listFriend = listFriend;
     }
 
@@ -78,7 +81,14 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
         viewHolder.getImageView().setImageResource(mDataSet3[position]);*/
         viewHolder.getTextView().setText(listFriend.get(position).getName());
         viewHolder.getTextView2().setText(listFriend.get(position).getDetail());
-        viewHolder.getImageView().setImageResource(listFriend.get(position).getIcon());
+        //viewHolder.getImageView().setImageResource(listFriend.get(position).getIcon());
+        Log.d("onDataChange3",""+listFriend.get(position).getUriImg());
+        Picasso.with(mContext)
+                .load(listFriend.get(position).getUriImg())
+                .placeholder(R.mipmap.ic_launcher)
+                .fit()
+                .centerCrop()
+                .into(viewHolder.getImageView());
         viewHolder.getImageView().setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){

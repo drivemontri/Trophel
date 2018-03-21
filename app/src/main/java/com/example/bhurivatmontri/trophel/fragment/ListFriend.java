@@ -1,13 +1,16 @@
 package com.example.bhurivatmontri.trophel.fragment;
 
 
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -18,6 +21,15 @@ import android.view.ViewGroup;
 import com.example.bhurivatmontri.trophel.R;
 import com.example.bhurivatmontri.trophel.adapter.CustomAdapter;
 import com.example.bhurivatmontri.trophel.adapter.Friend;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 
@@ -41,19 +53,30 @@ public class ListFriend extends Fragment implements SearchView.OnQueryTextListen
     protected CustomAdapter mAdapter;
     protected RecyclerView.LayoutManager mLayoutManager;
 
-    int [] icon = {R.drawable.profile_rattpong_kaewpinjai,R.drawable.profile_thatchapon_wongsri,R.drawable.profile_tananut_panyagosa,R.drawable.profile_pakin_suwannawat,R.drawable.profile_watchanan_chantapakul,R.drawable.profile_thatchai_chuaubon,R.drawable.profile_tanatat_tha,R.drawable.profile_gai_lowvapong,R.drawable.profile_aon_natjaya,R.drawable.profile_pansit_wattanaprasobsuk};
-    String [] name = {"Rattpong Kaewpinjai","Thatchapon Wongsri","Tananut Panyagosa","Pakin Suwannawat","Watchanan Chantapakul","Thatchai_Chuaubon","Tanatat Tha","Gai Lowvapong","Aon Natjaya","Pansit Wattanaprasobsuk"};
+    protected DatabaseReference mDatabase;
+    protected FirebaseStorage storage = FirebaseStorage.getInstance();
+
+    //int [] icon = {R.drawable.profile_rattpong_kaewpinjai,R.drawable.profile_thatchapon_wongsri,R.drawable.profile_tananut_panyagosa,R.drawable.profile_pakin_suwannawat,R.drawable.profile_watchanan_chantapakul,R.drawable.profile_thatchai_chuaubon,R.drawable.profile_tanatat_tha,R.drawable.profile_gai_lowvapong,R.drawable.profile_aon_natjaya,R.drawable.profile_pansit_wattanaprasobsuk};
+    /*String [] name = {"Rattpong Kaewpinjai","Thatchapon Wongsri","Tananut Panyagosa","Pakin Suwannawat","Watchanan Chantapakul","Thatchai_Chuaubon","Tanatat Tha","Gai Lowvapong","Aon Natjaya","Pansit Wattanaprasobsuk"};
     String [] detail = {"570610596","570610578","570610574","570610591","570610601","570610577","570610575","570610549","570610566","570610588"};
-    String [] friendID = {"aaa","bbb","ccc","ddd","eee","fff","ggg","hhh","iii","jjj"};
+    String [] friendID = {"aaa","bbb","ccc","ddd","eee","fff","ggg","hhh","iii","jjj"};*/
+    ArrayList<String> name = new ArrayList<>();
+    ArrayList<String> detail = new ArrayList<>();
+    ArrayList<String> friendID = new ArrayList<>();
+    ArrayList<String> uriImg = new ArrayList<>();
     ArrayList<Friend> listFriend = new ArrayList<>();
+
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         // Initialize dataset, this data would usually come from a local content provider or
         // remote server.
+        initDatabase();
         initDataset();
         setHasOptionsMenu(true);
+
     }
 
     @Override
@@ -79,11 +102,11 @@ public class ListFriend extends Fragment implements SearchView.OnQueryTextListen
         }
         setRecyclerViewLayoutManager(mCurrentLayoutManagerType);
 
-        mAdapter = new CustomAdapter(listFriend);
+        mAdapter = new CustomAdapter(getActivity().getApplicationContext(),listFriend);
         // Set CustomAdapter as the adapter for RecyclerView.
         mRecyclerView.setAdapter(mAdapter);
         // END_INCLUDE(initializeRecyclerView)
-
+        Log.d("onDataChange","yyyyyyy");
         return rootView;
     }
 
@@ -138,11 +161,60 @@ public class ListFriend extends Fragment implements SearchView.OnQueryTextListen
             mDataset2[i] = detail[i];
             mDataset3[i] = icon[i];
         }*/
+
         int i = 0;
+        Log.d("onDataChange","555555555555555555555555555555555555555555");
         for (String addName : name) {
-            listFriend.add(new Friend(addName,detail[i],friendID[i],icon[i])) ;
+            //listFriend.add(new Friend(addName,detail[i],friendID[i],icon[i])) ;
+            listFriend.add(new Friend(addName,detail.get(i),friendID.get(i),uriImg.get(i))) ;
+            //Log.d("onDataChange","initDataset :"+addName);
             i++;
         }
+    }
+
+    private void initDatabase(){
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+        final StorageReference mStorage = storage.getReference();
+
+        //mDatabase.child("users").child("uID").child("drive").child("friend_id").keepSynced(true);
+        mDatabase.child("users").child("uID").child("drive").child("friend_id").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Log.d("onDataChange",""+dataSnapshot.getChildrenCount());
+                for(DataSnapshot item_friend : dataSnapshot.getChildren()){
+                    Log.d("onDataChange","555"+item_friend.getValue().toString());
+                    Log.d("onDataChange",""+item_friend.getKey());
+                    Log.d("onDataChange",""+item_friend.child("name").getValue().toString());
+                    Log.d("onDataChange",""+item_friend.child("caption").getValue());
+                    friendID.add(item_friend.getKey().toString());
+                    name.add(item_friend.child("name").getValue().toString());
+                    detail.add(item_friend.child("caption").getValue().toString());
+                    uriImg.add(item_friend.child("uri_profile").getValue().toString());
+                    /*mStorage.child("img_profile/uImg/bose/profile.png").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        @Override
+                        public void onSuccess(Uri uri) {
+                            Log.d("onDataChange2",""+uri.toString());
+                            //uriImg.add("sss");
+                            //uriImg.add(uri.toString());
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.d("onDataChange2","errrorrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr");
+                        }
+                    });*/
+                }
+                initDataset();
+                Log.d("onDataChange","zzzz "+listFriend.size());
+                mAdapter = new CustomAdapter(getActivity(),listFriend);
+                mRecyclerView.setAdapter(mAdapter);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
     @Override

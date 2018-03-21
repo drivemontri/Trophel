@@ -9,13 +9,15 @@ public class Friend {
     private String name;
     private String detail;
     private String friendID;
-    private int icon;
+    //private int icon;
+    private String uriImg;
 
-    public Friend(String name,String detail,String friendID,int icon){
+    public Friend(String name,String detail,String friendID,String uriImg){
         this.setName(name);
         this.setDetail(detail);
         this.setFriendID(friendID);
-        this.setIcon(icon);
+        this.setUriImg(uriImg);
+        //this.setIcon(icon);
     }
 
     public String getName() {
@@ -33,14 +35,11 @@ public class Friend {
     public String getFriendID() {
         return friendID;
     }
-    public void setFriendID(String friendID) {
-        this.friendID = friendID;
-    }
+    public void setFriendID(String friendID) { this.friendID = friendID; }
 
-    public int getIcon() {
-        return icon;
-    }
-    public void setIcon(int icon) {
-        this.icon = icon;
-    }
+    /*public int getIcon() { return icon; }
+    public void setIcon(int icon) {this.icon = icon;}*/
+
+    public String getUriImg(){return uriImg;}
+    public void setUriImg(String uriImg){ this.uriImg = uriImg;}
 }

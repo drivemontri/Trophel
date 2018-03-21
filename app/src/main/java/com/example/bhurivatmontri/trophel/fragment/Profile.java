@@ -1,19 +1,28 @@
 package com.example.bhurivatmontri.trophel.fragment;
 
 
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.bhurivatmontri.trophel.R;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.squareup.picasso.Picasso;
 
 
 /**
@@ -22,6 +31,10 @@ import com.google.firebase.database.ValueEventListener;
 public class Profile extends Fragment {
 
     protected DatabaseReference mDatabase;
+    protected FirebaseStorage storage = FirebaseStorage.getInstance();
+
+    protected ImageView profile;
+    protected ImageView background;
     protected TextView idUser;
     protected TextView nameUser;
     protected TextView captionUser;
@@ -42,8 +55,11 @@ public class Profile extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_profile, container, false);
 
+        String [] img_type = {"profile.jpg","background.jpg"};
+        View view = inflater.inflate(R.layout.fragment_profile, container, false);
+        profile = (ImageView) view.findViewById(R.id.img_Profile);
+        background = (ImageView) view.findViewById(R.id.cover_background);
         idUser = (TextView) view.findViewById(R.id.id_Profile);
         nameUser = (TextView) view.findViewById(R.id.name_Profile);
         captionUser = (TextView) view.findViewById(R.id.caption_Profile);
@@ -57,8 +73,9 @@ public class Profile extends Fragment {
 
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
+        final StorageReference mStorage = storage.getReference();
 
-        mDatabase.child("users").child("uID").addValueEventListener(new ValueEventListener() {
+        mDatabase.child("users").child("uID").child("drive").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 String value = dataSnapshot.child("id").getValue().toString();
@@ -90,6 +107,43 @@ public class Profile extends Fragment {
 
             }
         });
+
+        mStorage.child("img_profile/uImg/drive/profile.jpg").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                Log.d("onDataChange","onSuccess");
+                Picasso.with(getActivity().getApplicationContext())
+                        .load(uri)
+                        .placeholder(R.mipmap.ic_launcher)
+                        .fit()
+                        .centerCrop()
+                        .into(profile);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+
+            }
+        });
+
+        mStorage.child("img_profile/uImg/drive/background.jpg").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                Log.d("onDataChange","onSuccess");
+                Picasso.with(getActivity().getApplicationContext())
+                        .load(uri)
+                        .placeholder(R.mipmap.ic_launcher)
+                        .fit()
+                        .centerCrop()
+                        .into(background);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+
+            }
+        });
+
 
         return view;
 
