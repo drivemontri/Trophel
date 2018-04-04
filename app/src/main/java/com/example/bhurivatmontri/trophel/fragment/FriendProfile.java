@@ -7,6 +7,9 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -49,6 +52,7 @@ public class FriendProfile extends Fragment {
 
     public FriendProfile() {
         // Required empty public constructor
+        setHasOptionsMenu(true);
     }
 
 
@@ -150,10 +154,22 @@ public class FriendProfile extends Fragment {
 
             }
         });
-
-
         return view;
+    }
 
+    @Override
+    public void onCreateOptionsMenu(Menu menu,MenuInflater inflater){
+        //inflater.inflate(R.menu.menu_home,menu);
+        /*menu.findItem(R.id.menu_search_friend).setVisible(false);
+        menu.findItem(R.id.menu_add_friend).setVisible(false);
+        super.onCreateOptionsMenu(menu,inflater);*/
+    }
+
+    @Override
+    public void onPrepareOptionsMenu(Menu menu){
+        /*menu.findItem(R.id.menu_search_friend).setVisible(false);
+        menu.findItem(R.id.menu_add_friend).setVisible(false);
+        return;*/
     }
 
 }

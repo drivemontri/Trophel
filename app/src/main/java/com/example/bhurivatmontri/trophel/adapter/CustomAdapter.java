@@ -108,7 +108,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
 
                 android.support.v4.app.FragmentManager manager = ((AppCompatActivity)mContext).getSupportFragmentManager();
                 manager.beginTransaction()
-                        .replace(R.id.listFriend,friendProfile,friendProfile.getTag())
+                        .add(R.id.listFriend,friendProfile,friendProfile.getTag())
                         .addToBackStack(null)
                         .commit();
 

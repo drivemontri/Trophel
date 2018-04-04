@@ -8,11 +8,9 @@ public class EndangeredItem2 {
 
     private String mName;
     private int mTrophy;
-    private int star1 = 0;
-    private int star2 = 0;
-    private int star3 = 0;
-    private int star4 = 0;
-    private int star5 = 0;
+    private int[] star = {0,0,0,0,0};
+    private int numStarAtt = 0;
+    private int numStarAttSucc = 0;
     private String attractionID;
 
     public String getName() {
@@ -29,27 +27,34 @@ public class EndangeredItem2 {
         this.mTrophy = mTrophy;
     }
 
-    public int getStar1() {
-        return star1;
+    public int[] getStar1() {
+        return star;
     }
-    public int getStar2() {
-        return star2;
-    }
-    public int getStar3() {
-        return star3;
-    }
-    public int getStar4() {
-        return star4;
-    }
-    public int getStar5() {
-        return star5;
-    }
+
     public void setStar(int star1,int star2,int star3,int star4,int star5 ) {
-        this.star1 = star1;
-        this.star2 = star2;
-        this.star3 = star3;
-        this.star4 = star4;
-        this.star5 = star5;
+        this.star[0] = star1;
+        this.star[1] = star2;
+        this.star[2] = star3;
+        this.star[3] = star4;
+        this.star[4] = star5;
+        this.numStarAtt = 0;
+        this.numStarAttSucc = 0;
+        for (int i = 0; i < this.star.length; i++) {
+            if(this.star[i] == 1){
+                this.numStarAtt += 1;
+            }else if (this.star[i] == 2){
+                this.numStarAtt += 1;
+                this.numStarAttSucc += 1;
+            }
+        }
+    }
+
+    public int getNumStarAtt(){
+        return this.numStarAtt;
+    }
+
+    public int getNumStarAttSucc(){
+        return this.numStarAttSucc;
     }
 
    public String getAttractionID() {return attractionID;}

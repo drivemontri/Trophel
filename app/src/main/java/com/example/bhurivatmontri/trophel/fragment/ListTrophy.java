@@ -39,7 +39,6 @@ public class ListTrophy extends Fragment {
         rg = bundle.getString("Region");
         Log.d("sss_Region",rg);
         setHasOptionsMenu(true);
-
     }
 
     @Override
@@ -54,7 +53,7 @@ public class ListTrophy extends Fragment {
         mLayoutManager  = new GridLayoutManager(getActivity(),1);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        mAdapter = new GridAdapter2(rg);
+        mAdapter = new GridAdapter2(getActivity(),rg);
         mRecyclerView.setAdapter(mAdapter);
 
         return view ;

@@ -102,7 +102,7 @@ public class ListFriend extends Fragment implements SearchView.OnQueryTextListen
         }
         setRecyclerViewLayoutManager(mCurrentLayoutManagerType);
 
-        mAdapter = new CustomAdapter(getActivity().getApplicationContext(),listFriend);
+        mAdapter = new CustomAdapter(getActivity(),listFriend);
         // Set CustomAdapter as the adapter for RecyclerView.
         mRecyclerView.setAdapter(mAdapter);
         // END_INCLUDE(initializeRecyclerView)

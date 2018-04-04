@@ -1,5 +1,6 @@
 package com.example.bhurivatmontri.trophel.adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.Fragment;
@@ -12,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,17 +31,18 @@ public class GridAdapter2 extends RecyclerView.Adapter<GridAdapter2.ViewHolder> 
     List<EndangeredItem2> mItems_inner;
     public Context mContext;
     public Fragment replaceFragment;
+    public Activity activity;
     int region;
     //String[] conv = {"northern","central","northeastern","western","southern","eastern"};
 
-    public GridAdapter2(String rg) {
+    public GridAdapter2(Activity activity,String rg) {
         super();
-
+        this.activity = activity;
         region = Integer.parseInt(rg);
         mItems_outer = new ArrayList<List<EndangeredItem2>>();
 
         String[][] name = {{"NorthAAA","NorthBBB","NorthCCC","NorthDDD","NorthEEE"},{"CentralAAA","CentralBBB"},{},{},{"SouthAAA"},{}};
-        int[][][] star = {{{2,2,2,2,2},{2,2,2,0,0},{2,2,2,2,0},{2,2,2,0,0},{2,2,2,0,0}},{{2,2,2,0,0},{2,2,2,2,2}},{},{},{{2,2,2,2,0}},{}};
+        int[][][] star = {{{2,2,2,2,2},{2,2,2,0,0},{2,2,2,2,0},{2,2,2,1,0},{2,2,2,1,1}},{{2,2,2,0,0},{2,1,1,1,1}},{},{},{{2,2,2,1,0}},{}};
         int[][] trophy = {{2,2,2,1,1},{2,1},{},{},{1},{}};
 
         for (int i = 0 ; i < 6 ; i++){
@@ -82,6 +85,27 @@ public class GridAdapter2 extends RecyclerView.Adapter<GridAdapter2.ViewHolder> 
                 break;
         }
 
+        //LinearLayout layout_star = (LinearLayout)this.activity.findViewById(R.id.bottom_layout_trophy_in);
+        String starNameImg = "trophy_star";
+        ImageView[] imageStar = new ImageView[5];
+        for (int j = 0; j < nature.getNumStarAtt() ; j++) {
+            viewHolder.imgStar[j].setVisibility(View.VISIBLE);
+            //ImageView image_star = new ImageView(this.activity);
+            /*String starNameImgId = starNameImg+j;
+            imageStar[j] = (ImageView)this.activity.findViewById(this.activity.getResources().getIdentifier(starNameImgId,"id",this.activity.getPackageName()));
+            imageStar[j].setVisibility(View.VISIBLE);*/
+            if(j < nature.getNumStarAttSucc()) {
+                viewHolder.imgStar[j].setImageResource(R.drawable.star_success);
+                //imageStar.setImageResource(R.drawable.star_success);
+                //image_star.setImageResource(R.drawable.star_success);
+            }else{
+                //imageStar.setImageResource(R.drawable.star_empty);
+                //image_star.setImageResource(R.drawable.star_empty);
+            }
+            //LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(40, 40);
+            //layout_star.addView(image_star,lp);
+        }
+
         viewHolder.imgTrophy.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
@@ -99,11 +123,16 @@ public class GridAdapter2 extends RecyclerView.Adapter<GridAdapter2.ViewHolder> 
     class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public ImageView imgTrophy;
         public TextView nameTrophy;
-
+        public ImageView[] imgStar = new ImageView[5];
         public ViewHolder(View itemView) {
             super(itemView);
             imgTrophy = (ImageView) itemView.findViewById(R.id.img_trophy);
             nameTrophy = (TextView) itemView.findViewById(R.id.name_trophy);
+            imgStar[0] = (ImageView) itemView.findViewById(R.id.trophy_star0);
+            imgStar[1] = (ImageView) itemView.findViewById(R.id.trophy_star1);
+            imgStar[2] = (ImageView) itemView.findViewById(R.id.trophy_star2);
+            imgStar[3] = (ImageView) itemView.findViewById(R.id.trophy_star3);
+            imgStar[4] = (ImageView) itemView.findViewById(R.id.trophy_star4);
             //nameTrophy.setOnClickListener(this);
         }
 
