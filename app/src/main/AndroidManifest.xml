@@ -42,9 +42,8 @@
             android:value="AIzaSyCZWRGLK3xzdk-VNLYepuxSjSUB_Mk56dQ" />
 
         <activity android:name=".Camera" />
-        <activity android:name=".DetailAttraction">
-
-        </activity>
+        <activity android:name=".DetailAttraction"></activity>
+        <activity android:name=".ListTrophy"></activity>
     </application>
 
 </manifest>

@@ -1,13 +1,15 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/listFriend"
+    android:id="@+id/list_Trophy"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.bhurivatmontri.trophel.fragment.ListFriend">
+    android:background="@color/Cyan100"
+    tools:context="com.example.bhurivatmontri.trophel.fragment.ListTrophy">
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/recyclerView_Friend"
+        android:id="@+id/recyclerView_Trophy"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent">
+    </android.support.v7.widget.RecyclerView>
 
 </FrameLayout>

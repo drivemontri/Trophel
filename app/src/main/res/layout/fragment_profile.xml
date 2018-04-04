@@ -1,311 +1,320 @@
-<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/my_profile"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/White"
     tools:context="com.example.bhurivatmontri.trophel.fragment.Profile">
 
-   <LinearLayout
-       android:layout_width="match_parent"
-       android:layout_height="wrap_content"
-       android:orientation="vertical">
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-       <RelativeLayout
-           android:layout_width="match_parent"
-           android:layout_height="wrap_content">
+        <LinearLayout
+            android:id="@+id/my_profile_in"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-           <ImageView
-               android:id="@+id/cover_background"
-               android:layout_width="400dp"
-               android:layout_height="200dp"
-               android:scaleType="centerCrop"
-               android:src="@drawable/cover_bhurivat_montri" />
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-           <de.hdodenhof.circleimageview.CircleImageView
-               android:id="@+id/img_Profile"
-               android:layout_width="80dp"
-               android:layout_height="80dp"
-               app:civ_border_width="2dp"
-               app:civ_border_color="#FFFFFF"
-               android:layout_below="@+id/cover_background"
-               android:layout_centerHorizontal="true"
-               android:layout_marginTop="-60dp"
-               android:src="@drawable/profile_bhurivat_montri" />
+                <ImageView
+                    android:id="@+id/cover_background"
+                    android:layout_width="400dp"
+                    android:layout_height="200dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/cover_bhurivat_montri" />
 
-       </RelativeLayout>
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/img_Profile"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    app:civ_border_width="2dp"
+                    app:civ_border_color="#FFFFFF"
+                    android:layout_below="@+id/cover_background"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="-60dp"
+                    android:src="@drawable/profile_bhurivat_montri" />
 
-       <RelativeLayout
-           android:layout_width="match_parent"
-           android:layout_height="wrap_content">
+            </RelativeLayout>
 
-           <TextView
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content"
-               android:id="@+id/name_Profile"
-               android:textColor="@color/Black"
-               android:textSize="20dp"
-               android:textStyle="bold"
-               android:layout_centerHorizontal="true"
-               android:layout_marginTop="10dp"
-               android:text="xxxx xxxx"/>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-           <TextView
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content"
-               android:id="@+id/caption_Profile"
-               android:textColor="@color/colorPrimaryDark"
-               android:textSize="15dp"
-               android:textStyle="italic"
-               android:layout_centerHorizontal="true"
-               android:layout_below="@+id/name_Profile"
-               android:text="( ---- )"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/name_Profile"
+                    android:textColor="@color/Black"
+                    android:textSize="20dp"
+                    android:textStyle="bold"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="10dp"
+                    android:text="xxxx xxxx"/>
 
-           <TextView
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content"
-               android:id="@+id/id_Profile"
-               android:textColor="@color/Cyan500"
-               android:textSize="15dp"
-               android:textStyle="italic"
-               android:layout_centerHorizontal="true"
-               android:layout_below="@+id/caption_Profile"
-               android:text="id:"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/caption_Profile"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="15dp"
+                    android:textStyle="italic"
+                    android:layout_centerHorizontal="true"
+                    android:layout_below="@+id/name_Profile"
+                    android:text="( ---- )"/>
 
-           <RelativeLayout
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content"
-               android:id="@+id/star_layout1"
-               android:layout_below="@+id/id_Profile"
-               android:layout_marginTop="5dp"
-               android:layout_centerHorizontal="true">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/id_Profile"
+                    android:textColor="@color/Cyan500"
+                    android:textSize="15dp"
+                    android:textStyle="italic"
+                    android:layout_centerHorizontal="true"
+                    android:layout_below="@+id/caption_Profile"
+                    android:text="id:"/>
 
-               <ImageView
-                   android:layout_width="20dp"
-                   android:layout_height="20dp"
-                   android:id="@+id/star_Profile"
-                   android:src="@drawable/star_success"/>
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/star_layout1"
+                    android:layout_below="@+id/id_Profile"
+                    android:layout_marginTop="5dp"
+                    android:layout_centerHorizontal="true">
 
-               <TextView
-                   android:layout_width="wrap_content"
-                   android:layout_height="wrap_content"
-                   android:id="@+id/star_count"
-                   android:layout_toRightOf="@+id/star_Profile"
-                   android:textSize="20dp"
-                   android:text=" : 0"
-                   android:textColor="@color/Cyan900"/>
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:id="@+id/star_Profile"
+                        android:src="@drawable/star_success"/>
 
-           </RelativeLayout>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/star_count"
+                        android:layout_toRightOf="@+id/star_Profile"
+                        android:textSize="20dp"
+                        android:text=" : 0"
+                        android:textColor="@color/Cyan900"/>
 
-           <RelativeLayout
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content"
-               android:id="@+id/trophel_layout1"
-               android:layout_below="@+id/star_layout1"
-               android:layout_marginTop="5dp"
-               android:layout_centerHorizontal="true">
+                </RelativeLayout>
 
-               <ImageView
-                   android:layout_width="20dp"
-                   android:layout_height="20dp"
-                   android:id="@+id/trophel_northern_Profile"
-                   android:src="@drawable/trophel_northern"/>
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/trophel_layout1"
+                    android:layout_below="@+id/star_layout1"
+                    android:layout_marginTop="5dp"
+                    android:layout_centerHorizontal="true">
 
-               <TextView
-                   android:layout_width="wrap_content"
-                   android:layout_height="wrap_content"
-                   android:id="@+id/trophel_northern_count"
-                   android:layout_toRightOf="@+id/trophel_northern_Profile"
-                   android:textSize="20dp"
-                   android:text=" : 0"
-                   android:textColor="@color/Cyan900"/>
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:id="@+id/trophel_northern_Profile"
+                        android:src="@drawable/trophel_northern"/>
 
-               <ImageView
-                   android:layout_width="20dp"
-                   android:layout_height="20dp"
-                   android:layout_toRightOf="@id/trophel_northern_count"
-                   android:layout_marginLeft="20dp"
-                   android:id="@+id/trophel_central_Profile"
-                   android:src="@drawable/trophel_central"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/trophel_northern_count"
+                        android:layout_toRightOf="@+id/trophel_northern_Profile"
+                        android:textSize="20dp"
+                        android:text=" : 0"
+                        android:textColor="@color/Cyan900"/>
 
-               <TextView
-                   android:layout_width="wrap_content"
-                   android:layout_height="wrap_content"
-                   android:id="@+id/trophel_central_count"
-                   android:layout_toRightOf="@+id/trophel_central_Profile"
-                   android:textSize="20dp"
-                   android:text=" : 0"
-                   android:textColor="@color/Cyan900"/>
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_toRightOf="@id/trophel_northern_count"
+                        android:layout_marginLeft="20dp"
+                        android:id="@+id/trophel_central_Profile"
+                        android:src="@drawable/trophel_central"/>
 
-               <ImageView
-                   android:layout_width="20dp"
-                   android:layout_height="20dp"
-                   android:layout_toRightOf="@id/trophel_central_count"
-                   android:layout_marginLeft="20dp"
-                   android:id="@+id/trophel_northeastern_Profile"
-                   android:src="@drawable/trophel_northeastern"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/trophel_central_count"
+                        android:layout_toRightOf="@+id/trophel_central_Profile"
+                        android:textSize="20dp"
+                        android:text=" : 0"
+                        android:textColor="@color/Cyan900"/>
 
-               <TextView
-                   android:layout_width="wrap_content"
-                   android:layout_height="wrap_content"
-                   android:id="@+id/trophel_northeastern_count"
-                   android:layout_toRightOf="@+id/trophel_northeastern_Profile"
-                   android:textSize="20dp"
-                   android:text=" : 0"
-                   android:textColor="@color/Cyan900"/>
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_toRightOf="@id/trophel_central_count"
+                        android:layout_marginLeft="20dp"
+                        android:id="@+id/trophel_northeastern_Profile"
+                        android:src="@drawable/trophel_northeastern"/>
 
-           </RelativeLayout>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/trophel_northeastern_count"
+                        android:layout_toRightOf="@+id/trophel_northeastern_Profile"
+                        android:textSize="20dp"
+                        android:text=" : 0"
+                        android:textColor="@color/Cyan900"/>
 
-           <RelativeLayout
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content"
-               android:id="@+id/trophel_layout2"
-               android:layout_below="@+id/trophel_layout1"
-               android:layout_marginTop="5dp"
-               android:layout_centerHorizontal="true">
+                </RelativeLayout>
 
-               <ImageView
-                   android:layout_width="20dp"
-                   android:layout_height="20dp"
-                   android:id="@+id/trophel_western_Profile"
-                   android:src="@drawable/trophel_western"/>
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/trophel_layout2"
+                    android:layout_below="@+id/trophel_layout1"
+                    android:layout_marginTop="5dp"
+                    android:layout_centerHorizontal="true">
 
-               <TextView
-                   android:layout_width="wrap_content"
-                   android:layout_height="wrap_content"
-                   android:id="@+id/trophel_western_count"
-                   android:layout_toRightOf="@+id/trophel_western_Profile"
-                   android:textSize="20dp"
-                   android:text=" : 0"
-                   android:textColor="@color/Cyan900"/>
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:id="@+id/trophel_western_Profile"
+                        android:src="@drawable/trophel_western"/>
 
-               <ImageView
-                   android:layout_width="20dp"
-                   android:layout_height="20dp"
-                   android:layout_toRightOf="@id/trophel_western_count"
-                   android:layout_marginLeft="20dp"
-                   android:id="@+id/trophel_southern_Profile"
-                   android:src="@drawable/trophel_southern"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/trophel_western_count"
+                        android:layout_toRightOf="@+id/trophel_western_Profile"
+                        android:textSize="20dp"
+                        android:text=" : 0"
+                        android:textColor="@color/Cyan900"/>
 
-               <TextView
-                   android:layout_width="wrap_content"
-                   android:layout_height="wrap_content"
-                   android:id="@+id/trophel_southern_count"
-                   android:layout_toRightOf="@+id/trophel_southern_Profile"
-                   android:textSize="20dp"
-                   android:text=" : 0"
-                   android:textColor="@color/Cyan900"/>
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_toRightOf="@id/trophel_western_count"
+                        android:layout_marginLeft="20dp"
+                        android:id="@+id/trophel_southern_Profile"
+                        android:src="@drawable/trophel_southern"/>
 
-               <ImageView
-                   android:layout_width="20dp"
-                   android:layout_height="20dp"
-                   android:layout_toRightOf="@id/trophel_southern_count"
-                   android:layout_marginLeft="20dp"
-                   android:id="@+id/trophel_eastern_Profile"
-                   android:src="@drawable/trophel_eastern"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/trophel_southern_count"
+                        android:layout_toRightOf="@+id/trophel_southern_Profile"
+                        android:textSize="20dp"
+                        android:text=" : 0"
+                        android:textColor="@color/Cyan900"/>
 
-               <TextView
-                   android:layout_width="wrap_content"
-                   android:layout_height="wrap_content"
-                   android:id="@+id/trophel_eastern_count"
-                   android:layout_toRightOf="@+id/trophel_eastern_Profile"
-                   android:textSize="20dp"
-                   android:text=" : 0"
-                   android:textColor="@color/Cyan900"/>
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_toRightOf="@id/trophel_southern_count"
+                        android:layout_marginLeft="20dp"
+                        android:id="@+id/trophel_eastern_Profile"
+                        android:src="@drawable/trophel_eastern"/>
 
-           </RelativeLayout>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/trophel_eastern_count"
+                        android:layout_toRightOf="@+id/trophel_eastern_Profile"
+                        android:textSize="20dp"
+                        android:text=" : 0"
+                        android:textColor="@color/Cyan900"/>
 
-           <TextView
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content"
-               android:layout_below="@id/trophel_layout2"
-               android:layout_marginTop="10dp"
-               android:layout_centerHorizontal="true"
-               android:id="@+id/detail_count"
-               android:textSize="20dp"
-               android:text="Discovery"
-               android:textColor="@color/colorPrimaryDark"/>
+                </RelativeLayout>
 
-           <RelativeLayout
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content"
-               android:id="@+id/trophel_layout3"
-               android:layout_below="@+id/detail_count"
-               android:layout_marginTop="5dp"
-               android:layout_centerHorizontal="true">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/trophel_layout2"
+                    android:layout_marginTop="10dp"
+                    android:layout_centerHorizontal="true"
+                    android:id="@+id/detail_count"
+                    android:textSize="20dp"
+                    android:text="Discovery"
+                    android:textColor="@color/colorPrimaryDark"/>
 
-               <Button
-                   android:layout_width="100dp"
-                   android:layout_height="wrap_content"
-                   android:id="@+id/button_northern"
-                   android:backgroundTint="@color/Cyan500"
-                   android:textSize="10dp"
-                   android:text="Northern"/>
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/trophel_layout3"
+                    android:layout_below="@+id/detail_count"
+                    android:layout_marginTop="5dp"
+                    android:layout_centerHorizontal="true">
 
-               <Button
-                   android:layout_width="100dp"
-                   android:layout_height="wrap_content"
-                   android:layout_toRightOf="@id/button_northern"
-                   android:id="@+id/button_central"
-                   android:backgroundTint="@color/Cyan500"
-                   android:textSize="10dp"
-                   android:text="Central"/>
+                    <Button
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/button_northern"
+                        android:backgroundTint="@color/Cyan500"
+                        android:textSize="10dp"
+                        android:text="Northern"/>
 
-               <Button
-                   android:layout_width="100dp"
-                   android:layout_height="wrap_content"
-                   android:layout_toRightOf="@id/button_central"
-                   android:id="@+id/button_northeastern"
-                   android:backgroundTint="@color/Cyan500"
-                   android:textSize="10dp"
-                   android:text="Norteastern"/>
+                    <Button
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@id/button_northern"
+                        android:id="@+id/button_central"
+                        android:backgroundTint="@color/Cyan500"
+                        android:textSize="10dp"
+                        android:text="Central"/>
 
-           </RelativeLayout>
+                    <Button
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@id/button_central"
+                        android:id="@+id/button_northeastern"
+                        android:backgroundTint="@color/Cyan500"
+                        android:textSize="10dp"
+                        android:text="Norteastern"/>
 
-           <RelativeLayout
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content"
-               android:id="@+id/trophel_layout4"
-               android:layout_below="@+id/trophel_layout3"
-               android:layout_marginTop="5dp"
-               android:layout_centerHorizontal="true">
+                </RelativeLayout>
 
-               <Button
-                   android:layout_width="100dp"
-                   android:layout_height="wrap_content"
-                   android:id="@+id/button_western"
-                   android:backgroundTint="@color/Cyan500"
-                   android:textSize="10dp"
-                   android:text="Western"/>
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/trophel_layout4"
+                    android:layout_below="@+id/trophel_layout3"
+                    android:layout_marginTop="5dp"
+                    android:layout_centerHorizontal="true">
 
-               <Button
-                   android:layout_width="100dp"
-                   android:layout_height="wrap_content"
-                   android:layout_toRightOf="@id/button_western"
-                   android:id="@+id/button_southern"
-                   android:textColor="@color/White"
-                   android:backgroundTint="@color/Cyan500"
-                   android:textSize="10dp"
-                   android:text="Southern"/>
+                    <Button
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/button_western"
+                        android:backgroundTint="@color/Cyan500"
+                        android:textSize="10dp"
+                        android:text="Western"/>
 
-               <Button
-                   android:layout_width="100dp"
-                   android:layout_height="wrap_content"
-                   android:layout_toRightOf="@id/button_southern"
-                   android:id="@+id/button_eastern"
-                   android:backgroundTint="@color/Cyan500"
-                   android:textSize="10dp"
-                   android:text="Eastern"/>
+                    <Button
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@id/button_western"
+                        android:id="@+id/button_southern"
+                        android:textColor="@color/White"
+                        android:backgroundTint="@color/Cyan500"
+                        android:textSize="10dp"
+                        android:text="Southern"/>
 
-           </RelativeLayout>
+                    <Button
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@id/button_southern"
+                        android:id="@+id/button_eastern"
+                        android:backgroundTint="@color/Cyan500"
+                        android:textSize="10dp"
+                        android:text="Eastern"/>
 
-       </RelativeLayout>
+                </RelativeLayout>
 
-       <LinearLayout
-           android:layout_width="wrap_content"
-           android:layout_height="50dp">
+            </RelativeLayout>
 
-       </LinearLayout>
-   </LinearLayout>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="50dp">
 
-</android.support.v4.widget.NestedScrollView>
+            </LinearLayout>
+        </LinearLayout>
+
+    </android.support.v4.widget.NestedScrollView>
+
+</FrameLayout>

@@ -11,7 +11,6 @@ public class EndangeredItem {
     public String getName() {
         return mName;
     }
-
     public void setName(String name) {
         this.mName = name;
     }
@@ -19,7 +18,6 @@ public class EndangeredItem {
     public int getThumbnail() {
         return mThumbnail;
     }
-
     public void setThumbnail(int thumbnail) {
         this.mThumbnail = thumbnail;
     }

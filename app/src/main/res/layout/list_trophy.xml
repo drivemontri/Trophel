@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/card_trophy"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="3dp"
+        android:layout_marginBottom="4dp"
+        android:layout_margin="4dp"
+        android:backgroundTint="@color/Cyan900"
+        card_view:cardElevation="3dp">
+
+       <LinearLayout
+           android:layout_width="match_parent"
+           android:layout_height="match_parent"
+           android:orientation="vertical">
+
+           <RelativeLayout
+               android:id="@+id/top_layout_trophy"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content" >
+
+               <TextView
+                   android:id="@+id/name_trophy"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:layout_gravity="bottom"
+                   android:textSize="14dp"
+                   android:text="Testtttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttt"
+                   android:layout_toLeftOf="@id/img_trophy"
+                   android:layout_marginLeft="10dp"
+                   android:layout_marginTop="10dp"
+                   android:layout_marginRight="30dp"
+                   android:layout_marginBottom="10dp"
+                   android:textColor="@color/White" />
+
+               <ImageView
+                   android:id="@+id/img_trophy"
+                   android:layout_width="100dp"
+                   android:layout_height="100dp"
+                   android:src="@drawable/trophel_empty"
+                   android:layout_alignParentRight="true"
+                   android:layout_marginRight="10dp"
+                   android:layout_marginTop="10dp"
+                   android:layout_marginBottom="10dp"
+                   android:scaleType="fitXY"  />
+
+
+           </RelativeLayout>
+
+           <RelativeLayout
+               android:id="@+id/bottom_layout_trophy"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:layout_below="@+id/top_layout_trophy"
+               android:background="@color/Black">
+
+               <ImageView
+                   android:id="@+id/trophy_star1"
+                   android:layout_width="40dp"
+                   android:layout_height="40dp"
+                   android:layout_marginLeft="10dp"
+                   android:layout_marginTop="10dp"
+                   android:layout_marginBottom="10dp"
+                   android:layout_marginRight="10dp"
+                   android:src="@drawable/star_empty"/>
+
+               <ImageView
+                   android:id="@+id/trophy_star2"
+                   android:layout_width="40dp"
+                   android:layout_height="40dp"
+                   android:layout_toRightOf="@+id/trophy_star1"
+                   android:layout_marginTop="10dp"
+                   android:layout_marginBottom="10dp"
+                   android:layout_marginRight="10dp"
+                   android:src="@drawable/star_empty"/>
+
+               <ImageView
+                   android:id="@+id/trophy_star3"
+                   android:layout_width="40dp"
+                   android:layout_height="40dp"
+                   android:layout_toRightOf="@+id/trophy_star2"
+                   android:layout_marginTop="10dp"
+                   android:layout_marginBottom="10dp"
+                   android:layout_marginRight="10dp"
+                   android:src="@drawable/star_empty"/>
+
+               <ImageView
+                   android:id="@+id/trophy_star4"
+                   android:layout_width="40dp"
+                   android:layout_height="40dp"
+                   android:layout_toRightOf="@+id/trophy_star3"
+                   android:layout_marginTop="10dp"
+                   android:layout_marginBottom="10dp"
+                   android:layout_marginRight="10dp"
+                   android:src="@drawable/star_empty"/>
+
+               <ImageView
+                   android:id="@+id/trophy_star5"
+                   android:layout_width="40dp"
+                   android:layout_height="40dp"
+                   android:layout_toRightOf="@+id/trophy_star4"
+                   android:layout_marginTop="10dp"
+                   android:layout_marginBottom="10dp"
+                   android:layout_marginRight="10dp"
+                   android:src="@drawable/star_empty"/>
+
+           </RelativeLayout>
+
+       </LinearLayout>
+
+    </android.support.v7.widget.CardView>
+
+</LinearLayout>
