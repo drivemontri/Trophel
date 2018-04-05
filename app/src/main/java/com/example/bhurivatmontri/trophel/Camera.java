@@ -117,10 +117,9 @@ public class Camera extends AppCompatActivity implements CameraBridgeViewBase.Cv
         AssetManager assetManager = getAssets();
         InputStream istr;
         switch (title){
-            case "Building1" : istr = assetManager.open("temple02_1.JPG"); break;
-            case "Building2" : istr = assetManager.open("temple03_1.jpg"); break;
-            case "Building3" : istr = assetManager.open("temple04_1.JPG"); break;
-            default: istr = assetManager.open("yasub_1");break;
+            case "รูปปั้นอนุสาวรีย์สามกษัตริย์" : istr = assetManager.open("อนุสาวรีย์3กษัตริย์.JPG"); break;
+            case "ตึก 30 ปี" : istr = assetManager.open("CPE CMU.jpg"); break;
+            default: istr = assetManager.open("temple_icon");break;
         }
         //InputStream istr = assetManager.open("temple02_1.JPG");
         Bitmap bitmap = BitmapFactory.decodeStream(istr);

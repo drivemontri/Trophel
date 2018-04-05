@@ -15,7 +15,7 @@
         card_view:cardElevation="3dp">
 
         <RelativeLayout
-            android:id="@+id/top_layout"
+            android:id="@+id/top_layout_Attraction"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" >
 

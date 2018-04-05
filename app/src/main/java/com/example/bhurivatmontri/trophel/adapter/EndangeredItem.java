@@ -6,19 +6,33 @@ package com.example.bhurivatmontri.trophel.adapter;
 
 public class EndangeredItem {
     private String mName;
-    private int mThumbnail;
+    private String mThumbnail;
+    private String mKeyName;
+
+    public EndangeredItem(String name,String thumbnail,String keyName){
+        this.mName = name;
+        this.mThumbnail = thumbnail;
+        this.mKeyName =keyName;
+    }
 
     public String getName() {
-        return mName;
+        return this.mName;
     }
     public void setName(String name) {
         this.mName = name;
     }
 
-    public int getThumbnail() {
-        return mThumbnail;
+    public String getThumbnail() {
+        return this.mThumbnail;
     }
-    public void setThumbnail(int thumbnail) {
+    public void setThumbnail(String thumbnail) {
         this.mThumbnail = thumbnail;
+    }
+
+    public String getKeyName() {
+        return this.mKeyName;
+    }
+    public void setKeyName(String keyName) {
+        this.mKeyName = keyName;
     }
 }

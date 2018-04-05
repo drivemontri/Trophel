@@ -34,6 +34,10 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 
 /**
@@ -43,10 +47,12 @@ public class Map extends Fragment implements OnMapReadyCallback, GoogleApiClient
 
     GoogleMap mGoogleMap;
     Marker mMarker;
+    Marker mmMarker;
     MapView mMapView;
     View mView;
     GoogleApiClient googleApiClient;
     boolean chkFirstTime = true;
+    int checktime = 20;
 
     public Map() {
         // Required empty public constructor
@@ -80,7 +86,36 @@ public class Map extends Fragment implements OnMapReadyCallback, GoogleApiClient
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
+
         MapsInitializer.initialize(getContext());
+        mGoogleMap = googleMap;
+        mGoogleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+        if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+        mGoogleMap.setMyLocationEnabled(true);
+        mGoogleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            public boolean onMarkerClick(Marker arg0) {
+                if(arg0.getTitle().equals("Location Current"))
+                    Toast.makeText(getContext(),arg0.getTitle(),Toast.LENGTH_SHORT).show();
+                else{
+                    Toast.makeText(getContext(),arg0.getId(),Toast.LENGTH_SHORT).show();
+                    arg0.showInfoWindow();
+                }
+                return true;
+            }
+        });
+        mGoogleMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+            @Override
+            public void onInfoWindowClick(Marker marker) {
+                Intent intent = new Intent(getActivity(),Camera.class);
+                intent.putExtra("Title",marker.getTitle());
+                startActivity(intent);
+            }
+        });
+        buildClient();
+
+        /*MapsInitializer.initialize(getContext());
         mGoogleMap = googleMap;
         mGoogleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
         if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -100,7 +135,7 @@ public class Map extends Fragment implements OnMapReadyCallback, GoogleApiClient
                 return true;
             }
         });
-        buildClient();
+        buildClient();*/
 
         /*googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
 
@@ -143,6 +178,55 @@ public class Map extends Fragment implements OnMapReadyCallback, GoogleApiClient
 
     @Override
     public void onLocationChanged(Location location) {
+
+        //String provider = location.getProvider();
+        final double latitude = location.getLatitude();
+        final double longitude = location.getLongitude();
+        //double altitude = location.getAltitude();
+        //float accuracy = location.getAccuracy();
+        //float bearing = location.getBearing();
+        //float speed = location.getSpeed();
+        //long time = location.getTime();
+        if (chkFirstTime == true) {
+            CameraPosition Liberty = CameraPosition.builder().target(new LatLng(latitude, longitude)).zoom(16).bearing(0).tilt(45).build();
+            mGoogleMap.moveCamera(CameraUpdateFactory.newCameraPosition(Liberty));
+            mmMarker = mGoogleMap.addMarker(new MarkerOptions().position(new LatLng(latitude, longitude)).title("Location Current").snippet("I am coding myProject").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ROSE)));
+            chkFirstTime = false;
+        }
+        mmMarker.remove();
+        mmMarker = mGoogleMap.addMarker(new MarkerOptions().position(new LatLng(latitude, longitude)).title("Location Current").snippet("I am coding myProject").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ROSE)));
+        FirebaseDatabase.getInstance().getReference("attractions")
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        for (DataSnapshot snapshot1 : dataSnapshot.getChildren()) {
+                            for (DataSnapshot snapshot2 : snapshot1.child("sub_Attrs").getChildren()){
+                                snapshot2.child("latitude").getValue(Integer.class);
+                                Log.d("onDataChange","qqqqqqqqq"+snapshot2.getKey().toString());
+
+                                Double Olat = Math.toRadians(latitude) - Math.toRadians(snapshot2.child("latitude").getValue(Double.class));
+                                Double Olong = Math.toRadians(longitude) - Math.toRadians(snapshot2.child("longitude").getValue(Double.class));
+                                Double a = Math.pow((Math.sin(Olat / 2)), 2) + (Math.cos(Math.toRadians(snapshot2.child("latitude").getValue(Double.class))) * Math.cos(Math.toRadians(latitude)) * Math.pow(Math.sin(Olong / 2), 2));
+                                Double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+                                Double distance = 6371e3 * c / 1000.0;
+                                Log.d("distance", "onDataChange: " + distance + snapshot2.getKey());
+                                if (distance <= 5 && checktime%20==0)
+                                    mGoogleMap.clear();
+                                mMarker = mGoogleMap.addMarker(new MarkerOptions().position(new LatLng(snapshot2.child("latitude").getValue(Double.class), snapshot2.child("longitude").getValue(Double.class))).icon(BitmapDescriptorFactory.fromAsset(snapshot2.child("marker_icon").getValue(String.class))).snippet("ลองลองดู").title(snapshot2.getKey()));
+                                //mMarker = mGoogleMap.addMarker(new MarkerOption s().position(new LatLng(18.795620,98.952810)).title(snapshot.getKey()));
+                            }
+                        }
+                    }
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+        checktime++;
+        if(checktime == 2000)
+            checktime = 20;
+    }
+        /*
         //String provider = location.getProvider();
         double latitude = location.getLatitude();
         double longitude = location.getLongitude();
@@ -167,6 +251,6 @@ public class Map extends Fragment implements OnMapReadyCallback, GoogleApiClient
        // mGoogleMap.addMarker(new MarkerOptions().position(new LatLng(latitude,longitude+0.0000003)).title("Building2"));
        // mGoogleMap.addMarker(new MarkerOptions().position(new LatLng(latitude+0.0000002,longitude-0.0000002)).title("Building3"));
 
-    }
+    }*/
 
 }
