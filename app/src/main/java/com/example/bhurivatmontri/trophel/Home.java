@@ -3,6 +3,8 @@ package com.example.bhurivatmontri.trophel;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -12,11 +14,14 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
-import android.support.v7.widget.util.SortedListAdapterCallback;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.bhurivatmontri.trophel.fragment.AppMenu;
@@ -24,21 +29,41 @@ import com.example.bhurivatmontri.trophel.fragment.Attraction;
 import com.example.bhurivatmontri.trophel.fragment.ListFriend;
 import com.example.bhurivatmontri.trophel.fragment.Map;
 import com.example.bhurivatmontri.trophel.fragment.Profile;
+import com.facebook.AccessToken;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.login.LoginManager;
+import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FacebookAuthProvider;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserInfo;
+import com.google.firebase.storage.StorageReference;
 import com.mikepenz.materialdrawer.Drawer;
 import com.mikepenz.materialdrawer.accountswitcher.AccountHeader;
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
 import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static android.graphics.PorterDuff.Mode.SRC_IN;
+import static com.facebook.FacebookSdk.getApplicationContext;
 
 public class Home extends AppCompatActivity {
 
     private Toolbar toolbar;
-    public ViewPager mViewPager;
+    private ViewPager mViewPager;
     private TabLayout tabLayout;
     private int[] tabIcons = {
             R.drawable.ic_attraction_144dp,
@@ -47,23 +72,19 @@ public class Home extends AppCompatActivity {
             //R.drawable.ic_profile_144dp,
             R.drawable.ic_menu_144dp,
     };
-
     private Drawer.Result navigationDrawerLeft ;
     private AccountHeader.Result headerNavigationLeft ;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
         mViewPager = (ViewPager) findViewById(R.id.container);
         setupViewPager(mViewPager);
-
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -75,17 +96,14 @@ public class Home extends AppCompatActivity {
             @Override
             public void onPageSelected(int position) {
                 switch (position) {
-                    case 0 :
+                    case 0:
                         getSupportActionBar().setTitle("Attraction");
                         break;
-                    case 1 :
+                    case 1:
                         getSupportActionBar().setTitle("Map");
                         break;
-                    case 2 :
+                    case 2:
                         getSupportActionBar().setTitle("Friend");
-                        break;
-                    case 3 :
-                        getSupportActionBar().setTitle("Menu");
                         break;
                     default:
                         getSupportActionBar().setTitle("Trophel");
@@ -107,6 +125,19 @@ public class Home extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });*/
+
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        for (UserInfo profile : user.getProviderData()) {
+            String name = profile.getDisplayName().toString();
+            String email = profile.getEmail();
+            headerNavigationLeft = new AccountHeader().withActivity(this).withCompactStyle(false)
+                    .withSavedInstance(savedInstanceState).withHeaderBackground(R.drawable.bank20)
+                    .addProfiles(
+                            new ProfileDrawerItem().withName(name).withEmail(email)
+                                    .withIcon(getResources().getDrawable(R.drawable.profile_thatchapon_wongsri))
+                    ).build();
+        }
+
 
         /*headerNavigationLeft = new AccountHeader().withActivity(this).withCompactStyle(false)
                 .withSavedInstance(savedInstanceState).withHeaderBackground(R.color.CyanA700)
@@ -139,7 +170,7 @@ public class Home extends AppCompatActivity {
                         }else if(drawerItem.getIdentifier() == 600){
                             Toast.makeText(Home.this, "Logout" , Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(Home.this,Login.class);
-                            startActivity(intent);
+                            Logout();
                         }
                     }
                 })
@@ -176,7 +207,7 @@ public class Home extends AppCompatActivity {
     }
 
 
-    /*@Override
+    /*@Overrideww
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_home, menu);
@@ -202,15 +233,12 @@ public class Home extends AppCompatActivity {
                 tab.getIcon().setColorFilter(Color.parseColor("#FFFFFF"), PorterDuff.Mode.SRC_IN);
 
             }
-
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
                 tab.getIcon().setColorFilter(Color.parseColor("#A8A8A8"), PorterDuff.Mode.SRC_IN);
             }
-
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
-
             }
         });
     }
@@ -249,16 +277,19 @@ public class Home extends AppCompatActivity {
             mFragmentTitleList.add(title);
         }
 
-        public void setmFragment(Fragment fragment,String title,int index){
-            mFragmentList.set(index,fragment);
-            mFragmentTitleList.set(index,title);
-        }
-
         @Override
         public CharSequence getPageTitle(int position) {
             // return null to display only the icon
             return mFragmentTitleList.get(position);
         }
     }
+    public void Logout() {
+        FirebaseAuth.getInstance().signOut();
+        LoginManager.getInstance().logOut();
+        Intent intent = new Intent(this, Login.class);
+        intent.addFlags(intent.FLAG_ACTIVITY_CLEAR_TOP | intent.FLAG_ACTIVITY_CLEAR_TASK | intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+    }
+
 
 }
