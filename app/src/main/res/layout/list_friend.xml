@@ -35,6 +35,26 @@
             android:layout_toRightOf="@+id/icon_Friend"
             android:layout_below="@+id/name_Friend"/>
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/count_Star_Friend"
+            android:text="0"
+            android:textStyle="bold"
+            android:textSize="20dp"
+            android:textColor="@color/Black"
+            android:layout_marginTop="8dp"
+            android:layout_marginRight="10dp"
+            android:layout_alignParentRight="true"/>
+
+        <ImageView
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_toLeftOf="@id/count_Star_Friend"
+            android:src="@drawable/star_success"/>
+
     </RelativeLayout>
 
 
