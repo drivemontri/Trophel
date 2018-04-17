@@ -24,6 +24,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.bhurivatmontri.trophel.fragment.AppMenu;
 import com.example.bhurivatmontri.trophel.fragment.Attraction;
 import com.example.bhurivatmontri.trophel.fragment.ListFriend;
 import com.example.bhurivatmontri.trophel.fragment.Map;
@@ -68,8 +69,8 @@ public class Home extends AppCompatActivity {
             R.drawable.ic_attraction_144dp,
             R.drawable.ic_map_144dp,
             R.drawable.ic_friend_144dp,
-            R.drawable.ic_profile_144dp,
-            //R.drawable.ic_menu_144dp,
+            //R.drawable.ic_profile_144dp,
+            R.drawable.ic_menu_144dp,
     };
     private Drawer.Result navigationDrawerLeft ;
     private AccountHeader.Result headerNavigationLeft ;
@@ -104,9 +105,6 @@ public class Home extends AppCompatActivity {
                     case 2:
                         getSupportActionBar().setTitle("Friend");
                         break;
-                    case 3:
-                        getSupportActionBar().setTitle("Profile");
-                        break;
                     default:
                         getSupportActionBar().setTitle("Trophel");
                 }
@@ -127,6 +125,7 @@ public class Home extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });*/
+
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         for (UserInfo profile : user.getProviderData()) {
             String name = profile.getDisplayName().toString();
@@ -138,6 +137,14 @@ public class Home extends AppCompatActivity {
                                     .withIcon(getResources().getDrawable(R.drawable.profile_thatchapon_wongsri))
                     ).build();
         }
+
+
+        /*headerNavigationLeft = new AccountHeader().withActivity(this).withCompactStyle(false)
+                .withSavedInstance(savedInstanceState).withHeaderBackground(R.color.CyanA700)
+                .addProfiles(
+                        new ProfileDrawerItem().withName("Bhurivat Montri").withEmail("bhurivat.m@gmail.com")
+                        .withIcon(getResources().getDrawable(R.drawable.profile_bhurivat_montri))
+                ).build();
         navigationDrawerLeft = new Drawer().withActivity(this).withToolbar(toolbar)
                 .withDisplayBelowToolbar(false).withActionBarDrawerToggleAnimated(true)
                 .withDrawerGravity(Gravity.LEFT).withSavedInstance(savedInstanceState)
@@ -175,7 +182,7 @@ public class Home extends AppCompatActivity {
         navigationDrawerLeft.addItem(new PrimaryDrawerItem().withName("Profile").withIcon(getResources().getDrawable(R.drawable.icnav_person_144dp)).withIdentifier(400));
         navigationDrawerLeft.addItem(new PrimaryDrawerItem().withName("About us").withIcon(getResources().getDrawable(R.drawable.icnav_about_us_144dp)).withIdentifier(500));
         navigationDrawerLeft.addItem(new PrimaryDrawerItem().withName("Logout").withIcon(getResources().getDrawable(R.drawable.icnav_logout_144dp)).withIdentifier(600));
-
+        */
     }
 
     @Override
@@ -241,7 +248,7 @@ public class Home extends AppCompatActivity {
         adapter.addFragment(new Attraction(), "Attraction");
         adapter.addFragment(new Map(), "Map");
         adapter.addFragment(new ListFriend(), "Friend");
-        adapter.addFragment(new Profile(), "Profile");
+        adapter.addFragment(new AppMenu(), "App Menu");
         //adapter.addFragment(new AppMenu(), "Menu");
         mViewPager.setAdapter(adapter);
     }

@@ -50,4 +50,6 @@ dependencies {
     implementation project(':openCVLibrary340')
 }
 
+
 apply plugin: 'com.google.gms.google-services'
+

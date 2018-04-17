@@ -11,12 +11,14 @@ public class Friend {
     private String friendID;
     //private int icon;
     private String uriImg;
+    private String countStar;
 
-    public Friend(String name,String detail,String friendID,String uriImg){
+    public Friend(String name,String detail,String friendID,String uriImg,String countStar){
         this.setName(name);
         this.setDetail(detail);
         this.setFriendID(friendID);
         this.setUriImg(uriImg);
+        this.setCountStar(countStar);
         //this.setIcon(icon);
     }
 
@@ -42,4 +44,7 @@ public class Friend {
 
     public String getUriImg(){return uriImg;}
     public void setUriImg(String uriImg){ this.uriImg = uriImg;}
+
+    public String getCountStar(){return countStar;}
+    public void setCountStar(String countStar){ this.countStar = countStar;}
 }

@@ -37,7 +37,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
     //private int[] mDataSet3;
 
     public static class ViewHolder extends RecyclerView.ViewHolder{
-        private final TextView textView,textView2;
+        private final TextView textView,textView2,count_Star;
         private final ImageView icon;
         public ViewHolder(View v){
             super(v);
@@ -54,6 +54,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
             textView = (TextView) v.findViewById(R.id.name_Friend);
             textView2 = (TextView) v.findViewById(R.id.detail_Friend);
             icon = (ImageView) v.findViewById(R.id.icon_Friend);
+            count_Star = (TextView) v.findViewById(R.id.count_Star_Friend) ;
         }
         public TextView getTextView() {
             return textView;
@@ -64,6 +65,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
         public ImageView getImageView() {
             return icon;
         }
+        public TextView gettextView3() {return count_Star;}
     }
 
     /*public CustomAdapter(String[] dataSet,String[] dataSet2,int[] dataSet3){
@@ -87,6 +89,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
         viewHolder.getImageView().setImageResource(mDataSet3[position]);*/
         viewHolder.getTextView().setText(listFriend.get(position).getName());
         viewHolder.getTextView2().setText(listFriend.get(position).getDetail());
+        viewHolder.gettextView3().setText(listFriend.get(position).getCountStar());
         //viewHolder.getImageView().setImageResource(listFriend.get(position).getIcon());
         Log.d("onDataChange3",""+listFriend.get(position).getUriImg());
         Picasso.with(mContext)

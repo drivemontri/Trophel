@@ -65,6 +65,7 @@ public class ListFriend extends Fragment implements SearchView.OnQueryTextListen
     ArrayList<String> friendID = new ArrayList<>();
     ArrayList<String> uriImg = new ArrayList<>();
     ArrayList<Friend> listFriend = new ArrayList<>();
+    ArrayList<String> count_Star = new ArrayList<>();
 
 
     @Override
@@ -163,10 +164,12 @@ public class ListFriend extends Fragment implements SearchView.OnQueryTextListen
         }*/
 
         int i = 0;
+        int num = name.size()-1;
         Log.d("onDataChange","555555555555555555555555555555555555555555");
+
         for (String addName : name) {
             //listFriend.add(new Friend(addName,detail[i],friendID[i],icon[i])) ;
-            listFriend.add(new Friend(addName,detail.get(i),friendID.get(i),uriImg.get(i))) ;
+            listFriend.add(new Friend(addName,detail.get(num-i),friendID.get(num-i),uriImg.get(num-i),count_Star.get(num-i))) ;
             //Log.d("onDataChange","initDataset :"+addName);
             i++;
         }
@@ -177,7 +180,7 @@ public class ListFriend extends Fragment implements SearchView.OnQueryTextListen
         final StorageReference mStorage = storage.getReference();
 
         //mDatabase.child("users").child("uID").child("drive").child("friend_id").keepSynced(true);
-        mDatabase.child("users").child("uID").child("drive").child("friend_id").addValueEventListener(new ValueEventListener() {
+        mDatabase.child("users").child("uID").child("drive").child("friend_id").orderByChild("count_Star").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Log.d("onDataChange",""+dataSnapshot.getChildrenCount());
@@ -186,10 +189,12 @@ public class ListFriend extends Fragment implements SearchView.OnQueryTextListen
                     Log.d("onDataChange",""+item_friend.getKey());
                     Log.d("onDataChange",""+item_friend.child("name").getValue().toString());
                     Log.d("onDataChange",""+item_friend.child("caption").getValue());
+                    Log.d("onDataChange",""+item_friend.child("count_Star").getValue());
                     friendID.add(item_friend.getKey().toString());
                     name.add(item_friend.child("name").getValue().toString());
                     detail.add(item_friend.child("caption").getValue().toString());
                     uriImg.add(item_friend.child("uri_profile").getValue().toString());
+                    count_Star.add(item_friend.child("count_Star").getValue(Integer.class).toString());
                     /*mStorage.child("img_profile/uImg/bose/profile.png").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                         @Override
                         public void onSuccess(Uri uri) {
