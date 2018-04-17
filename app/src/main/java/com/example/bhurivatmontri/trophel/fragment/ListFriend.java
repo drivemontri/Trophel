@@ -225,9 +225,9 @@ public class ListFriend extends Fragment implements SearchView.OnQueryTextListen
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.menu_friend, menu);
-        MenuItem menuItem = menu.findItem(R.id.menu_search_friend);
+        /*MenuItem menuItem = menu.findItem(R.id.menu_search_friend);
         SearchView searchView = (SearchView) MenuItemCompat.getActionView(menuItem);
-        searchView.setOnQueryTextListener(this);
+        searchView.setOnQueryTextListener(this);*/
         return;
     }
 

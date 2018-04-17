@@ -48,8 +48,8 @@ public class Home extends AppCompatActivity {
             R.drawable.ic_menu_144dp,
     };
 
-    private Drawer.Result navigationDrawerLeft ;
-    private AccountHeader.Result headerNavigationLeft ;
+    //private Drawer.Result navigationDrawerLeft ;
+    //private AccountHeader.Result headerNavigationLeft ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,7 +59,7 @@ public class Home extends AppCompatActivity {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         mViewPager = (ViewPager) findViewById(R.id.container);
         setupViewPager(mViewPager);
@@ -157,6 +157,7 @@ public class Home extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // handle item selection
+        /*
         switch (item.getItemId()) {
             case R.id.menu_search_attraction :
                 Toast.makeText(this,"Search in Attraction",Toast.LENGTH_SHORT).show();
@@ -173,6 +174,8 @@ public class Home extends AppCompatActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
+        */
+        return super.onOptionsItemSelected(item);
     }
 
 
@@ -217,10 +220,10 @@ public class Home extends AppCompatActivity {
 
     private void setupViewPager(ViewPager mViewPager) {
         SectionsPagerAdapter adapter = new SectionsPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new Attraction(), "Attraction");
+        adapter.addFragment(new Attraction(), "Travel");
         adapter.addFragment(new Map(), "Map");
         adapter.addFragment(new ListFriend(), "Friend");
-        adapter.addFragment(new AppMenu(), "App Menu");
+        adapter.addFragment(new AppMenu(), "Menu");
         //adapter.addFragment(new AppMenu(), "Menu");
         mViewPager.setAdapter(adapter);
     }
