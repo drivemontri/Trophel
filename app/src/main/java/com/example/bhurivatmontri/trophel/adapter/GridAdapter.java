@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import com.example.bhurivatmontri.trophel.Camera;
 import com.example.bhurivatmontri.trophel.DetailAttraction;
+import com.example.bhurivatmontri.trophel.DetailAttraction2;
 import com.example.bhurivatmontri.trophel.Home;
 import com.example.bhurivatmontri.trophel.R;
 import com.squareup.picasso.Picasso;
@@ -92,7 +93,7 @@ public class GridAdapter extends RecyclerView.Adapter<GridAdapter.ViewHolder> {
         viewHolder.getCard_attrs().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(v.getContext(),DetailAttraction.class);
+                Intent intent = new Intent(v.getContext(),DetailAttraction2.class);
                 intent.putExtra("keyOfAttraction",nature.getKeyName());
                 v.getContext().startActivity(intent);
             }

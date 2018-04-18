@@ -70,7 +70,8 @@
         <activity android:name=".Act_Profile" />
         <activity android:name=".ActProfile" />
         <activity android:name=".ActListTrophy" />
-        <activity android:name=".AddFriend"></activity>
+        <activity android:name=".AddFriend" />
+        <activity android:name=".DetailAttraction2"></activity>
     </application>
 
 </manifest>
