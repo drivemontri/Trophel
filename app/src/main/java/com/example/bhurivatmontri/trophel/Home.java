@@ -72,7 +72,9 @@ public class Home extends AppCompatActivity {
             //R.drawable.ic_profile_144dp,
             R.drawable.ic_menu_144dp,
     };
+    private boolean chk1 = false;
 
+    private HomeFragment homeFragment = new HomeFragment();
 
     //private Drawer.Result navigationDrawerLeft ;
     //private AccountHeader.Result headerNavigationLeft ;
@@ -107,6 +109,12 @@ public class Home extends AppCompatActivity {
                         break;
                     case 2:
                         getSupportActionBar().setTitle("Friend");
+                        Log.d("onDataChange","onPageSelected ListFriend");
+                        if(chk1 == true){
+                            HomeFragment.getListFriendInstance().reListFriend();
+                        }else{
+                            chk1 = true;
+                        }
                         break;
                     default:
                         getSupportActionBar().setTitle("Trophel");
@@ -240,12 +248,23 @@ public class Home extends AppCompatActivity {
     }
 
     private void setupViewPager(ViewPager mViewPager) {
+        HomeFragment.setAttraction();
+        HomeFragment.setMap();
+        HomeFragment.setListFriend();
+        HomeFragment.setAppMenu();
         SectionsPagerAdapter adapter = new SectionsPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new Attraction(), "Travel");
+        /*adapter.addFragment(new Attraction(), "Travel");
         adapter.addFragment(new Map(), "Map");
         adapter.addFragment(new ListFriend(), "Friend");
         adapter.addFragment(new AppMenu(), "Menu");
+        //adapter.addFragment(new AppMenu(), "Menu");*/
+
+        adapter.addFragment(HomeFragment.getAttractionInstance(), "Travel");
+        adapter.addFragment(HomeFragment.getMapInstance(), "Map");
+        adapter.addFragment(HomeFragment.getListFriendInstance(), "Friend");
+        adapter.addFragment(HomeFragment.getAppMenuInstance(), "Menu");
         //adapter.addFragment(new AppMenu(), "Menu");
+
         mViewPager.setAdapter(adapter);
     }
 

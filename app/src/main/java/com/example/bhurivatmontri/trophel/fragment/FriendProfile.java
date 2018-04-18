@@ -5,6 +5,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -12,10 +14,12 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.bhurivatmontri.trophel.HomeFragment;
 import com.example.bhurivatmontri.trophel.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -32,7 +36,7 @@ import com.squareup.picasso.Picasso;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class FriendProfile extends Fragment {
+public class FriendProfile extends Fragment implements View.OnClickListener {
 
     protected DatabaseReference mDatabase;
     protected FirebaseStorage storage = FirebaseStorage.getInstance();
@@ -49,7 +53,14 @@ public class FriendProfile extends Fragment {
     protected TextView easternUser;
     protected TextView westernUser;
     protected TextView starUser;
-
+    protected Button buttonNorth;
+    protected Button buttonCentral;
+    protected Button buttonNortheastern;
+    protected Button buttonWestern;
+    protected Button buttonSouthern;
+    protected Button buttonEastern;
+    protected Button buttonUnfollow;
+    protected String friendID;
     public FriendProfile() {
         // Required empty public constructor
         setHasOptionsMenu(true);
@@ -65,7 +76,7 @@ public class FriendProfile extends Fragment {
         View view = inflater.inflate(R.layout.fragment_friend_profile, container, false);
 
         Bundle bundle = getArguments();
-        String friendID = bundle.getString("FriendID");
+        friendID = bundle.getString("FriendID");
 
         profile = (ImageView) view.findViewById(R.id.img_Profile_friend);
         background = (ImageView) view.findViewById(R.id.cover_background_friend);
@@ -79,7 +90,13 @@ public class FriendProfile extends Fragment {
         easternUser = (TextView) view.findViewById(R.id.trophel_eastern_count_friend);
         westernUser = (TextView) view.findViewById(R.id.trophel_western_count_friend);
         starUser = (TextView) view.findViewById(R.id.star_count_friend);
-
+        buttonNorth = (Button) view.findViewById(R.id.button_northern_friend);
+        buttonCentral = (Button) view.findViewById(R.id.button_central_friend);
+        buttonNortheastern = (Button) view.findViewById(R.id.button_northeastern_friend);
+        buttonWestern = (Button) view.findViewById(R.id.button_western_friend);
+        buttonSouthern = (Button) view.findViewById(R.id.button_southern_friend);
+        buttonEastern = (Button) view.findViewById(R.id.button_eastern_friend);
+        buttonUnfollow = (Button) view.findViewById(R.id.button_unfollow_friend);
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
         final StorageReference mStorage = storage.getReference();
@@ -154,6 +171,15 @@ public class FriendProfile extends Fragment {
 
             }
         });
+
+        buttonNorth.setOnClickListener(this);
+        buttonCentral.setOnClickListener(this);
+        buttonNortheastern.setOnClickListener(this);
+        buttonWestern.setOnClickListener(this);
+        buttonSouthern.setOnClickListener(this);
+        buttonEastern.setOnClickListener(this);
+        buttonUnfollow.setOnClickListener(this);
+
         return view;
     }
 
@@ -170,6 +196,59 @@ public class FriendProfile extends Fragment {
         /*menu.findItem(R.id.menu_search_friend).setVisible(false);
         menu.findItem(R.id.menu_add_friend).setVisible(false);
         return;*/
+    }
+
+    @Override
+    public void onClick(View v){
+        Bundle bundle = new Bundle();
+        switch (v.getId()){
+            case R.id.button_northern_friend:
+                bundle.putString("Region","1");
+                transacFragment(bundle);
+                break;
+            case R.id.button_central_friend:
+                bundle.putString("Region","2");
+                transacFragment(bundle);
+                break;
+            case R.id.button_northeastern_friend:
+                bundle.putString("Region","3");
+                transacFragment(bundle);
+                break;
+            case R.id.button_western_friend:
+                bundle.putString("Region","4");
+                transacFragment(bundle);
+                break;
+            case R.id.button_southern_friend:
+                bundle.putString("Region","5");
+                transacFragment(bundle);
+                break;
+            case R.id.button_eastern_friend:
+                bundle.putString("Region","6");
+                transacFragment(bundle);
+                break;
+            case R.id.button_unfollow_friend:
+                deleteFragement(bundle);
+                HomeFragment.getListFriendInstance().reListFriend();
+                break;
+        }
+    }
+
+    public void transacFragment(Bundle bundle){
+        ListTrophy listTrophy = new ListTrophy();
+        listTrophy.setArguments(bundle);
+        FragmentManager manager = ((AppCompatActivity)getContext()).getSupportFragmentManager();
+        manager.beginTransaction()
+                .replace(R.id.friend_profile,listTrophy,listTrophy.getTag())
+                .addToBackStack(null)
+                .commit();
+    }
+
+    public void deleteFragement(Bundle bundle){
+        Log.d("onDataChange","btn_unfollow");
+        /*FragmentManager manager = ((AppCompatActivity)getContext()).getSupportFragmentManager();
+        manager.popBackStack();*/
+        mDatabase.child("users").child("uID").child("drive").child("friend_id").child(friendID).removeValue();
+        getActivity().onBackPressed();
     }
 
 }

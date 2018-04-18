@@ -23,6 +23,7 @@ import com.example.bhurivatmontri.trophel.adapter.CustomAdapter;
 import com.example.bhurivatmontri.trophel.adapter.Friend;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -66,6 +67,13 @@ public class ListFriend extends Fragment implements SearchView.OnQueryTextListen
     ArrayList<String> uriImg = new ArrayList<>();
     ArrayList<Friend> listFriend = new ArrayList<>();
     ArrayList<String> count_Star = new ArrayList<>();
+
+    ArrayList<String> re_name = new ArrayList<>();
+    ArrayList<String> re_detail = new ArrayList<>();
+    ArrayList<String> re_friendID = new ArrayList<>();
+    ArrayList<String> re_uriImg = new ArrayList<>();
+    ArrayList<Friend> re_listFriend = new ArrayList<>();
+    ArrayList<String> re_count_Star = new ArrayList<>();
 
 
     @Override
@@ -169,7 +177,7 @@ public class ListFriend extends Fragment implements SearchView.OnQueryTextListen
 
         for (String addName : name) {
             //listFriend.add(new Friend(addName,detail[i],friendID[i],icon[i])) ;
-            listFriend.add(new Friend(addName,detail.get(num-i),friendID.get(num-i),uriImg.get(num-i),count_Star.get(num-i))) ;
+            listFriend.add(new Friend(name.get(num-i),detail.get(num-i),friendID.get(num-i),uriImg.get(num-i),count_Star.get(num-i))) ;
             //Log.d("onDataChange","initDataset :"+addName);
             i++;
         }
@@ -180,39 +188,12 @@ public class ListFriend extends Fragment implements SearchView.OnQueryTextListen
         final StorageReference mStorage = storage.getReference();
 
         //mDatabase.child("users").child("uID").child("drive").child("friend_id").keepSynced(true);
-        mDatabase.child("users").child("uID").child("drive").child("friend_id").orderByChild("count_Star").addValueEventListener(new ValueEventListener() {
+
+        mDatabase.child("users").child("uID").child("drive").child("friend_id").orderByChild("count_Star").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Log.d("onDataChange",""+dataSnapshot.getChildrenCount());
-                for(DataSnapshot item_friend : dataSnapshot.getChildren()){
-                    Log.d("onDataChange","555"+item_friend.getValue().toString());
-                    Log.d("onDataChange",""+item_friend.getKey());
-                    Log.d("onDataChange",""+item_friend.child("name").getValue().toString());
-                    Log.d("onDataChange",""+item_friend.child("caption").getValue());
-                    Log.d("onDataChange",""+item_friend.child("count_Star").getValue());
-                    friendID.add(item_friend.getKey().toString());
-                    name.add(item_friend.child("name").getValue().toString());
-                    detail.add(item_friend.child("caption").getValue().toString());
-                    uriImg.add(item_friend.child("uri_profile").getValue().toString());
-                    count_Star.add(item_friend.child("count_Star").getValue(Integer.class).toString());
-                    /*mStorage.child("img_profile/uImg/bose/profile.png").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                        @Override
-                        public void onSuccess(Uri uri) {
-                            Log.d("onDataChange2",""+uri.toString());
-                            //uriImg.add("sss");
-                            //uriImg.add(uri.toString());
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Log.d("onDataChange2","errrorrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr");
-                        }
-                    });*/
-                }
-                initDataset();
-                Log.d("onDataChange","zzzz "+listFriend.size());
-                mAdapter = new CustomAdapter(getActivity(),listFriend);
-                mRecyclerView.setAdapter(mAdapter);
+                setDataSnapshot(dataSnapshot);
             }
 
             @Override
@@ -220,6 +201,7 @@ public class ListFriend extends Fragment implements SearchView.OnQueryTextListen
 
             }
         });
+
     }
 
     @Override
@@ -249,5 +231,58 @@ public class ListFriend extends Fragment implements SearchView.OnQueryTextListen
         mAdapter.setFilter(newList);
         return true;
     }
+
+    public void reListFriend(){
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+        final StorageReference mStorage = storage.getReference();
+
+        mDatabase.child("users").child("uID").child("drive").child("friend_id").orderByChild("count_Star").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                setDataSnapshot(dataSnapshot);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    private void reDataset() {
+        int i = 0;
+        int num = re_name.size()-1;
+        Log.d("onDataChange","555555555555555555555555555555555555555555");
+
+        for (String addName : re_name) {
+            re_listFriend.add(new Friend(re_name.get(num-i),re_detail.get(num-i),re_friendID.get(num-i),re_uriImg.get(num-i),re_count_Star.get(num-i))) ;
+            i++;
+        }
+    }
+
+    private void reValue(){
+        re_name = new ArrayList<>();
+        re_detail = new ArrayList<>();
+        re_friendID = new ArrayList<>();
+        re_uriImg = new ArrayList<>();
+        re_listFriend = new ArrayList<>();
+        re_count_Star = new ArrayList<>();
+    }
+
+    private void setDataSnapshot(DataSnapshot dataSnapshot){
+        for(DataSnapshot item_friend : dataSnapshot.getChildren()){
+            re_friendID.add(item_friend.getKey().toString());
+            re_name.add(item_friend.child("name").getValue().toString());
+            re_detail.add(item_friend.child("caption").getValue().toString());
+            re_uriImg.add(item_friend.child("uri_profile").getValue().toString());
+            re_count_Star.add(item_friend.child("count_Star").getValue(Integer.class).toString());
+        }
+        reDataset();
+        Log.d("onDataChange","zzzz5555 "+re_listFriend.size());
+        mAdapter = new CustomAdapter(getActivity(),re_listFriend);
+        mRecyclerView.setAdapter(mAdapter);
+        reValue();
+    }
+
 
 }
