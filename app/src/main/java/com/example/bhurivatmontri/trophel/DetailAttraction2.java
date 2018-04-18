@@ -5,11 +5,27 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.HorizontalScrollView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.example.bhurivatmontri.trophel.adapter.ImgPager;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.MapsInitializer;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -21,18 +37,22 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
-public class DetailAttraction2 extends AppCompatActivity {
+public class DetailAttraction2 extends AppCompatActivity implements OnMapReadyCallback {
 
     protected DatabaseReference mDatabase;
     protected FirebaseStorage storage = FirebaseStorage.getInstance();
 
-   /* private String[] imgUrls = new String[]{
-            "https://firebasestorage.googleapis.com/v0/b/trophel-application.appspot.com/o/attractions%2FNorthern%2FChiang%20Mai%2F%E0%B8%AD%E0%B8%99%E0%B8%B8%E0%B8%AA%E0%B8%B2%E0%B8%A7%E0%B8%A3%E0%B8%B5%E0%B8%A2%E0%B9%8C%E0%B8%AA%E0%B8%B2%E0%B8%A1%E0%B8%81%E0%B8%A9%E0%B8%B1%E0%B8%95%E0%B8%A3%E0%B8%B4%E0%B8%A2%E0%B9%8C%2Fimg1.jpg?alt=media&token=e1258b1f-3970-44b5-96ea-2bd32f140f7b",
-            "https://firebasestorage.googleapis.com/v0/b/trophel-application.appspot.com/o/attractions%2FNorthern%2FChiang%20Mai%2F%E0%B8%84%E0%B8%93%E0%B8%B0%E0%B8%A7%E0%B8%B4%E0%B8%A8%E0%B8%A7%E0%B8%81%E0%B8%A3%E0%B8%A3%E0%B8%A1%E0%B8%A8%E0%B8%B2%E0%B8%AA%E0%B8%95%E0%B8%A3%E0%B9%8C%20%E0%B8%A1%E0%B8%AB%E0%B8%B2%E0%B8%A7%E0%B8%B4%E0%B8%97%E0%B8%A2%E0%B8%B2%E0%B8%A5%E0%B8%B1%E0%B8%A2%E0%B9%80%E0%B8%8A%E0%B8%B5%E0%B8%A2%E0%B8%87%E0%B9%83%E0%B8%AB%E0%B8%A1%E0%B9%88%2Fimg1.jpg?alt=media&token=1c21fe8f-0222-4620-b115-e61dd8576e0d",
-            "https://firebasestorage.googleapis.com/v0/b/trophel-application.appspot.com/o/attractions%2FNorthern%2FChiang%20Mai%2F%E0%B8%84%E0%B8%93%E0%B8%B0%E0%B8%A7%E0%B8%B4%E0%B8%A8%E0%B8%A7%E0%B8%81%E0%B8%A3%E0%B8%A3%E0%B8%A1%E0%B8%A8%E0%B8%B2%E0%B8%AA%E0%B8%95%E0%B8%A3%E0%B9%8C%20%E0%B8%A1%E0%B8%AB%E0%B8%B2%E0%B8%A7%E0%B8%B4%E0%B8%97%E0%B8%A2%E0%B8%B2%E0%B8%A5%E0%B8%B1%E0%B8%A2%E0%B9%80%E0%B8%8A%E0%B8%B5%E0%B8%A2%E0%B8%87%E0%B9%83%E0%B8%AB%E0%B8%A1%E0%B9%88%2Fsub_attrs%2F%E0%B8%95%E0%B8%B6%E0%B8%81%2030%20%E0%B8%9B%E0%B8%B5%2F%E0%B8%95%E0%B8%B6%E0%B8%81%2030%20%E0%B8%9B%E0%B8%B51.jpg?alt=media&token=5a044f5f-fb3c-45d2-89a9-a3397b41775b"
-    };*/
-
     ArrayList<String> imgUrls = new ArrayList<String>();
+
+    GoogleMap mGoogleMap;
+    Marker mMarker;
+    ScrollView mScrollView;
+
+    double latitude;
+    double longitude;
+    ArrayList<String> sub_Attrs_name = new ArrayList<String>();
+    ArrayList<Double> sub_Attrs_latitude = new ArrayList<Double>();
+    ArrayList<Double> sub_Attrs_longitude = new ArrayList<Double>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +62,7 @@ public class DetailAttraction2 extends AppCompatActivity {
         String keyOfAttraction = null;
 
         Bundle extras = getIntent().getExtras();
-        if(extras == null) {
+        if (extras == null) {
             keyOfAttraction = null;
         } else {
             keyOfAttraction = extras.getString("keyOfAttraction");
@@ -57,30 +77,52 @@ public class DetailAttraction2 extends AppCompatActivity {
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
         final StorageReference mStorage = storage.getReference();
-        Log.d("onDataChange","keyOfAttraction"+keyOfAttraction);
+        Log.d("onDataChange", "keyOfAttraction" + keyOfAttraction);
 
         mDatabase.child("attractions").child(keyOfAttraction).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                Log.d("onDataChange",""+dataSnapshot.getKey().toString());
+                Log.d("onDataChange", "" + dataSnapshot.getKey().toString());
                 String name = dataSnapshot.child("name_Eng").getValue().toString();
                 String info = dataSnapshot.child("info_Eng").getValue().toString();
+
+                latitude = dataSnapshot.child("latitude").getValue(Double.class);
+                longitude = dataSnapshot.child("longitude").getValue(Double.class);
+
                 DataSnapshot uri_imgs = dataSnapshot.child("uri_img_group");
-                int num_img = (int)uri_imgs.getChildrenCount();
-                for (int i = 1; i <= num_img ; i++) {
-                    Log.d("onDataChange","num of img:"+i);
-                    Log.d("onDataChange",""+uri_imgs.child("uri_img"+i).getValue().toString());
-                    String eUri = uri_imgs.child("uri_img"+i).getValue().toString();
+                int num_img = (int) uri_imgs.getChildrenCount();
+                for (int i = 1; i <= num_img; i++) {
+                    Log.d("onDataChange", "num of img:" + i);
+                    Log.d("onDataChange", "" + uri_imgs.child("uri_img" + i).getValue().toString());
+                    String eUri = uri_imgs.child("uri_img" + i).getValue().toString();
                     imgUrls.add(eUri);
+                }
+
+                DataSnapshot sub_Attrs = dataSnapshot.child("sub_Attrs");
+                //int num_sub_Attrs = (int) sub_Attrs.getChildrenCount();
+                for (DataSnapshot sub_Attr : sub_Attrs.getChildren()) {
+                    String name_sub = sub_Attr.child("name_Eng").getValue().toString();
+                    double latitue_sub = sub_Attr.child("latitude").getValue(Double.class);
+                    double longitude_sub = sub_Attr.child("longitude").getValue(Double.class);
+                    sub_Attrs_name.add(name_sub);
+                    sub_Attrs_latitude.add(latitue_sub);
+                    sub_Attrs_longitude.add(longitude_sub);
                 }
 
                 //String uri_img = dataSnapshot.child("uri_img").getValue().toString();
                 nameDetailAttraction.setText(name);
                 detailDetailAttraction.setText(info);
                 ViewPager viewPager = findViewById(R.id.cover_detail_attraction2);
-                ImgPager adapter = new ImgPager(getApplicationContext(),imgUrls);
+                ImgPager adapter = new ImgPager(getApplicationContext(), imgUrls);
                 viewPager.setAdapter(adapter);
+
+
+
+                if (mGoogleMap == null) {
+                    ((CustomMapFragment) getSupportFragmentManager().findFragmentById(R.id.mapDetailAttraction2)).getMapAsync(DetailAttraction2.this);
+                }
             }
+
             @Override
             public void onCancelled(DatabaseError databaseError) {
 
@@ -94,5 +136,31 @@ public class DetailAttraction2 extends AppCompatActivity {
                 DetailAttraction2.this.finish();
             }
         });
+
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        //final double latitude = 18.791118;
+        //final double longitude = 98.960624;
+        mGoogleMap = googleMap;
+        mGoogleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+        mGoogleMap.getUiSettings().setZoomControlsEnabled(true);
+        mScrollView = (ScrollView) findViewById(R.id.scrollView_detail_attraction2);
+
+        ((CustomMapFragment) getSupportFragmentManager().findFragmentById(R.id.mapDetailAttraction2))
+                .setListener(new CustomMapFragment.OnTouchListener() {
+                    @Override
+                    public void onTouch() {
+                        mScrollView.requestDisallowInterceptTouchEvent(true);
+                    }
+                });
+
+        //mMarker = mGoogleMap.addMarker(new MarkerOptions().position(new LatLng(latitude, longitude)).title("4 way junction").snippet("I am coding myProject").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ROSE)));
+        for (int i = 0 ; i < sub_Attrs_name.size() ; i++){
+            mMarker = mGoogleMap.addMarker(new MarkerOptions().position(new LatLng(sub_Attrs_latitude.get(i),sub_Attrs_longitude.get(i))).title(sub_Attrs_name.get(i)).snippet("").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ROSE)));
+        }
+        CameraPosition Liberty = CameraPosition.builder().target(new LatLng(latitude, longitude)).zoom(16).bearing(0).tilt(45).build();
+        mGoogleMap.moveCamera(CameraUpdateFactory.newCameraPosition(Liberty));
     }
 }

@@ -1,8 +1,9 @@
-<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/scrollView_detail_attraction2"
     android:background="@color/Cyan900"
     tools:context="com.example.bhurivatmontri.trophel.DetailAttraction2">
 
@@ -57,22 +58,29 @@
             android:layout_marginLeft="10dp"
             android:text="@string/Monjong"/>
 
+        <fragment
+            class="com.example.bhurivatmontri.trophel.CustomMapFragment"
+            android:layout_width="300dp"
+            android:layout_height="250dp"
+            android:id="@+id/mapDetailAttraction2"
+            android:layout_gravity="center"
+            android:layout_marginTop="50dp"/>
+
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="250dp">
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="50dp"
+                android:layout_marginBottom="50dp"
                 android:layout_centerHorizontal="true"
                 android:id="@+id/button_back_detail_attraction2"
                 android:text="Back"
                 android:backgroundTint="@color/Cyan500"
                 android:textSize="20dp"/>
         </RelativeLayout>
-
-
     </LinearLayout>
 
-</android.support.v4.widget.NestedScrollView>
+</ScrollView>
 

@@ -119,6 +119,7 @@ public class Camera extends AppCompatActivity implements CameraBridgeViewBase.Cv
         switch (title){
             case "รูปปั้นอนุสาวรีย์สามกษัตริย์" : istr = assetManager.open("อนุสาวรีย์3กษัตริย์.JPG"); break;
             case "ตึก 30 ปี" : istr = assetManager.open("CPE CMU.jpg"); break;
+            case "ป้ายทางเข้าพิพิธภัณฑ์" : istr = assetManager.open("ศาลาธนารักษ์.JPG"); break;
             default: istr = assetManager.open("temple_icon");break;
         }
         //InputStream istr = assetManager.open("temple02_1.JPG");
