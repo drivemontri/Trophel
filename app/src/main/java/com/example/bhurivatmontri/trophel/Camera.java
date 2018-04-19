@@ -21,6 +21,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.bhurivatmontri.trophel.adapter.GridAdapter;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import org.opencv.android.BaseLoaderCallback;
 import org.opencv.android.CameraBridgeViewBase;
@@ -80,6 +84,15 @@ public class Camera extends AppCompatActivity implements CameraBridgeViewBase.Cv
     TextView tv_title;
     ImageButton ib_success;
     int numberOfMatch;
+
+    protected DatabaseReference mDatabase;
+    protected FirebaseStorage storage = FirebaseStorage.getInstance();
+
+    String keyOfAttraction;
+    String keyOfSubAttraction;
+    String keyOfRegion;
+    int countOfSubAttraction;
+
     static {
         if(!OpenCVLoader.initDebug()){
             Log.d(TAG,"OpenCV not loaded (Test)");
@@ -147,8 +160,15 @@ public class Camera extends AppCompatActivity implements CameraBridgeViewBase.Cv
         Bundle extras = getIntent().getExtras();
         if(extras == null) {
             title = null;
+            keyOfAttraction = null;
+            keyOfSubAttraction = null;
+            keyOfRegion = null;
         } else {
-            title = extras.getString("Title");
+            title = extras.getString("keyOfSubAttraction");
+            keyOfAttraction = extras.getString("keyOfAttraction");
+            keyOfSubAttraction = extras.getString("keyOfSubAttraction");
+            keyOfRegion = extras.getString("keyOfRegion");
+            countOfSubAttraction = extras.getInt("countOfSubAttraction");
         }
 
         if(ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED){
@@ -158,6 +178,9 @@ public class Camera extends AppCompatActivity implements CameraBridgeViewBase.Cv
         cameraBridgeViewBase = (CameraBridgeViewBase) findViewById(R.id.camera1);
         cameraBridgeViewBase.setVisibility(SurfaceView.VISIBLE);
         cameraBridgeViewBase.setCvCameraViewListener(this);
+
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+        final StorageReference mStorage = storage.getReference();
 
         tv_title = (TextView) findViewById(R.id.title1);
         tv_title.setText("Activating via OpenCV : " + title);
@@ -374,6 +397,10 @@ public class Camera extends AppCompatActivity implements CameraBridgeViewBase.Cv
         protected void onPostExecute(Boolean chkMatch) {
             tv_title.setText("number of match : " + numberOfMatch);
             if (chkMatch == true) {
+                mDatabase.child("users").child("uID").child("drive").child("attractions").child(keyOfAttraction)
+                        .child("region").setValue(keyOfRegion);
+                mDatabase.child("users").child("uID").child("drive").child("attractions").child(keyOfAttraction)
+                        .child("sub_Attrs").child(keyOfSubAttraction).child("status").setValue(1);
                 Log.d(AsyncTAG, "Match is Success.");
                 isMatch = true;
                 ib_success.setVisibility(View.VISIBLE);

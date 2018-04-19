@@ -3,6 +3,9 @@ package com.example.bhurivatmontri.trophel.adapter;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -14,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,6 +25,8 @@ import com.example.bhurivatmontri.trophel.Camera;
 import com.example.bhurivatmontri.trophel.DetailAttraction;
 import com.example.bhurivatmontri.trophel.Home;
 import com.example.bhurivatmontri.trophel.R;
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,23 +41,31 @@ public class GridAdapter2 extends RecyclerView.Adapter<GridAdapter2.ViewHolder> 
     int region;
     //String[] conv = {"northern","central","northeastern","western","southern","eastern"};
 
-    public GridAdapter2(Activity activity,String rg) {
+    public GridAdapter2(Activity activity,String rg,ArrayList<ArrayList<String>> nameInput,ArrayList<ArrayList<String>> uri_ImgInput
+            ,ArrayList<ArrayList<ArrayList<Integer>>> starInput,ArrayList<ArrayList<Integer>> trophyInput) {
         super();
         this.activity = activity;
         region = Integer.parseInt(rg);
         mItems_outer = new ArrayList<List<EndangeredItem2>>();
 
-        String[][] name = {{"NorthAAA","NorthBBB","NorthCCC","NorthDDD","NorthEEE"},{"CentralAAA","CentralBBB"},{},{},{"SouthAAA"},{}};
+        /*String[][] name = {{"NorthAAA","NorthBBB","NorthCCC","NorthDDD","NorthEEE"},{"CentralAAA","CentralBBB"},{},{},{"SouthAAA"},{}};
         int[][][] star = {{{2,2,2,2,2},{2,2,2,0,0},{2,2,2,2,0},{2,2,2,1,0},{2,2,2,1,1}},{{2,2,2,0,0},{2,1,1,1,1}},{},{},{{2,2,2,1,0}},{}};
-        int[][] trophy = {{2,2,2,1,1},{2,1},{},{},{1},{}};
+        int[][] trophy = {{2,2,2,1,1},{2,1},{},{},{1},{}};*/
+
+        ArrayList<ArrayList<String>> name = nameInput;
+        ArrayList<ArrayList<String>> uri_img = uri_ImgInput;
+        ArrayList<ArrayList<ArrayList<Integer>>> star = starInput;
+        ArrayList<ArrayList<Integer>> trophy = trophyInput;
+        //ArrayList<ArrayList<String>> uri_img = new ArrayList<>();
 
         for (int i = 0 ; i < 6 ; i++){
             mItems_inner = new ArrayList<EndangeredItem2>();
-            for (int j = 0; j < name[i].length; j++) {
+            for (int j = 0; j < name.get(i).size(); j++) {
                 EndangeredItem2 nama = new EndangeredItem2();
-                nama.setName(name[i][j]);
-                nama.setStar(star[i][j][0],star[i][j][1],star[i][j][2],star[i][j][3],star[i][j][4]);
-                nama.setTrophy(trophy[i][j]);
+                nama.setName(name.get(i).get(j));
+                nama.setThumbnail(uri_img.get(i).get(j));
+                nama.setStar(star.get(i).get(j).get(0),star.get(i).get(j).get(1),star.get(i).get(j).get(2),star.get(i).get(j).get(3),star.get(i).get(j).get(4));
+                nama.setTrophy(trophy.get(i).get(j));
                 nama.setAttractionID("++++");
                 mItems_inner.add(nama);
                 Log.d("sss++","i="+i+",j="+j);
@@ -75,6 +89,12 @@ public class GridAdapter2 extends RecyclerView.Adapter<GridAdapter2.ViewHolder> 
         final EndangeredItem2 nature = mItems_outer.get(region-1).get(i);
         Log.d("sss","xxx--"+nature.getName());
         viewHolder.nameTrophy.setText(nature.getName());
+        Picasso.with(mContext)
+                .load(nature.getThumbnail())
+                .placeholder(R.mipmap.ic_launcher)
+                .fit()
+                .centerCrop()
+                .into(viewHolder.thumbnailTrophy);
         //viewHolder.imgTrophy.setImageResource(nature.getThumbnail());
         switch (nature.getTrophy()){
             case 1:
@@ -90,20 +110,10 @@ public class GridAdapter2 extends RecyclerView.Adapter<GridAdapter2.ViewHolder> 
         ImageView[] imageStar = new ImageView[5];
         for (int j = 0; j < nature.getNumStarAtt() ; j++) {
             viewHolder.imgStar[j].setVisibility(View.VISIBLE);
-            //ImageView image_star = new ImageView(this.activity);
-            /*String starNameImgId = starNameImg+j;
-            imageStar[j] = (ImageView)this.activity.findViewById(this.activity.getResources().getIdentifier(starNameImgId,"id",this.activity.getPackageName()));
-            imageStar[j].setVisibility(View.VISIBLE);*/
             if(j < nature.getNumStarAttSucc()) {
                 viewHolder.imgStar[j].setImageResource(R.drawable.star_success);
-                //imageStar.setImageResource(R.drawable.star_success);
-                //image_star.setImageResource(R.drawable.star_success);
             }else{
-                //imageStar.setImageResource(R.drawable.star_empty);
-                //image_star.setImageResource(R.drawable.star_empty);
             }
-            //LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(40, 40);
-            //layout_star.addView(image_star,lp);
         }
 
         viewHolder.imgTrophy.setOnClickListener(new View.OnClickListener(){
@@ -123,11 +133,13 @@ public class GridAdapter2 extends RecyclerView.Adapter<GridAdapter2.ViewHolder> 
     class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public ImageView imgTrophy;
         public TextView nameTrophy;
+        public ImageView thumbnailTrophy;
         public ImageView[] imgStar = new ImageView[5];
         public ViewHolder(View itemView) {
             super(itemView);
             imgTrophy = (ImageView) itemView.findViewById(R.id.img_trophy);
             nameTrophy = (TextView) itemView.findViewById(R.id.name_trophy);
+            thumbnailTrophy = (ImageView) itemView.findViewById(R.id.img_att_trophy);
             imgStar[0] = (ImageView) itemView.findViewById(R.id.trophy_star0);
             imgStar[1] = (ImageView) itemView.findViewById(R.id.trophy_star1);
             imgStar[2] = (ImageView) itemView.findViewById(R.id.trophy_star2);

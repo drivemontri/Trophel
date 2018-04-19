@@ -12,6 +12,7 @@ public class EndangeredItem2 {
     private int numStarAtt = 0;
     private int numStarAttSucc = 0;
     private String attractionID;
+    private String mThumbnail;
 
     public String getName() {
         return mName;
@@ -30,7 +31,6 @@ public class EndangeredItem2 {
     public int[] getStar1() {
         return star;
     }
-
     public void setStar(int star1,int star2,int star3,int star4,int star5 ) {
         this.star[0] = star1;
         this.star[1] = star2;
@@ -52,12 +52,18 @@ public class EndangeredItem2 {
     public int getNumStarAtt(){
         return this.numStarAtt;
     }
-
     public int getNumStarAttSucc(){
         return this.numStarAttSucc;
     }
 
-   public String getAttractionID() {return attractionID;}
-   public void setAttractionID(String attractionID) { this.attractionID = attractionID; }
+    public String getAttractionID() {return attractionID;}
+    public void setAttractionID(String attractionID) { this.attractionID = attractionID; }
+
+    public String getThumbnail() {
+        return this.mThumbnail;
+    }
+    public void setThumbnail(String thumbnail) {
+        this.mThumbnail = thumbnail;
+    }
 
 }

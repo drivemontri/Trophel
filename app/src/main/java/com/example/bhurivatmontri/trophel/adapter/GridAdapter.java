@@ -85,7 +85,7 @@ public class GridAdapter extends RecyclerView.Adapter<GridAdapter.ViewHolder> {
         final EndangeredItem nature = mItems.get(position);
         viewHolder.tvspecies.setText(nature.getName());
         Picasso.with(mContext)
-                .load(mItems.get(position).getThumbnail())
+                .load(nature.getThumbnail())
                 .placeholder(R.mipmap.ic_launcher)
                 .fit()
                 .centerCrop()

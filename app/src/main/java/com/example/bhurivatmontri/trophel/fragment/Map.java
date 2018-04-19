@@ -7,6 +7,7 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.constraint.solver.widgets.Snapshot;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -18,6 +19,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.example.bhurivatmontri.trophel.Camera;
+import com.example.bhurivatmontri.trophel.DetailAttraction;
 import com.example.bhurivatmontri.trophel.Home;
 import com.example.bhurivatmontri.trophel.R;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -39,6 +41,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.HashMap;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -53,6 +57,9 @@ public class Map extends Fragment implements OnMapReadyCallback, GoogleApiClient
     GoogleApiClient googleApiClient;
     boolean chkFirstTime = true;
     int checktime = 20;
+    HashMap<String,String> keyOfAttractionMap = new HashMap<>();
+    HashMap<String,String> keyOfRegionMap = new HashMap<>();
+    HashMap<String,Integer> countOfSubAttraction = new HashMap<>();
 
     public Map() {
         // Required empty public constructor
@@ -108,8 +115,14 @@ public class Map extends Fragment implements OnMapReadyCallback, GoogleApiClient
         mGoogleMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
             @Override
             public void onInfoWindowClick(Marker marker) {
-                Intent intent = new Intent(getActivity(),Camera.class);
+                /*Intent intent = new Intent(getActivity(),Camera.class);
                 intent.putExtra("Title",marker.getTitle());
+                startActivity(intent);*/
+                Intent intent = new Intent(getActivity(), DetailAttraction.class);
+                intent.putExtra("keyOfSubAttraction",marker.getTitle());
+                intent.putExtra("keyOfAttraction",keyOfAttractionMap.get(marker.getTitle()));
+                intent.putExtra("keyOfRegion",keyOfRegionMap.get(marker.getTitle()));
+                intent.putExtra("countOfSubAttraction",countOfSubAttraction.get(marker.getTitle()));
                 startActivity(intent);
             }
         });
@@ -202,17 +215,24 @@ public class Map extends Fragment implements OnMapReadyCallback, GoogleApiClient
                         for (DataSnapshot snapshot1 : dataSnapshot.getChildren()) {
                             for (DataSnapshot snapshot2 : snapshot1.child("sub_Attrs").getChildren()){
                                 snapshot2.child("latitude").getValue(Integer.class);
-                                Log.d("onDataChange","qqqqqqqqq"+snapshot2.getKey().toString());
+                                //Log.d("onDataChange","qqqqqqqqq"+snapshot2.getKey().toString());
 
                                 Double Olat = Math.toRadians(latitude) - Math.toRadians(snapshot2.child("latitude").getValue(Double.class));
                                 Double Olong = Math.toRadians(longitude) - Math.toRadians(snapshot2.child("longitude").getValue(Double.class));
                                 Double a = Math.pow((Math.sin(Olat / 2)), 2) + (Math.cos(Math.toRadians(snapshot2.child("latitude").getValue(Double.class))) * Math.cos(Math.toRadians(latitude)) * Math.pow(Math.sin(Olong / 2), 2));
                                 Double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
                                 Double distance = 6371e3 * c / 1000.0;
-                                Log.d("distance", "onDataChange: " + distance + snapshot2.getKey());
-                                if (distance <= 5 && checktime%20==0)
+                                //Log.d("distance", "onDataChange: " + distance + snapshot2.getKey());
+                                if (distance <= 5 && checktime%20==0){
                                     mGoogleMap.clear();
+                                    keyOfAttractionMap.clear();
+                                    keyOfRegionMap.clear();
+                                    countOfSubAttraction.clear();
+                                }
                                 mMarker = mGoogleMap.addMarker(new MarkerOptions().position(new LatLng(snapshot2.child("latitude").getValue(Double.class), snapshot2.child("longitude").getValue(Double.class))).icon(BitmapDescriptorFactory.fromAsset(snapshot2.child("marker_icon").getValue(String.class))).snippet("ลองลองดู").title(snapshot2.getKey()));
+                                keyOfAttractionMap.put(snapshot2.getKey(),snapshot1.getKey());
+                                keyOfRegionMap.put(snapshot2.getKey(),snapshot1.child("region_Eng").getValue().toString());
+                                countOfSubAttraction.put(snapshot2.getKey(),(int)snapshot1.child("sub_Attrs").getChildrenCount());
                                 //mMarker = mGoogleMap.addMarker(new MarkerOption s().position(new LatLng(18.795620,98.952810)).title(snapshot.getKey()));
                             }
                         }

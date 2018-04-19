@@ -1,6 +1,7 @@
 package com.example.bhurivatmontri.trophel;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -24,23 +25,31 @@ public class DetailAttraction extends AppCompatActivity {
     protected DatabaseReference mDatabase;
     protected FirebaseStorage storage = FirebaseStorage.getInstance();
 
+    String keyOfSubAttraction = null;
+    String keyOfAttraction = null;
+    String keyOfRegion = null;
+    int countOfSubAttraction ;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail_attraction);
 
-        String keyOfAttraction = null;
-
         Bundle extras = getIntent().getExtras();
         if(extras == null) {
+            keyOfSubAttraction = null;
             keyOfAttraction = null;
+            keyOfRegion = null;
         } else {
+            keyOfSubAttraction = extras.getString("keyOfSubAttraction");
             keyOfAttraction = extras.getString("keyOfAttraction");
+            keyOfRegion = extras.getString("keyOfRegion");
+            countOfSubAttraction = extras.getInt("countOfSubAttraction");
         }
 
         Toolbar toolbarDetailAttr = (Toolbar) findViewById(R.id.toolbar_detail_attraction);
         setSupportActionBar(toolbarDetailAttr);
-        getSupportActionBar().setTitle("Attraction detail");
+        getSupportActionBar().setTitle("Sub_Attraction detail");
 
         final ImageView coverDetailAttraction = (ImageView) findViewById(R.id.cover_detail_attraction);
         final TextView nameDetailAttraction = (TextView) findViewById(R.id.name_detail_attraction);
@@ -56,11 +65,12 @@ public class DetailAttraction extends AppCompatActivity {
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
         final StorageReference mStorage = storage.getReference();
-        Log.d("onDataChange","bbnnbnbnb"+keyOfAttraction);
-        mDatabase.child("attractions").child(keyOfAttraction).addValueEventListener(new ValueEventListener() {
+
+        //Log.d("onDataChange","bbnnbnbnb"+keyOfAttraction);
+        mDatabase.child("attractions").child(keyOfAttraction).child("sub_Attrs").child(keyOfSubAttraction).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                Log.d("onDataChange","hihihi"+dataSnapshot.getKey().toString());
+                Log.d("onDataChange","DetailAttraction1 : "+dataSnapshot.getKey().toString());
                 String name = dataSnapshot.child("name_Eng").getValue().toString();
                 String info = dataSnapshot.child("info_Eng").getValue().toString();
                 String uri_img = dataSnapshot.child("uri_img").getValue().toString();
@@ -83,6 +93,18 @@ public class DetailAttraction extends AppCompatActivity {
 
         //String url_img1 = "attractions/Northern/Chiang Mai/"+keyOfAttraction+"/img1.jpg";
 
+        Button btn_play = (Button) findViewById(R.id.button_play_detail_attraction);
+        btn_play.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(DetailAttraction.this, Camera.class);
+                intent.putExtra("keyOfSubAttraction",keyOfSubAttraction);
+                intent.putExtra("keyOfAttraction",keyOfAttraction);
+                intent.putExtra("keyOfRegion",keyOfRegion);
+                intent.putExtra("countOfSubAttraction",countOfSubAttraction);
+                startActivity(intent);
+            }
+        });
 
         Button btn_back = (Button) findViewById(R.id.button_back_detail_attraction);
         btn_back.setOnClickListener(new View.OnClickListener() {
