@@ -97,12 +97,28 @@ public class GridAdapter2 extends RecyclerView.Adapter<GridAdapter2.ViewHolder> 
                 .into(viewHolder.thumbnailTrophy);
         //viewHolder.imgTrophy.setImageResource(nature.getThumbnail());
         switch (nature.getTrophy()){
+            case 0:
+                viewHolder.imgTrophy.setImageResource(R.drawable.trophy_green_png);
+                break;
             case 1:
-                viewHolder.imgTrophy.setImageResource(R.drawable.trophel_empty);
+                viewHolder.imgTrophy.setImageResource(R.drawable.trophy_yellow_png);
                 break;
             case 2:
-                viewHolder.imgTrophy.setImageResource(R.drawable.trophel_central);
+                viewHolder.imgTrophy.setImageResource(R.drawable.trophy_orange_png);
                 break;
+            case 3:
+                viewHolder.imgTrophy.setImageResource(R.drawable.trophy_red_png);
+                break;
+            case 4:
+                viewHolder.imgTrophy.setImageResource(R.drawable.trophy_blue_png);
+                break;
+            case 5:
+                viewHolder.imgTrophy.setImageResource(R.drawable.trophy_purple_png);
+                break;
+            case 6:
+                viewHolder.imgTrophy.setImageResource(R.drawable.trophy_unsuccess_png);
+                break;
+
         }
 
         //LinearLayout layout_star = (LinearLayout)this.activity.findViewById(R.id.bottom_layout_trophy_in);

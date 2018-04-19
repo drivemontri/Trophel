@@ -1,15 +1,97 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/list_Trophy"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/Cyan100"
+    android:orientation="vertical"
     tools:context="com.example.bhurivatmontri.trophel.fragment.ListTrophy">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recyclerView_Trophy"
+    <RelativeLayout
+        android:layout_width="150dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="30dp"
+        android:elevation="6dp"
+        android:background="@drawable/rounded_corner2">
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true">
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:id="@+id/img_sum_star_list_trophy"
+                android:src="@drawable/star_success" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="20dp"
+                android:layout_toRightOf="@id/img_sum_star_list_trophy"
+                android:layout_marginLeft="5dp"
+                android:text=":"
+                android:textColor="@color/White"
+                android:textSize="15dp"
+                android:id="@+id/layer_list_trophy1"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="20dp"
+                android:layout_toRightOf="@id/layer_list_trophy1"
+                android:layout_marginLeft="5dp"
+                android:text="0"
+                android:textColor="@color/White"
+                android:textSize="15dp"
+                android:id="@+id/text_sum_star_list_trophy"/>
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_toRightOf="@id/text_sum_star_list_trophy"
+                android:layout_marginLeft="20dp"
+                android:id="@+id/img_sum_trophy_list_trophy"
+                android:src="@drawable/trophel_central" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="20dp"
+                android:layout_toRightOf="@id/img_sum_trophy_list_trophy"
+                android:layout_marginLeft="5dp"
+                android:text=":"
+                android:textColor="@color/White"
+                android:textSize="15dp"
+                android:id="@+id/layer_list_trophy2"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="20dp"
+                android:layout_toRightOf="@id/layer_list_trophy2"
+                android:layout_marginLeft="5dp"
+                android:text="0"
+                android:textColor="@color/White"
+                android:textSize="15dp"
+                android:id="@+id/text_sum_trophy_list_trophy"/>
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+    <FrameLayout
+        android:id="@+id/list_Trophy"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-    </android.support.v7.widget.RecyclerView>
 
-</FrameLayout>
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerView_Trophy"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        </android.support.v7.widget.RecyclerView>
+
+    </FrameLayout>
+
+</LinearLayout>
+
+

@@ -6,6 +6,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.widget.TextView;
 
 import com.example.bhurivatmontri.trophel.adapter.GridAdapter2;
 import com.google.firebase.database.DataSnapshot;
@@ -41,6 +42,12 @@ public class ActListTrophy extends AppCompatActivity {
     HashMap<String,Integer> regionMap = new HashMap<>();
     String[] regionName = {"Northern","Central","Northeastern","Western","Southern","Eastern"};
 
+    ArrayList<Integer> count_star_all = new ArrayList<>();
+    ArrayList<Integer> count_trophy_all = new ArrayList<>();
+
+    protected TextView tv_count_star_all;
+    protected TextView tv_count_trophy_all;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,6 +74,8 @@ public class ActListTrophy extends AppCompatActivity {
             star.add(new ArrayList<ArrayList<Integer>>());
             trophy.add(new ArrayList<Integer>());
             regionMap.put(regionName[i],i);
+            count_star_all.add(0);
+            count_trophy_all.add(0);
         }
 
         mDatabase.child("users").child("uID").child("drive").child("attractions").addListenerForSingleValueEvent(new ValueEventListener() {
@@ -84,6 +93,9 @@ public class ActListTrophy extends AppCompatActivity {
                     int count_star_sub_Attrs = (int)attraction.child("sub_Attrs").getChildrenCount();
                     for (int j = 1; j <= 5; j++) {
                         if(j <= count_star_sub_Attrs && j <= count_sub_Attrs){
+                            int count_star = count_star_all.get(index);
+                            count_star+=1;
+                            count_star_all.set(index,count_star);
                             star_attraction.add(2);
                         }else if( j > count_star_sub_Attrs && j <= count_sub_Attrs){
                             star_attraction.add(1);
@@ -94,9 +106,12 @@ public class ActListTrophy extends AppCompatActivity {
                     star.get(index).add(star_attraction);
 
                     if(count_star_sub_Attrs >= count_sub_Attrs ){
-                        trophy.get(index).add(2);
+                        int count_trophy = count_trophy_all.get(index);
+                        count_trophy+=1;
+                        count_trophy_all.set(index,count_trophy);
+                        trophy.get(index).add(index);
                     }else{
-                        trophy.get(index).add(1);
+                        trophy.get(index).add(6);
                     }
 
                     //init data from database
@@ -110,6 +125,14 @@ public class ActListTrophy extends AppCompatActivity {
 
                 mAdapter = new GridAdapter2(ActListTrophy.this,rg,name,uri_img,star,trophy);
                 mRecyclerView.setAdapter(mAdapter);
+
+                tv_count_star_all = (TextView) findViewById(R.id.text_sum_star_list_trophy_2);
+                tv_count_trophy_all = (TextView) findViewById(R.id.text_sum_trophy_list_trophy_2);
+
+                int region = Integer.parseInt(rg);
+                tv_count_star_all.setText(""+count_star_all.get(region-1));
+                tv_count_trophy_all.setText(""+count_trophy_all.get(region-1));
+
             }
 
             @Override

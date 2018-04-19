@@ -10,9 +10,10 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="3dp"
         android:layout_marginBottom="4dp"
-        android:layout_margin="4dp"
+        android:layout_margin="20dp"
         android:backgroundTint="@color/Cyan900"
-        card_view:cardElevation="3dp">
+        card_view:cardElevation="6dp"
+        card_view:cardCornerRadius="8dp">
 
         <FrameLayout
             android:layout_width="match_parent"
@@ -68,7 +69,7 @@
                         android:src="@drawable/trophel_empty"
                         android:layout_alignParentRight="true"
                         android:layout_marginRight="10dp"
-                        android:layout_marginTop="10dp"
+                        android:layout_marginTop="8dp"
                         android:layout_marginBottom="10dp"
                         android:scaleType="fitXY"  />
 
@@ -80,7 +81,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/top_layout_trophy"
-                    android:background="@color/Black">
+                    android:background="@drawable/rounded_corner3">
 
                     <LinearLayout
                         android:id="@+id/bottom_layout_trophy_in"

@@ -201,6 +201,7 @@ public class FriendProfile extends Fragment implements View.OnClickListener {
     @Override
     public void onClick(View v){
         Bundle bundle = new Bundle();
+        bundle.putString("friendID",friendID);
         switch (v.getId()){
             case R.id.button_northern_friend:
                 bundle.putString("Region","1");

@@ -1,10 +1,11 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context="com.example.bhurivatmontri.trophel.ActListTrophy"
-    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/Cyan100"
+    android:orientation="vertical"
+    tools:context="com.example.bhurivatmontri.trophel.ActListTrophy">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar_act_list_trophy"
@@ -16,11 +17,83 @@
 
     </android.support.v7.widget.Toolbar>
 
+    <RelativeLayout
+        android:layout_width="150dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="30dp"
+        android:elevation="6dp"
+        android:background="@drawable/rounded_corner2">
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true">
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:id="@+id/img_sum_star_list_trophy_2"
+                android:src="@drawable/star_success" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="20dp"
+                android:layout_toRightOf="@id/img_sum_star_list_trophy_2"
+                android:layout_marginLeft="5dp"
+                android:text=":"
+                android:textColor="@color/White"
+                android:textSize="15dp"
+                android:id="@+id/layer_list_trophy1_2"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="20dp"
+                android:layout_toRightOf="@id/layer_list_trophy1_2"
+                android:layout_marginLeft="5dp"
+                android:text="0"
+                android:textColor="@color/White"
+                android:textSize="15dp"
+                android:id="@+id/text_sum_star_list_trophy_2"/>
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_toRightOf="@id/text_sum_star_list_trophy_2"
+                android:layout_marginLeft="20dp"
+                android:id="@+id/img_sum_trophy_list_trophy_2"
+                android:src="@drawable/trophel_central" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="20dp"
+                android:layout_toRightOf="@id/img_sum_trophy_list_trophy_2"
+                android:layout_marginLeft="5dp"
+                android:text=":"
+                android:textColor="@color/White"
+                android:textSize="15dp"
+                android:id="@+id/layer_list_trophy2_2"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="20dp"
+                android:layout_toRightOf="@id/layer_list_trophy2_2"
+                android:layout_marginLeft="5dp"
+                android:text="0"
+                android:textColor="@color/White"
+                android:textSize="15dp"
+                android:id="@+id/text_sum_trophy_list_trophy_2"/>
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
     <FrameLayout
-        android:id="@+id/list_act_Trophy"
+        android:id="@+id/list_Trophy"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/Cyan100">
+        android:layout_height="match_parent">
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recyclerView_act_Trophy"
@@ -31,4 +104,3 @@
     </FrameLayout>
 
 </LinearLayout>
-
