@@ -59,6 +59,8 @@ public class Map extends Fragment implements OnMapReadyCallback, GoogleApiClient
     int checktime = 20;
     HashMap<String,String> keyOfAttractionMap = new HashMap<>();
     HashMap<String,String> keyOfRegionMap = new HashMap<>();
+    HashMap<String,String> keyOfUriImgAttractionMap = new HashMap<>();
+    HashMap<String,Integer> keyOfCountAttractionMap = new HashMap<>();
     HashMap<String,Integer> countOfSubAttraction = new HashMap<>();
 
     public Map() {
@@ -122,6 +124,8 @@ public class Map extends Fragment implements OnMapReadyCallback, GoogleApiClient
                 intent.putExtra("keyOfSubAttraction",marker.getTitle());
                 intent.putExtra("keyOfAttraction",keyOfAttractionMap.get(marker.getTitle()));
                 intent.putExtra("keyOfRegion",keyOfRegionMap.get(marker.getTitle()));
+                intent.putExtra("keyOfUriImgAttraction",keyOfUriImgAttractionMap.get(marker.getTitle()));
+                intent.putExtra("keyOfCountAttraction",keyOfCountAttractionMap.get(marker.getTitle()));
                 intent.putExtra("countOfSubAttraction",countOfSubAttraction.get(marker.getTitle()));
                 startActivity(intent);
             }
@@ -223,16 +227,22 @@ public class Map extends Fragment implements OnMapReadyCallback, GoogleApiClient
                                 Double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
                                 Double distance = 6371e3 * c / 1000.0;
                                 //Log.d("distance", "onDataChange: " + distance + snapshot2.getKey());
-                                if (distance <= 5 && checktime%20==0){
+                                if ( checktime%20==0){
                                     mGoogleMap.clear();
                                     keyOfAttractionMap.clear();
                                     keyOfRegionMap.clear();
+                                    keyOfCountAttractionMap.clear();
+                                    keyOfUriImgAttractionMap.clear();
                                     countOfSubAttraction.clear();
                                 }
-                                mMarker = mGoogleMap.addMarker(new MarkerOptions().position(new LatLng(snapshot2.child("latitude").getValue(Double.class), snapshot2.child("longitude").getValue(Double.class))).icon(BitmapDescriptorFactory.fromAsset(snapshot2.child("marker_icon").getValue(String.class))).snippet("ลองลองดู").title(snapshot2.getKey()));
-                                keyOfAttractionMap.put(snapshot2.getKey(),snapshot1.getKey());
-                                keyOfRegionMap.put(snapshot2.getKey(),snapshot1.child("region_Eng").getValue().toString());
-                                countOfSubAttraction.put(snapshot2.getKey(),(int)snapshot1.child("sub_Attrs").getChildrenCount());
+                                if(distance <= 2){
+                                    mMarker = mGoogleMap.addMarker(new MarkerOptions().position(new LatLng(snapshot2.child("latitude").getValue(Double.class), snapshot2.child("longitude").getValue(Double.class))).icon(BitmapDescriptorFactory.fromAsset(snapshot2.child("marker_icon").getValue(String.class))).snippet("ลองลองดู").title(snapshot2.getKey()));
+                                    keyOfAttractionMap.put(snapshot2.getKey(),snapshot1.getKey());
+                                    keyOfRegionMap.put(snapshot2.getKey(),snapshot1.child("region_Eng").getValue().toString());
+                                    keyOfCountAttractionMap.put(snapshot2.getKey(),(int)snapshot1.child("sub_Attrs").getChildrenCount());
+                                    keyOfUriImgAttractionMap.put(snapshot2.getKey(),snapshot1.child("uri_img").getValue().toString());
+                                    countOfSubAttraction.put(snapshot2.getKey(),(int)snapshot1.child("sub_Attrs").getChildrenCount());
+                                }
                                 //mMarker = mGoogleMap.addMarker(new MarkerOption s().position(new LatLng(18.795620,98.952810)).title(snapshot.getKey()));
                             }
                         }

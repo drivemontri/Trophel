@@ -28,6 +28,8 @@ public class DetailAttraction extends AppCompatActivity {
     String keyOfSubAttraction = null;
     String keyOfAttraction = null;
     String keyOfRegion = null;
+    String keyOfUriImgAttraction = null;
+    int keyOfCountAttraction ;
     int countOfSubAttraction ;
 
     @Override
@@ -40,10 +42,13 @@ public class DetailAttraction extends AppCompatActivity {
             keyOfSubAttraction = null;
             keyOfAttraction = null;
             keyOfRegion = null;
+            keyOfUriImgAttraction = null;
         } else {
             keyOfSubAttraction = extras.getString("keyOfSubAttraction");
             keyOfAttraction = extras.getString("keyOfAttraction");
             keyOfRegion = extras.getString("keyOfRegion");
+            keyOfUriImgAttraction = extras.getString("keyOfUriImgAttraction");
+            keyOfCountAttraction = extras.getInt("keyOfCountAttraction");
             countOfSubAttraction = extras.getInt("countOfSubAttraction");
         }
 
@@ -101,6 +106,8 @@ public class DetailAttraction extends AppCompatActivity {
                 intent.putExtra("keyOfSubAttraction",keyOfSubAttraction);
                 intent.putExtra("keyOfAttraction",keyOfAttraction);
                 intent.putExtra("keyOfRegion",keyOfRegion);
+                intent.putExtra("keyOfUriImgAttraction",keyOfUriImgAttraction);
+                intent.putExtra("keyOfCountAttraction",keyOfCountAttraction);
                 intent.putExtra("countOfSubAttraction",countOfSubAttraction);
                 startActivity(intent);
             }

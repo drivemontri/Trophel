@@ -3,7 +3,6 @@ package com.example.bhurivatmontri.trophel.fragment;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewPager;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -13,11 +12,8 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.bhurivatmontri.trophel.Home;
 import com.example.bhurivatmontri.trophel.R;
-import com.example.bhurivatmontri.trophel.adapter.CustomAdapter;
 import com.example.bhurivatmontri.trophel.adapter.EndangeredItem;
-import com.example.bhurivatmontri.trophel.adapter.Friend;
 import com.example.bhurivatmontri.trophel.adapter.GridAdapter;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -29,11 +25,10 @@ import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 
-
 /**
  * A simple {@link Fragment} subclass.
  */
-public class Attraction extends Fragment {
+public class ListAttractionFromRegion extends Fragment {
 
     RecyclerView mRecyclerView;
     RecyclerView.LayoutManager mLayoutManager;
@@ -46,13 +41,17 @@ public class Attraction extends Fragment {
     ArrayList<String> keyName = new ArrayList<>();
     ArrayList<EndangeredItem> listAttractions = new ArrayList<>();
 
-    public Attraction() {
+    String rg = "";
+
+    public ListAttractionFromRegion() {
         // Required empty public constructor
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Bundle bundle = getArguments();
+        rg = bundle.getString("Region");
         initDatabase();
         initDataset();
         setHasOptionsMenu(true);
@@ -62,9 +61,9 @@ public class Attraction extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        View view = inflater.inflate(R.layout.fragment_list_attraction_from_region, container, false);
 
-        View view = inflater.inflate(R.layout.fragment_attraction, container, false);
-        mRecyclerView = (RecyclerView) view.findViewById(R.id.recyclerView_Attraction);
+        mRecyclerView = (RecyclerView) view.findViewById(R.id.recyclerView_ListAttractionFromRegion);
         mRecyclerView.setHasFixedSize(true);
 
         mLayoutManager  = new GridLayoutManager(getActivity(),1);
@@ -95,7 +94,7 @@ public class Attraction extends Fragment {
         mDatabase = FirebaseDatabase.getInstance().getReference();
         final StorageReference mStorage = storage.getReference();
 
-        mDatabase.child("attractions").addListenerForSingleValueEvent(new ValueEventListener() {
+        mDatabase.child("attractions").orderByChild("region").equalTo(rg).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Log.d("onDataChange",""+dataSnapshot.getChildrenCount());

@@ -26,7 +26,7 @@
                     android:layout_width="400dp"
                     android:layout_height="200dp"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/cover_bhurivat_montri" />
+                    android:src="@drawable/profile_default_cover" />
 
                 <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/img_Profile_friend"
@@ -37,7 +37,7 @@
                     android:layout_below="@+id/cover_background_friend"
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="-60dp"
-                    android:src="@drawable/profile_bhurivat_montri" />
+                    android:src="@drawable/profile_default_people" />
 
             </RelativeLayout>
 

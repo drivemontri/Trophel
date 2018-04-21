@@ -248,7 +248,8 @@ public class Home extends AppCompatActivity {
     }
 
     private void setupViewPager(ViewPager mViewPager) {
-        HomeFragment.setAttraction();
+        //HomeFragment.setAttraction();
+        HomeFragment.setAttractionType();
         HomeFragment.setMap();
         HomeFragment.setListFriend();
         HomeFragment.setAppMenu();
@@ -259,12 +260,14 @@ public class Home extends AppCompatActivity {
         adapter.addFragment(new AppMenu(), "Menu");
         //adapter.addFragment(new AppMenu(), "Menu");*/
 
-        adapter.addFragment(HomeFragment.getAttractionInstance(), "Travel");
+        //adapter.addFragment(HomeFragment.getAttractionInstance(), "Travel");
+        adapter.addFragment(HomeFragment.getAttractionTypeInstance(), "Travel");
         adapter.addFragment(HomeFragment.getMapInstance(), "Map");
         adapter.addFragment(HomeFragment.getListFriendInstance(), "Friend");
         adapter.addFragment(HomeFragment.getAppMenuInstance(), "Menu");
         //adapter.addFragment(new AppMenu(), "Menu");
 
+        mViewPager.setOffscreenPageLimit(4);
         mViewPager.setAdapter(adapter);
     }
 

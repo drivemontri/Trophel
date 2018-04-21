@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.example.bhurivatmontri.trophel.fragment.AppMenu;
 import com.example.bhurivatmontri.trophel.fragment.Attraction;
+import com.example.bhurivatmontri.trophel.fragment.AttractionType;
 import com.example.bhurivatmontri.trophel.fragment.ListFriend;
 import com.example.bhurivatmontri.trophel.fragment.Map;
 
@@ -15,6 +16,7 @@ public class HomeFragment {
 
     private static HomeFragment homeFragment;
     private static Attraction attraction;
+    private static AttractionType attractionType;
     private static Map map;
     private static ListFriend listFriend;
     private static AppMenu appMenu;
@@ -79,6 +81,16 @@ public class HomeFragment {
 
     public static AppMenu getAppMenuInstance() {
         return appMenu;
+    }
+
+    public static void setAttractionType(){
+        if (attractionType == null) {
+            attractionType = new AttractionType();
+        }
+    }
+
+    public static AttractionType getAttractionTypeInstance() {
+        return attractionType;
     }
 
 }

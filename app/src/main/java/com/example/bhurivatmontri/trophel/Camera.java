@@ -21,8 +21,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.bhurivatmontri.trophel.adapter.GridAdapter;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -86,11 +89,14 @@ public class Camera extends AppCompatActivity implements CameraBridgeViewBase.Cv
     int numberOfMatch;
 
     protected DatabaseReference mDatabase;
+    protected DatabaseReference mDatabase2;
     protected FirebaseStorage storage = FirebaseStorage.getInstance();
 
     String keyOfAttraction;
     String keyOfSubAttraction;
     String keyOfRegion;
+    String keyOfUriImgAttraction;
+    int keyOfCountAttraction;
     int countOfSubAttraction;
 
     static {
@@ -163,11 +169,14 @@ public class Camera extends AppCompatActivity implements CameraBridgeViewBase.Cv
             keyOfAttraction = null;
             keyOfSubAttraction = null;
             keyOfRegion = null;
+            keyOfUriImgAttraction = null;
         } else {
             title = extras.getString("keyOfSubAttraction");
             keyOfAttraction = extras.getString("keyOfAttraction");
             keyOfSubAttraction = extras.getString("keyOfSubAttraction");
             keyOfRegion = extras.getString("keyOfRegion");
+            keyOfUriImgAttraction = extras.getString("keyOfUriImgAttraction");
+            keyOfCountAttraction = extras.getInt("keyOfCountAttraction");
             countOfSubAttraction = extras.getInt("countOfSubAttraction");
         }
 
@@ -180,6 +189,7 @@ public class Camera extends AppCompatActivity implements CameraBridgeViewBase.Cv
         cameraBridgeViewBase.setCvCameraViewListener(this);
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
+        mDatabase2 = FirebaseDatabase.getInstance().getReference();
         final StorageReference mStorage = storage.getReference();
 
         tv_title = (TextView) findViewById(R.id.title1);
@@ -394,26 +404,102 @@ public class Camera extends AppCompatActivity implements CameraBridgeViewBase.Cv
         }
 
         @Override
-        protected void onPostExecute(Boolean chkMatch) {
+        protected void onPostExecute(final Boolean chkMatch) {
             tv_title.setText("number of match : " + numberOfMatch);
-            if (chkMatch == true) {
-                mDatabase.child("users").child("uID").child("drive").child("attractions").child(keyOfAttraction)
-                        .child("region").setValue(keyOfRegion);
-                mDatabase.child("users").child("uID").child("drive").child("attractions").child(keyOfAttraction)
-                        .child("sub_Attrs").child(keyOfSubAttraction).child("status").setValue(1);
-                Log.d(AsyncTAG, "Match is Success.");
-                isMatch = true;
-                ib_success.setVisibility(View.VISIBLE);
-                ib_success.setOnClickListener(new View.OnClickListener() {
+            if (chkMatch == true){
+                mDatabase.child("users").child("uID").child("drive").addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
-                    public void onClick(View v) {
-                        //Intent intent = new Intent(Camera.this,Home.class);
-                        //startActivity(intent);
-                        Camera.this.finish();
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        long chk_ever = 0;
+                        try{
+                            chk_ever = dataSnapshot.child("attractions").child(keyOfAttraction).child("sub_Attrs").child(keyOfSubAttraction).child("status").getValue(Long.class);
+                        }catch (Exception e)
+                        {
+                            mDatabase.child("users").child("uID").child("drive").child("attractions").child(keyOfAttraction)
+                                    .child("region").setValue(keyOfRegion);
+                            mDatabase.child("users").child("uID").child("drive").child("attractions").child(keyOfAttraction)
+                                    .child("count_sub_Attrs").setValue(keyOfCountAttraction);
+                            mDatabase.child("users").child("uID").child("drive").child("attractions").child(keyOfAttraction)
+                                    .child("uri_img").setValue(keyOfUriImgAttraction);
+                            mDatabase.child("users").child("uID").child("drive").child("attractions").child(keyOfAttraction)
+                                    .child("sub_Attrs").child(keyOfSubAttraction).child("status").setValue(1);
+
+                            mDatabase2.child("users").child("uID").child("drive").addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                    long count_star_rg = 0;
+                                    long[] count_trophy_rg = {0,0,0,0,0,0};
+                                    count_star_rg = dataSnapshot.child("count_Star").getValue(Long.class);
+                                    count_trophy_rg[0] = dataSnapshot.child("count_Northern").getValue(Long.class);
+                                    count_trophy_rg[1] = dataSnapshot.child("count_Central").getValue(Long.class);
+                                    count_trophy_rg[2] = dataSnapshot.child("count_Northeastern").getValue(Long.class);
+                                    count_trophy_rg[3] = dataSnapshot.child("count_Western").getValue(Long.class);
+                                    count_trophy_rg[4] = dataSnapshot.child("count_Southern").getValue(Long.class);
+                                    count_trophy_rg[5] = dataSnapshot.child("count_Eastern").getValue(Long.class);
+
+                                    String[] rg = {"Northern","Central","Northeastern","Western","Southern","Eastern"};
+                                    // for find star
+                                    for (DataSnapshot dataSnapshot2 : dataSnapshot.child("attractions").getChildren()) {
+                                        long count_sub_attr = 0;
+                                        for (DataSnapshot dataSnapshot3 : dataSnapshot2.child("sub_Attrs").getChildren()) {
+                                            count_sub_attr += 1;
+                                            count_star_rg += 1;
+                                        }
+                                        Log.d("onDataChange","dataSnapshot2"+dataSnapshot2.child("region"));
+                                        Log.d("onDataChange","dataSnapshot2"+dataSnapshot2.child("count_sub_Attrs"));
+
+                                        String regionAttr = dataSnapshot2.child("region").getValue().toString();
+                                        long countSubAttr = dataSnapshot2.child("count_sub_Attrs").getValue(Long.class);
+                                        if(regionAttr.equals(rg[0]) && countSubAttr == count_sub_attr){
+                                            Log.d("onDataChange","North+++North");
+                                            count_trophy_rg[0] += 1;
+                                        }else if(regionAttr.equals(rg[1]) && countSubAttr == count_sub_attr){
+                                            count_trophy_rg[1] += 1;
+                                        }else if(regionAttr.equals(rg[2]) && countSubAttr == count_sub_attr){
+                                            count_trophy_rg[2] += 1;
+                                        }else if(regionAttr.equals(rg[3]) && countSubAttr == count_sub_attr){
+                                            count_trophy_rg[3] += 1;
+                                        }else if(regionAttr.equals(rg[4]) && countSubAttr == count_sub_attr){
+                                            count_trophy_rg[4] += 1;
+                                        }else if(regionAttr.equals(rg[5]) && countSubAttr == count_sub_attr){
+                                            count_trophy_rg[5] += 1;
+                                        }
+                                    }
+
+                                    Log.d("onDataChange", "chk_ever=2");
+                                    mDatabase.child("users").child("uID").child("drive").child("count_Star").setValue(count_star_rg);
+                                    mDatabase.child("users").child("uID").child("drive").child("count_Northern").setValue(count_trophy_rg[0]);
+                                    mDatabase.child("users").child("uID").child("drive").child("count_Central").setValue(count_trophy_rg[1]);
+                                    mDatabase.child("users").child("uID").child("drive").child("count_Northeastern").setValue(count_trophy_rg[2]);
+                                    mDatabase.child("users").child("uID").child("drive").child("count_Western").setValue(count_trophy_rg[3]);
+                                    mDatabase.child("users").child("uID").child("drive").child("count_Southern").setValue(count_trophy_rg[4]);
+                                    mDatabase.child("users").child("uID").child("drive").child("count_Eastern").setValue(count_trophy_rg[5]);
+                                }
+
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
+
+                                }
+                            });
+                        }
+                        Log.d(AsyncTAG, "Match is Success.");
+                        isMatch = true;
+                        ib_success.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Camera.this.finish();
+                            }
+                        });
+                    }
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
                     }
                 });
-                this.cancel(true);
+
+                ib_success.setVisibility(View.VISIBLE);
             }
+            this.cancel(true);
         }
     }
 
