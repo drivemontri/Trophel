@@ -1,5 +1,6 @@
 package com.example.bhurivatmontri.trophel;
 
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -48,10 +49,24 @@ public class ActListTrophy extends AppCompatActivity {
     protected TextView tv_count_star_all;
     protected TextView tv_count_trophy_all;
 
+    protected SharedPreferences settings;
+    protected int select_language_position;
+    protected String name_language = "";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_act_list_trophy);
+
+        settings = this.getSharedPreferences("Trophel",MODE_WORLD_WRITEABLE);
+        select_language_position = settings.getInt("select_language_position",-1);
+        Log.d("onDataChange",""+select_language_position);
+        switch (select_language_position){
+            case -1: name_language = "name_Eng";break;
+            case 0:  name_language = "name_Eng";break;
+            case 1:  name_language = "name_Eng";break;
+            case 2:  name_language = "name_Thai";break;
+        }
 
         rg = null;
         Bundle extras = getIntent().getExtras();
@@ -63,7 +78,7 @@ public class ActListTrophy extends AppCompatActivity {
 
         Toolbar toolbarActListTrophy = (Toolbar) findViewById(R.id.toolbar_act_list_trophy);
         setSupportActionBar(toolbarActListTrophy);
-        getSupportActionBar().setTitle("My Trophy ("+rg+")");
+        getSupportActionBar().setTitle("My Trophy ("+regionName[Integer.parseInt(rg) - 1]+")");
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
         final StorageReference mStorage = storage.getReference();
@@ -85,7 +100,7 @@ public class ActListTrophy extends AppCompatActivity {
                     String reg = attraction.child("region").getValue().toString();
                     int index = regionMap.get(reg);
 
-                    name.get(index).add(attraction.getKey());
+                    name.get(index).add(attraction.child(name_language).getValue().toString());
                     uri_img.get(index).add(attraction.child("uri_img").getValue().toString());
 
                     ArrayList<Integer> star_attraction = new ArrayList<>();

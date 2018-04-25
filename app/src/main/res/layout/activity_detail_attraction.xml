@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/Cyan900"
+    android:background="@color/White"
     tools:context="com.example.bhurivatmontri.trophel.DetailAttraction">
 
     <LinearLayout
@@ -15,7 +15,7 @@
             android:id="@+id/toolbar_detail_attraction"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="@color/DarkSlateBlue"
+            android:background="@color/colorApp1"
             app:layout_scrollFlags="scroll|enterAlways"
             app:popupTheme="@style/AppTheme.PopupOverlay">
 
@@ -41,8 +41,8 @@
             android:id="@+id/name_detail_attraction"
             android:textColor="@color/White"
             android:textSize="30dp"
-            android:background="@color/Cyan500"
-            android:paddingLeft="10dp"
+            android:background="@color/colorApp2"
+            android:paddingLeft="20dp"
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
             android:text="Name"/>
@@ -51,11 +51,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/detail_detail_attraction"
-            android:textColor="@color/White"
-            android:textSize="20dp"
-            android:layout_marginTop="10dp"
+            android:textColor="@color/colorTextDetail"
+            android:textSize="18dp"
+            android:layout_marginTop="30dp"
             android:layout_marginLeft="10dp"
-            android:text="@string/Monjong"/>
+            android:paddingLeft="30dp"
+            android:paddingRight="30dp"
+            android:text="None"
+            android:minHeight="130dp"/>
 
         <RelativeLayout
             android:layout_width="wrap_content"
@@ -70,7 +73,7 @@
                 android:layout_marginBottom="50dp"
                 android:id="@+id/button_play_detail_attraction"
                 android:text="Play"
-                android:backgroundTint="@color/Cyan500"
+                android:backgroundTint="@color/colorApp2"
                 android:textSize="20dp"/>
 
             <Button
@@ -81,7 +84,7 @@
                 android:layout_toRightOf="@id/button_play_detail_attraction"
                 android:id="@+id/button_back_detail_attraction"
                 android:text="Back"
-                android:backgroundTint="@color/Cyan500"
+                android:backgroundTint="@color/colorApp2"
                 android:textSize="20dp"/>
         </RelativeLayout>
 

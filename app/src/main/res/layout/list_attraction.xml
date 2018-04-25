@@ -11,7 +11,7 @@
         android:layout_marginTop="3dp"
         android:layout_marginBottom="4dp"
         android:layout_margin="4dp"
-        android:backgroundTint="@color/Cyan900"
+        android:backgroundTint="@color/colorApp2"
         card_view:cardElevation="3dp">
 
         <RelativeLayout
@@ -29,13 +29,15 @@
             <TextView
                 android:id="@+id/name_Attraction"
                 android:layout_width="fill_parent"
-                android:layout_height="20dp"
+                android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
                 android:textSize="14dp"
                 android:text="Test"
                 android:layout_marginLeft="8dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="5dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
                 android:layout_below="@+id/img_Attraction"
                 android:textColor="@color/White"
                 android:layout_centerHorizontal="true" />

@@ -225,11 +225,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/trophel_layout2_friend"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="15dp"
                     android:layout_centerHorizontal="true"
                     android:id="@+id/detail_count_friend"
                     android:textSize="20dp"
-                    android:text="Discovery"
+                    android:text="History"
                     android:textColor="@color/colorPrimaryDark"/>
 
                 <RelativeLayout
@@ -237,34 +237,37 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/trophel_layout3_friend"
                     android:layout_below="@+id/detail_count_friend"
-                    android:layout_marginTop="5dp"
+                    android:layout_marginTop="10dp"
                     android:layout_centerHorizontal="true">
 
                     <Button
+                        android:id="@+id/button_northern_friend"
                         android:layout_width="100dp"
                         android:layout_height="wrap_content"
-                        android:id="@+id/button_northern_friend"
-                        android:backgroundTint="@color/Cyan500"
-                        android:textSize="10dp"
-                        android:text="Northern"/>
+                        android:backgroundTint="@color/colorApp1"
+                        android:textColor="@color/White"
+                        android:text="Northern"
+                        android:textSize="12dp" />
 
                     <Button
+                        android:id="@+id/button_central_friend"
                         android:layout_width="100dp"
                         android:layout_height="wrap_content"
                         android:layout_toRightOf="@id/button_northern_friend"
-                        android:id="@+id/button_central_friend"
-                        android:backgroundTint="@color/Cyan500"
-                        android:textSize="10dp"
-                        android:text="Central"/>
+                        android:backgroundTint="@color/colorApp1"
+                        android:textColor="@color/White"
+                        android:text="Central"
+                        android:textSize="12dp" />
 
                     <Button
+                        android:id="@+id/button_northeastern_friend"
                         android:layout_width="100dp"
                         android:layout_height="wrap_content"
                         android:layout_toRightOf="@id/button_central_friend"
-                        android:id="@+id/button_northeastern_friend"
-                        android:backgroundTint="@color/Cyan500"
-                        android:textSize="10dp"
-                        android:text="Norteastern"/>
+                        android:backgroundTint="@color/colorApp1"
+                        android:textColor="@color/White"
+                        android:text="Norteastern"
+                        android:textSize="10dp" />
 
                 </RelativeLayout>
 
@@ -277,31 +280,33 @@
                     android:layout_centerHorizontal="true">
 
                     <Button
+                        android:id="@+id/button_western_friend"
                         android:layout_width="100dp"
                         android:layout_height="wrap_content"
-                        android:id="@+id/button_western_friend"
-                        android:backgroundTint="@color/Cyan500"
-                        android:textSize="10dp"
-                        android:text="Western"/>
+                        android:backgroundTint="@color/colorApp1"
+                        android:textColor="@color/White"
+                        android:text="Western"
+                        android:textSize="12dp" />
 
                     <Button
+                        android:id="@+id/button_southern_friend"
                         android:layout_width="100dp"
                         android:layout_height="wrap_content"
                         android:layout_toRightOf="@id/button_western_friend"
-                        android:id="@+id/button_southern_friend"
+                        android:backgroundTint="@color/colorApp1"
                         android:textColor="@color/White"
-                        android:backgroundTint="@color/Cyan500"
-                        android:textSize="10dp"
-                        android:text="Southern"/>
+                        android:text="Southern"
+                        android:textSize="12dp" />
 
                     <Button
+                        android:id="@+id/button_eastern_friend"
                         android:layout_width="100dp"
                         android:layout_height="wrap_content"
                         android:layout_toRightOf="@id/button_southern_friend"
-                        android:id="@+id/button_eastern_friend"
-                        android:backgroundTint="@color/Cyan500"
-                        android:textSize="10dp"
-                        android:text="Eastern"/>
+                        android:backgroundTint="@color/colorApp1"
+                        android:textColor="@color/White"
+                        android:text="Eastern"
+                        android:textSize="12dp" />
 
                 </RelativeLayout>
 
@@ -319,8 +324,8 @@
                 android:layout_height="50dp"
                 android:layout_gravity="center"
                 android:text="Unfollow"
-                android:textSize="8dp"
-                android:textColor="@color/Black"
+                android:textSize="10dp"
+                android:textColor="@color/White"
                 android:backgroundTint="@color/md_red_300"/>
 
             <LinearLayout

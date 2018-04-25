@@ -28,6 +28,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.squareup.picasso.Picasso;
 
 import org.opencv.android.BaseLoaderCallback;
 import org.opencv.android.CameraBridgeViewBase;
@@ -86,6 +87,7 @@ public class Camera extends AppCompatActivity implements CameraBridgeViewBase.Cv
     String title;
     TextView tv_title;
     ImageButton ib_success;
+    ImageView iv_transparent;
     int numberOfMatch;
 
     protected DatabaseReference mDatabase;
@@ -98,6 +100,10 @@ public class Camera extends AppCompatActivity implements CameraBridgeViewBase.Cv
     String keyOfUriImgAttraction;
     int keyOfCountAttraction;
     int countOfSubAttraction;
+    String nameOfAttractionEng;
+    String nameOfAttractionThai;
+
+    double count_star_to_friend;
 
     static {
         if(!OpenCVLoader.initDebug()){
@@ -178,6 +184,8 @@ public class Camera extends AppCompatActivity implements CameraBridgeViewBase.Cv
             keyOfUriImgAttraction = extras.getString("keyOfUriImgAttraction");
             keyOfCountAttraction = extras.getInt("keyOfCountAttraction");
             countOfSubAttraction = extras.getInt("countOfSubAttraction");
+            nameOfAttractionEng = extras.getString("nameOfAttractionEng");
+            nameOfAttractionThai = extras.getString("nameOfAttractionThai");
         }
 
         if(ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED){
@@ -195,6 +203,13 @@ public class Camera extends AppCompatActivity implements CameraBridgeViewBase.Cv
         tv_title = (TextView) findViewById(R.id.title1);
         tv_title.setText("Activating via OpenCV : " + title);
         ib_success = (ImageButton) findViewById(R.id.ib_camera_success);
+        iv_transparent = (ImageView) findViewById(R.id.image_transparent);
+        Picasso.with(getApplicationContext())
+                .load("https://firebasestorage.googleapis.com/v0/b/trophel-application.appspot.com/o/testImgRotate.jpg?alt=media&token=2cf58bce-ebca-4c65-bdbc-82b190a30b6d")
+                .placeholder(R.mipmap.ic_launcher)
+                .fit()
+                .centerCrop()
+                .into(iv_transparent);
         Log.d(TAG,"onCreate passed successfully");
     }
 
@@ -423,33 +438,48 @@ public class Camera extends AppCompatActivity implements CameraBridgeViewBase.Cv
                                     .child("uri_img").setValue(keyOfUriImgAttraction);
                             mDatabase.child("users").child("uID").child("drive").child("attractions").child(keyOfAttraction)
                                     .child("sub_Attrs").child(keyOfSubAttraction).child("status").setValue(1);
+                            mDatabase.child("users").child("uID").child("drive").child("attractions").child(keyOfAttraction)
+                                    .child("name_Eng").setValue(nameOfAttractionEng);
+                            mDatabase.child("users").child("uID").child("drive").child("attractions").child(keyOfAttraction)
+                                    .child("name_Thai").setValue(nameOfAttractionThai);
 
                             mDatabase2.child("users").child("uID").child("drive").addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(DataSnapshot dataSnapshot) {
                                     long count_star_rg = 0;
                                     long[] count_trophy_rg = {0,0,0,0,0,0};
-                                    count_star_rg = dataSnapshot.child("count_Star").getValue(Long.class);
-                                    count_trophy_rg[0] = dataSnapshot.child("count_Northern").getValue(Long.class);
+                                    //count_star_rg = dataSnapshot.child("count_Star").getValue(Long.class);
+                                    count_star_rg = 0;
+                                   /* count_trophy_rg[0] = dataSnapshot.child("count_Northern").getValue(Long.class);
                                     count_trophy_rg[1] = dataSnapshot.child("count_Central").getValue(Long.class);
                                     count_trophy_rg[2] = dataSnapshot.child("count_Northeastern").getValue(Long.class);
                                     count_trophy_rg[3] = dataSnapshot.child("count_Western").getValue(Long.class);
                                     count_trophy_rg[4] = dataSnapshot.child("count_Southern").getValue(Long.class);
-                                    count_trophy_rg[5] = dataSnapshot.child("count_Eastern").getValue(Long.class);
+                                    count_trophy_rg[5] = dataSnapshot.child("count_Eastern").getValue(Long.class);*/
+                                    count_trophy_rg[0] = 0;
+                                    count_trophy_rg[1] = 0;
+                                    count_trophy_rg[2] = 0;
+                                    count_trophy_rg[3] = 0;
+                                    count_trophy_rg[4] = 0;
+                                    count_trophy_rg[5] = 0;
 
                                     String[] rg = {"Northern","Central","Northeastern","Western","Southern","Eastern"};
                                     // for find star
+                                    long count_sub_attr = 0;
                                     for (DataSnapshot dataSnapshot2 : dataSnapshot.child("attractions").getChildren()) {
-                                        long count_sub_attr = 0;
+                                        count_sub_attr = 0;
                                         for (DataSnapshot dataSnapshot3 : dataSnapshot2.child("sub_Attrs").getChildren()) {
                                             count_sub_attr += 1;
                                             count_star_rg += 1;
                                         }
-                                        Log.d("onDataChange","dataSnapshot2"+dataSnapshot2.child("region"));
-                                        Log.d("onDataChange","dataSnapshot2"+dataSnapshot2.child("count_sub_Attrs"));
+                                        Log.d("onDataChange","me : "+dataSnapshot2.child("region"));
+                                        Log.d("onDataChange","attr : "+dataSnapshot2.child("count_sub_Attrs"));
 
                                         String regionAttr = dataSnapshot2.child("region").getValue().toString();
                                         long countSubAttr = dataSnapshot2.child("count_sub_Attrs").getValue(Long.class);
+                                        Log.d("test777","countSubAttr:"+countSubAttr);
+                                        Log.d("test777","countSubAttr:"+count_sub_attr);
+                                        Log.d("test777","------------:");
                                         if(regionAttr.equals(rg[0]) && countSubAttr == count_sub_attr){
                                             Log.d("onDataChange","North+++North");
                                             count_trophy_rg[0] += 1;
@@ -474,6 +504,25 @@ public class Camera extends AppCompatActivity implements CameraBridgeViewBase.Cv
                                     mDatabase.child("users").child("uID").child("drive").child("count_Western").setValue(count_trophy_rg[3]);
                                     mDatabase.child("users").child("uID").child("drive").child("count_Southern").setValue(count_trophy_rg[4]);
                                     mDatabase.child("users").child("uID").child("drive").child("count_Eastern").setValue(count_trophy_rg[5]);
+                                    count_star_to_friend = count_star_rg;
+                                    FirebaseDatabase.getInstance().getReference("users").child("uID").addListenerForSingleValueEvent(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(DataSnapshot dataSnapshot) {
+                                            for (DataSnapshot dataSnapshot2 : dataSnapshot.getChildren()) {
+                                                for (DataSnapshot datasnapshot3 : dataSnapshot2.child("friend_id").getChildren()) {
+                                                    if(datasnapshot3.getKey().equals("drive")){
+                                                        mDatabase.child("users").child("uID").child(dataSnapshot2.getKey())
+                                                                .child("friend_id").child("drive").child("count_Star").setValue(count_star_to_friend);
+                                                    }
+                                                }
+                                            }
+                                        }
+
+                                        @Override
+                                        public void onCancelled(DatabaseError databaseError) {
+
+                                        }
+                                    });
                                 }
 
                                 @Override
@@ -498,6 +547,7 @@ public class Camera extends AppCompatActivity implements CameraBridgeViewBase.Cv
                 });
 
                 ib_success.setVisibility(View.VISIBLE);
+                iv_transparent.setVisibility(View.INVISIBLE);
             }
             this.cancel(true);
         }

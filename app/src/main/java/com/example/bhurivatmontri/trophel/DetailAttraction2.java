@@ -1,5 +1,6 @@
 package com.example.bhurivatmontri.trophel;
 
+import android.content.SharedPreferences;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -54,10 +55,25 @@ public class DetailAttraction2 extends AppCompatActivity implements OnMapReadyCa
     ArrayList<Double> sub_Attrs_latitude = new ArrayList<Double>();
     ArrayList<Double> sub_Attrs_longitude = new ArrayList<Double>();
 
+    protected SharedPreferences settings;
+    protected int select_language_position;
+    protected String name_language = "";
+    protected String info_language = "";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail_attraction2);
+
+        settings = this.getSharedPreferences("Trophel",MODE_WORLD_WRITEABLE);
+        select_language_position = settings.getInt("select_language_position",-1);
+        Log.d("onDataChange",""+select_language_position);
+        switch (select_language_position){
+            case -1: name_language = "name_Eng";info_language = "info_Eng";break;
+            case 0:  name_language = "name_Eng";info_language = "info_Eng";break;
+            case 1:  name_language = "name_Eng";info_language = "info_Eng";break;
+            case 2:  name_language = "name_Thai";info_language = "info_Thai";break;
+        }
 
         String keyOfAttraction = null;
 
@@ -83,8 +99,8 @@ public class DetailAttraction2 extends AppCompatActivity implements OnMapReadyCa
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Log.d("onDataChange", "" + dataSnapshot.getKey().toString());
-                String name = dataSnapshot.child("name_Eng").getValue().toString();
-                String info = dataSnapshot.child("info_Eng").getValue().toString();
+                String name = dataSnapshot.child(name_language).getValue().toString();
+                String info = "      "+dataSnapshot.child(info_language).getValue().toString();
 
                 latitude = dataSnapshot.child("latitude").getValue(Double.class);
                 longitude = dataSnapshot.child("longitude").getValue(Double.class);

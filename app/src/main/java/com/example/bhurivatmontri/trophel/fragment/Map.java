@@ -3,6 +3,7 @@ package com.example.bhurivatmontri.trophel.fragment;
 
 import android.Manifest;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
@@ -41,7 +42,10 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+
+import static android.content.Context.MODE_WORLD_WRITEABLE;
 
 
 /**
@@ -57,11 +61,33 @@ public class Map extends Fragment implements OnMapReadyCallback, GoogleApiClient
     GoogleApiClient googleApiClient;
     boolean chkFirstTime = true;
     int checktime = 20;
+    boolean statusOk = false;
+
     HashMap<String,String> keyOfAttractionMap = new HashMap<>();
+    HashMap<String,String> keyOfSubAttractionMap = new HashMap<>();
     HashMap<String,String> keyOfRegionMap = new HashMap<>();
     HashMap<String,String> keyOfUriImgAttractionMap = new HashMap<>();
     HashMap<String,Integer> keyOfCountAttractionMap = new HashMap<>();
     HashMap<String,Integer> countOfSubAttraction = new HashMap<>();
+    HashMap<String,String> nameOfAttractionEngMap = new HashMap<>();
+    HashMap<String,String> nameOfAttractionThaiMap = new HashMap<>();
+    HashMap<String,String> nameOfSubAttractionMap = new HashMap<>();
+    //HashMap<String,String> nameOfSubAttractionEngMap = new HashMap<>();
+    //HashMap<String,String> nameOfSubAttractionThaiMap = new HashMap<>();
+    HashMap<String,Double> latitudeOfSubAttractionMap = new HashMap<>();
+    HashMap<String,Double> longitudeOfSubAttractionMap = new HashMap<>();
+    HashMap<String,String> everOfSubAttractionMap = new HashMap<>();
+    HashMap<String,String> markerIconOfSubAttractionMap = new HashMap<>();
+
+    ArrayList<String> allKeySubAttraction;
+
+    protected SharedPreferences settings;
+    protected int select_language_position;
+    protected String name_language = "";
+    protected String info_language = "";
+
+    double latitude;
+    double longitude;
 
     public Map() {
         // Required empty public constructor
@@ -71,6 +97,7 @@ public class Map extends Fragment implements OnMapReadyCallback, GoogleApiClient
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+        settings = this.getActivity().getSharedPreferences("Trophel",MODE_WORLD_WRITEABLE);
     }
 
     @Override
@@ -117,49 +144,20 @@ public class Map extends Fragment implements OnMapReadyCallback, GoogleApiClient
         mGoogleMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
             @Override
             public void onInfoWindowClick(Marker marker) {
-                /*Intent intent = new Intent(getActivity(),Camera.class);
-                intent.putExtra("Title",marker.getTitle());
-                startActivity(intent);*/
                 Intent intent = new Intent(getActivity(), DetailAttraction.class);
-                intent.putExtra("keyOfSubAttraction",marker.getTitle());
+                intent.putExtra("keyOfSubAttraction",keyOfSubAttractionMap.get(marker.getTitle()));
                 intent.putExtra("keyOfAttraction",keyOfAttractionMap.get(marker.getTitle()));
                 intent.putExtra("keyOfRegion",keyOfRegionMap.get(marker.getTitle()));
                 intent.putExtra("keyOfUriImgAttraction",keyOfUriImgAttractionMap.get(marker.getTitle()));
                 intent.putExtra("keyOfCountAttraction",keyOfCountAttractionMap.get(marker.getTitle()));
                 intent.putExtra("countOfSubAttraction",countOfSubAttraction.get(marker.getTitle()));
+                intent.putExtra("nameOfAttractionEng",nameOfAttractionEngMap.get(marker.getTitle()));
+                intent.putExtra("nameOfAttractionThai",nameOfAttractionThaiMap.get(marker.getTitle()));
                 startActivity(intent);
             }
         });
         buildClient();
-
-        /*MapsInitializer.initialize(getContext());
-        mGoogleMap = googleMap;
-        mGoogleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-        if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            return;
-        }
-        mGoogleMap.setMyLocationEnabled(true);
-        mGoogleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
-            public boolean onMarkerClick(Marker arg0) {
-                if(arg0.getTitle().equals("Location Current")){
-                    Toast.makeText(getContext(),arg0.getTitle(),Toast.LENGTH_SHORT).show();
-                }else{
-                    Toast.makeText(getContext(),arg0.getId(),Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(getActivity(),Camera.class);
-                    intent.putExtra("Title",arg0.getTitle());
-                    startActivity(intent);
-                }
-                return true;
-            }
-        });
-        buildClient();*/
-
-        /*googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-
-        googleMap.addMarker(new MarkerOptions().position(new LatLng(18.795561,98.953033)).title("30 years Building").snippet("I am coding myProject"));
-        CameraPosition Liberty = CameraPosition.builder().target(new LatLng(18.795561,98.953033)).zoom(16).bearing(0).tilt(45).build();
-        googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(Liberty));
-        */
+        reMapAttraction();
     }
 
     @Override
@@ -195,15 +193,9 @@ public class Map extends Fragment implements OnMapReadyCallback, GoogleApiClient
 
     @Override
     public void onLocationChanged(Location location) {
+        latitude = location.getLatitude();
+        longitude = location.getLongitude();
 
-        //String provider = location.getProvider();
-        final double latitude = location.getLatitude();
-        final double longitude = location.getLongitude();
-        //double altitude = location.getAltitude();
-        //float accuracy = location.getAccuracy();
-        //float bearing = location.getBearing();
-        //float speed = location.getSpeed();
-        //long time = location.getTime();
         if (chkFirstTime == true) {
             CameraPosition Liberty = CameraPosition.builder().target(new LatLng(latitude, longitude)).zoom(16).bearing(0).tilt(45).build();
             mGoogleMap.moveCamera(CameraUpdateFactory.newCameraPosition(Liberty));
@@ -212,75 +204,137 @@ public class Map extends Fragment implements OnMapReadyCallback, GoogleApiClient
         }
         mmMarker.remove();
         mmMarker = mGoogleMap.addMarker(new MarkerOptions().position(new LatLng(latitude, longitude)).title("Location Current").snippet("I am coding myProject").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ROSE)));
-        FirebaseDatabase.getInstance().getReference("attractions")
-                .addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        for (DataSnapshot snapshot1 : dataSnapshot.getChildren()) {
-                            for (DataSnapshot snapshot2 : snapshot1.child("sub_Attrs").getChildren()){
-                                snapshot2.child("latitude").getValue(Integer.class);
-                                //Log.d("onDataChange","qqqqqqqqq"+snapshot2.getKey().toString());
-
-                                Double Olat = Math.toRadians(latitude) - Math.toRadians(snapshot2.child("latitude").getValue(Double.class));
-                                Double Olong = Math.toRadians(longitude) - Math.toRadians(snapshot2.child("longitude").getValue(Double.class));
-                                Double a = Math.pow((Math.sin(Olat / 2)), 2) + (Math.cos(Math.toRadians(snapshot2.child("latitude").getValue(Double.class))) * Math.cos(Math.toRadians(latitude)) * Math.pow(Math.sin(Olong / 2), 2));
-                                Double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-                                Double distance = 6371e3 * c / 1000.0;
-                                //Log.d("distance", "onDataChange: " + distance + snapshot2.getKey());
-                                if ( checktime%20==0){
-                                    mGoogleMap.clear();
-                                    keyOfAttractionMap.clear();
-                                    keyOfRegionMap.clear();
-                                    keyOfCountAttractionMap.clear();
-                                    keyOfUriImgAttractionMap.clear();
-                                    countOfSubAttraction.clear();
-                                }
-                                if(distance <= 2){
-                                    mMarker = mGoogleMap.addMarker(new MarkerOptions().position(new LatLng(snapshot2.child("latitude").getValue(Double.class), snapshot2.child("longitude").getValue(Double.class))).icon(BitmapDescriptorFactory.fromAsset(snapshot2.child("marker_icon").getValue(String.class))).snippet("ลองลองดู").title(snapshot2.getKey()));
-                                    keyOfAttractionMap.put(snapshot2.getKey(),snapshot1.getKey());
-                                    keyOfRegionMap.put(snapshot2.getKey(),snapshot1.child("region_Eng").getValue().toString());
-                                    keyOfCountAttractionMap.put(snapshot2.getKey(),(int)snapshot1.child("sub_Attrs").getChildrenCount());
-                                    keyOfUriImgAttractionMap.put(snapshot2.getKey(),snapshot1.child("uri_img").getValue().toString());
-                                    countOfSubAttraction.put(snapshot2.getKey(),(int)snapshot1.child("sub_Attrs").getChildrenCount());
-                                }
-                                //mMarker = mGoogleMap.addMarker(new MarkerOption s().position(new LatLng(18.795620,98.952810)).title(snapshot.getKey()));
-                            }
+        try {
+            FirebaseDatabase.getInstance().getReference().child("users").child("uID").child("drive").child("attractions").addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    Log.d("statusOk","+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+                    for (DataSnapshot snapshot1 : dataSnapshot.getChildren()) {
+                        for (DataSnapshot snapshot2 : snapshot1.child("sub_Attrs").getChildren()){
+                            everOfSubAttractionMap.put(snapshot2.getKey(),snapshot2.getKey());
                         }
                     }
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
+                }
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
 
+                }
+            });
+        }catch (Exception e){
+
+        }
+        Log.d("statusOk","ieie2");
+        try {
+            if(statusOk) {
+                for(int i = 0; i < allKeySubAttraction.size() ; i++){
+                    Log.d("statusOk",""+allKeySubAttraction.get(i));
+                    Double Olat = Math.toRadians(latitude) - Math.toRadians(latitudeOfSubAttractionMap.get(allKeySubAttraction.get(i)));
+                    Double Olong = Math.toRadians(longitude) - Math.toRadians(longitudeOfSubAttractionMap.get(allKeySubAttraction.get(i)));
+                    Double a = Math.pow((Math.sin(Olat / 2)), 2) + (Math.cos(Math.toRadians(latitudeOfSubAttractionMap.get(allKeySubAttraction.get(i)))) * Math.cos(Math.toRadians(latitude)) * Math.pow(Math.sin(Olong / 2), 2));
+                    Double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+                    Double distance = 6371e3 * c / 1000.0;
+
+                    if ( checktime%20==0){
+                        mGoogleMap.clear();
                     }
-                });
+                    Log.d("statusOk","MyEverSubAttraction : "+everOfSubAttractionMap.get(allKeySubAttraction.get(i)) + ",Size = "+everOfSubAttractionMap.size());
+                    if(distance <= 6 ){
+                        if(everOfSubAttractionMap.get(keyOfSubAttractionMap.get(allKeySubAttraction.get(i))) != null){
+                            Log.d("statusOk","latitude of "+allKeySubAttraction.get(i) + " : " + latitudeOfSubAttractionMap.get(allKeySubAttraction.get(i)));
+                            Log.d("statusOk","longitude of "+allKeySubAttraction.get(i) + " : "+ longitudeOfSubAttractionMap.get(allKeySubAttraction.get(i)));
+                            Log.d("statusOk","addMarker : "+allKeySubAttraction.get(i));
+                            mMarker = mGoogleMap.addMarker(new MarkerOptions()
+                                    .position(new LatLng(latitudeOfSubAttractionMap.get(allKeySubAttraction.get(i)), longitudeOfSubAttractionMap.get(allKeySubAttraction.get(i))))
+                                    .icon(BitmapDescriptorFactory.fromAsset(markerIconOfSubAttractionMap.get(allKeySubAttraction.get(i))+"_checkmark"+".png"))
+                                    .snippet("")
+                                    .title(nameOfSubAttractionMap.get(allKeySubAttraction.get(i))));
+                        }else{
+                            Log.d("statusOk","latitude of "+allKeySubAttraction.get(i) + " : " + latitudeOfSubAttractionMap.get(allKeySubAttraction.get(i)));
+                            Log.d("statusOk","longitude of "+allKeySubAttraction.get(i) + " : "+ longitudeOfSubAttractionMap.get(allKeySubAttraction.get(i)));
+                            Log.d("statusOk","addMarker : "+allKeySubAttraction.get(i));
+                            mMarker = mGoogleMap.addMarker(new MarkerOptions()
+                                    .position(new LatLng(latitudeOfSubAttractionMap.get(allKeySubAttraction.get(i)), longitudeOfSubAttractionMap.get(allKeySubAttraction.get(i))))
+                                    .icon(BitmapDescriptorFactory.fromAsset(markerIconOfSubAttractionMap.get(allKeySubAttraction.get(i))+".png"))
+                                    .snippet("")
+                                    .title(nameOfSubAttractionMap.get(allKeySubAttraction.get(i))));
+                        }
+                    }
+                }
+            }
+        }catch (Exception e){
+
+        }
+
         checktime++;
         if(checktime == 2000)
             checktime = 20;
+
     }
-        /*
-        //String provider = location.getProvider();
-        double latitude = location.getLatitude();
-        double longitude = location.getLongitude();
-        //double altitude = location.getAltitude();
-        //float accuracy = location.getAccuracy();
-        //float bearing = location.getBearing();
-        //float speed = location.getSpeed();
-        //long time = location.getTime();
-        if(chkFirstTime == true){
-            CameraPosition Liberty = CameraPosition.builder().target(new LatLng(latitude,longitude)).zoom(16).bearing(0).tilt(45).build();
-            mGoogleMap.moveCamera(CameraUpdateFactory.newCameraPosition(Liberty));
-            chkFirstTime = false;
-        }
-        if(mGoogleMap != null){
-            mGoogleMap.clear();
-        }
 
-        mMarker = mGoogleMap.addMarker(new MarkerOptions().position(new LatLng(latitude,longitude)).title("Location Current").snippet("I am coding myProject").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
-        mMarker = mGoogleMap.addMarker(new MarkerOptions().position(new LatLng(latitude+0.002,longitude)).title("Building1"));
-        mMarker = mGoogleMap.addMarker(new MarkerOptions().position(new LatLng(latitude+0.003,longitude+0.007)).title("Building2"));
-        mMarker = mGoogleMap.addMarker(new MarkerOptions().position(new LatLng(latitude-0.007,longitude-0.008)).title("Building3"));
-       // mGoogleMap.addMarker(new MarkerOptions().position(new LatLng(latitude,longitude+0.0000003)).title("Building2"));
-       // mGoogleMap.addMarker(new MarkerOptions().position(new LatLng(latitude+0.0000002,longitude-0.0000002)).title("Building3"));
+    public void reMapAttraction(){
+        select_language_position = settings.getInt("select_language_position",-1);
+        Log.d("onDataChange",""+select_language_position);
+        switch (select_language_position){
+            case -1: name_language = "name_Eng";info_language = "info_Eng";break;
+            case 0:  name_language = "name_Eng";info_language = "info_Eng";break;
+            case 1:  name_language = "name_Eng";info_language = "info_Eng";break;
+            case 2:  name_language = "name_Thai";info_language = "info_Thai";break;
+        }
+        clearValue();
+        FirebaseDatabase.getInstance().getReference("attractions").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot snapshot1 : dataSnapshot.getChildren()) {
+                    for (DataSnapshot snapshot2 : snapshot1.child("sub_Attrs").getChildren()){
+                        String keyname = snapshot2.child(name_language).getValue().toString();
+                        keyOfAttractionMap.put(keyname,snapshot1.getKey());
+                        keyOfSubAttractionMap.put(keyname,snapshot2.getKey());
+                        keyOfRegionMap.put(keyname,snapshot1.child("region_Eng").getValue().toString());
+                        keyOfCountAttractionMap.put(keyname,(int)snapshot1.child("sub_Attrs").getChildrenCount());
+                        keyOfUriImgAttractionMap.put(keyname,snapshot1.child("uri_img").getValue().toString());
+                        countOfSubAttraction.put(keyname,(int)snapshot1.child("sub_Attrs").getChildrenCount());
+                        nameOfAttractionEngMap.put(keyname,snapshot1.child("name_Eng").getValue().toString());
+                        nameOfAttractionThaiMap.put(keyname,snapshot1.child("name_Thai").getValue().toString());
+                        nameOfSubAttractionMap.put(keyname,snapshot2.child(name_language).getValue().toString());
+                        //nameOfSubAttractionEngMap.put(keyname,snapshot2.child("name_Eng").getValue().toString());
+                        //nameOfSubAttractionThaiMap.put(keyname,snapshot2.child("name_Thai").getValue().toString());
+                        latitudeOfSubAttractionMap.put(keyname,(double)snapshot2.child("latitude").getValue());
+                        longitudeOfSubAttractionMap.put(keyname,(double)snapshot2.child("longitude").getValue());
+                        markerIconOfSubAttractionMap.put(keyname,snapshot2.child("marker_icon").getValue().toString());
+                        Log.d("statusOk","ieie");
+                        allKeySubAttraction.add(keyname);
+                    }
+                }
+                Log.d("statusOk","statusOk");
+                Log.d("statusOk","countOfSub : "+keyOfSubAttractionMap.size());
+                statusOk = true;
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
 
-    }*/
+            }
+        });
+    }
+
+    private void clearValue(){
+        statusOk = false;
+        mGoogleMap.clear();
+        keyOfAttractionMap.clear();
+        keyOfSubAttractionMap.clear();
+        keyOfRegionMap.clear();
+        keyOfCountAttractionMap.clear();
+        keyOfUriImgAttractionMap.clear();
+        countOfSubAttraction.clear();
+        nameOfAttractionEngMap.clear();
+        nameOfAttractionThaiMap.clear();
+        nameOfSubAttractionMap.clear();
+        //nameOfSubAttractionEngMap.put(keyname,snapshot2.child("name_Eng").getValue().toString());
+        //nameOfSubAttractionThaiMap.put(keyname,snapshot2.child("name_Thai").getValue().toString());
+        latitudeOfSubAttractionMap.clear();
+        longitudeOfSubAttractionMap.clear();
+        markerIconOfSubAttractionMap.clear();
+        allKeySubAttraction = new ArrayList<String>();
+        everOfSubAttractionMap.clear();
+    }
 
 }

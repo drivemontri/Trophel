@@ -22,7 +22,7 @@
                 android:id="@+id/toolbar_act_profile"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                android:background="@color/Cyan500"
+                android:background="@color/colorApp1"
                 app:layout_scrollFlags="scroll|enterAlways"
                 app:popupTheme="@style/AppTheme.PopupOverlay">
             </android.support.v7.widget.Toolbar>
@@ -235,11 +235,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/trophel_layout2"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="15dp"
                     android:layout_centerHorizontal="true"
                     android:id="@+id/detail_count"
                     android:textSize="20dp"
-                    android:text="Discovery"
+                    android:text="History"
                     android:textColor="@color/colorPrimaryDark"/>
 
                 <RelativeLayout
@@ -247,34 +247,37 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/trophel_layout3"
                     android:layout_below="@+id/detail_count"
-                    android:layout_marginTop="5dp"
+                    android:layout_marginTop="10dp"
                     android:layout_centerHorizontal="true">
 
                     <Button
+                        android:id="@+id/button_act_northern"
                         android:layout_width="100dp"
                         android:layout_height="wrap_content"
-                        android:id="@+id/button_act_northern"
-                        android:backgroundTint="@color/Cyan500"
-                        android:textSize="10dp"
-                        android:text="Northern"/>
+                        android:backgroundTint="@color/colorApp1"
+                        android:text="Northern"
+                        android:textColor="@color/White"
+                        android:textSize="12dp" />
 
                     <Button
+                        android:id="@+id/button_act_central"
                         android:layout_width="100dp"
                         android:layout_height="wrap_content"
                         android:layout_toRightOf="@id/button_act_northern"
-                        android:id="@+id/button_act_central"
-                        android:backgroundTint="@color/Cyan500"
-                        android:textSize="10dp"
-                        android:text="Central"/>
+                        android:backgroundTint="@color/colorApp1"
+                        android:text="Central"
+                        android:textColor="@color/White"
+                        android:textSize="12dp" />
 
                     <Button
+                        android:id="@+id/button_act_northeastern"
                         android:layout_width="100dp"
                         android:layout_height="wrap_content"
                         android:layout_toRightOf="@id/button_act_central"
-                        android:id="@+id/button_act_northeastern"
-                        android:backgroundTint="@color/Cyan500"
-                        android:textSize="10dp"
-                        android:text="Norteastern"/>
+                        android:backgroundTint="@color/colorApp1"
+                        android:text="Norteastern"
+                        android:textColor="@color/White"
+                        android:textSize="10dp" />
 
                 </RelativeLayout>
 
@@ -287,31 +290,33 @@
                     android:layout_centerHorizontal="true">
 
                     <Button
+                        android:id="@+id/button_act_western"
                         android:layout_width="100dp"
                         android:layout_height="wrap_content"
-                        android:id="@+id/button_act_western"
-                        android:backgroundTint="@color/Cyan500"
-                        android:textSize="10dp"
-                        android:text="Western"/>
+                        android:backgroundTint="@color/colorApp1"
+                        android:text="Western"
+                        android:textColor="@color/White"
+                        android:textSize="12dp" />
 
                     <Button
+                        android:id="@+id/button_act_southern"
                         android:layout_width="100dp"
                         android:layout_height="wrap_content"
                         android:layout_toRightOf="@id/button_act_western"
-                        android:id="@+id/button_act_southern"
+                        android:backgroundTint="@color/colorApp1"
+                        android:text="Southern"
                         android:textColor="@color/White"
-                        android:backgroundTint="@color/Cyan500"
-                        android:textSize="10dp"
-                        android:text="Southern"/>
+                        android:textSize="12dp" />
 
                     <Button
+                        android:id="@+id/button_act_eastern"
                         android:layout_width="100dp"
                         android:layout_height="wrap_content"
                         android:layout_toRightOf="@id/button_act_southern"
-                        android:id="@+id/button_act_eastern"
-                        android:backgroundTint="@color/Cyan500"
-                        android:textSize="10dp"
-                        android:text="Eastern"/>
+                        android:backgroundTint="@color/colorApp1"
+                        android:text="Eastern"
+                        android:textColor="@color/White"
+                        android:textSize="12dp" />
 
                 </RelativeLayout>
 
@@ -322,6 +327,23 @@
                 android:layout_height="50dp">
 
             </LinearLayout>
+
+            <Button
+                android:id="@+id/button_edit_my_profile"
+                android:layout_width="100dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+                android:text="Edit Profile"
+                android:textSize="10dp"
+                android:textColor="@color/White"
+                android:backgroundTint="@color/colorApp2"/>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="50dp">
+
+            </LinearLayout>
+
         </LinearLayout>
 
     </android.support.v4.widget.NestedScrollView>

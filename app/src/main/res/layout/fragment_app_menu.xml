@@ -50,6 +50,7 @@
                         android:layout_width="60dp"
                         android:layout_height="60dp"
                         android:layout_gravity="center"
+                        android:tint="@color/colorTextDetail"
                         android:src="@drawable/ic_profile_144dp" />
 
                     <Button
@@ -59,8 +60,7 @@
                         android:layout_gravity="center"
                         android:background="@null"
                         android:text="My Profile"
-                        android:textColor="@color/Black"
-                        android:textStyle="italic" />
+                        android:textColor="@color/colorTextDetail" />
 
                 </LinearLayout>
 
@@ -76,6 +76,7 @@
                         android:layout_width="60dp"
                         android:layout_height="60dp"
                         android:layout_gravity="center"
+                        android:tint="@color/colorTextDetail"
                         android:src="@drawable/ic_add_friend_144dp" />
 
                     <Button
@@ -85,8 +86,7 @@
                         android:layout_gravity="center"
                         android:background="@null"
                         android:text="Follow"
-                        android:textColor="@color/Black"
-                        android:textStyle="italic" />
+                        android:textColor="@color/colorTextDetail" />
 
                 </LinearLayout>
 
@@ -102,6 +102,7 @@
                         android:layout_width="60dp"
                         android:layout_height="60dp"
                         android:layout_gravity="center"
+                        android:tint="@color/colorTextDetail"
                         android:src="@drawable/ic_setting_144dp" />
 
                     <Button
@@ -111,8 +112,7 @@
                         android:layout_gravity="center"
                         android:background="@null"
                         android:text="Setting"
-                        android:textColor="@color/Black"
-                        android:textStyle="italic" />
+                        android:textColor="@color/colorTextDetail" />
 
                 </LinearLayout>
 
@@ -138,6 +138,7 @@
                         android:layout_width="60dp"
                         android:layout_height="60dp"
                         android:layout_gravity="center"
+                        android:tint="@color/colorTextDetail"
                         android:src="@drawable/ic_about_us_144dp" />
 
                     <Button
@@ -147,8 +148,8 @@
                         android:layout_gravity="center"
                         android:background="@null"
                         android:text="About us"
-                        android:textColor="@color/Black"
-                        android:textStyle="italic" />
+                        android:textColor="@color/colorTextDetail"
+                         />
 
                 </LinearLayout>
 
@@ -164,6 +165,7 @@
                         android:layout_width="60dp"
                         android:layout_height="60dp"
                         android:layout_gravity="center"
+                        android:tint="@color/colorTextDetail"
                         android:src="@drawable/ic_logout_144dp" />
 
                     <Button
@@ -173,8 +175,7 @@
                         android:layout_gravity="center"
                         android:background="@null"
                         android:text="Logout"
-                        android:textColor="@color/Black"
-                        android:textStyle="italic" />
+                        android:textColor="@color/colorTextDetail" />
 
                 </LinearLayout>
 

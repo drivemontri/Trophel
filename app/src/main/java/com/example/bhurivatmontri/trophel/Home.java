@@ -73,6 +73,7 @@ public class Home extends AppCompatActivity {
             R.drawable.ic_menu_144dp,
     };
     private boolean chk1 = false;
+    private boolean chk2 = false;
 
     private HomeFragment homeFragment = new HomeFragment();
 
@@ -102,13 +103,18 @@ public class Home extends AppCompatActivity {
             public void onPageSelected(int position) {
                 switch (position) {
                     case 0 :
-                        getSupportActionBar().setTitle("Travel");
+                        getSupportActionBar().setTitle("TRAVEL");
                         break;
                     case 1:
-                        getSupportActionBar().setTitle("Map");
+                        getSupportActionBar().setTitle("MAP");
+                        if(chk2 == true){
+                            HomeFragment.getMapInstance().reMapAttraction();
+                        }else{
+                            chk2 = true;
+                        }
                         break;
                     case 2:
-                        getSupportActionBar().setTitle("Friend");
+                        getSupportActionBar().setTitle("FOLLOWING");
                         Log.d("onDataChange","onPageSelected ListFriend");
                         if(chk1 == true){
                             HomeFragment.getListFriendInstance().reListFriend();
@@ -117,7 +123,7 @@ public class Home extends AppCompatActivity {
                         }
                         break;
                     default:
-                        getSupportActionBar().setTitle("Trophel");
+                        getSupportActionBar().setTitle("Menu");
                 }
             }
 
@@ -261,10 +267,10 @@ public class Home extends AppCompatActivity {
         //adapter.addFragment(new AppMenu(), "Menu");*/
 
         //adapter.addFragment(HomeFragment.getAttractionInstance(), "Travel");
-        adapter.addFragment(HomeFragment.getAttractionTypeInstance(), "Travel");
-        adapter.addFragment(HomeFragment.getMapInstance(), "Map");
-        adapter.addFragment(HomeFragment.getListFriendInstance(), "Friend");
-        adapter.addFragment(HomeFragment.getAppMenuInstance(), "Menu");
+        adapter.addFragment(HomeFragment.getAttractionTypeInstance(), "");
+        adapter.addFragment(HomeFragment.getMapInstance(), "");
+        adapter.addFragment(HomeFragment.getListFriendInstance(), "");
+        adapter.addFragment(HomeFragment.getAppMenuInstance(), "");
         //adapter.addFragment(new AppMenu(), "Menu");
 
         mViewPager.setOffscreenPageLimit(4);

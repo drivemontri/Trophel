@@ -8,6 +8,13 @@
     <color name="Black">#000000</color>
     <color name="DarkSlateBlue">#172442</color>
 
+    <color name="colorApp0">#FFA000</color>
+    <color name="colorApp1">#FFCA28</color>
+    <color name="colorApp2">#3F51B5</color>
+    <color name="colorApp3">#FFE082</color>
+    <color name="colorTextDetail">#455A64</color>
+    <color name="colorTextDetail2">#424242</color>
+
     <color name="Cyan50">#E0F7FA</color>
     <color name="Cyan100">#b2ebf2</color>
     <color name="Cyan200">#80deea</color>
@@ -28,4 +35,6 @@
     <color name="Indigo500">#3F51B5</color>ฺ
 
     <color name="LightBlue300">#4FC3F7</color>
+
+    <color name="testColor">#A8A8A8</color>
 </resources>

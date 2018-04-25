@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/Cyan100"
+    android:background="@color/White"
     android:orientation="vertical"
     tools:context="com.example.bhurivatmontri.trophel.ActListTrophy">
 
@@ -11,7 +11,7 @@
         android:id="@+id/toolbar_act_list_trophy"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="@color/Cyan500"
+        android:background="@color/colorApp1"
         app:layout_scrollFlags="scroll|enterAlways"
         app:popupTheme="@style/AppTheme.PopupOverlay">
 

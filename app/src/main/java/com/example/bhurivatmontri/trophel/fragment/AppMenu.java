@@ -14,6 +14,7 @@ import com.example.bhurivatmontri.trophel.ActProfile;
 import com.example.bhurivatmontri.trophel.AddFriend;
 import com.example.bhurivatmontri.trophel.Login;
 import com.example.bhurivatmontri.trophel.R;
+import com.example.bhurivatmontri.trophel.SettingApp;
 import com.facebook.login.LoginManager;
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -70,6 +71,8 @@ public class AppMenu extends Fragment implements View.OnClickListener{
                 startActivity(intent);
                 break;
             case R.id.menu_setting:
+                intent = new Intent(getActivity(),SettingApp.class);
+                startActivity(intent);
                 break;
             case R.id.menu_about_us:
                 break;

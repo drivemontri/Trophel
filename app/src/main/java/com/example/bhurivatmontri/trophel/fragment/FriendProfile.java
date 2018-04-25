@@ -61,6 +61,9 @@ public class FriendProfile extends Fragment implements View.OnClickListener {
     protected Button buttonEastern;
     protected Button buttonUnfollow;
     protected String friendID;
+    protected String uri_profile;
+    protected String uri_background;
+
     public FriendProfile() {
         // Required empty public constructor
         setHasOptionsMenu(true);
@@ -117,6 +120,8 @@ public class FriendProfile extends Fragment implements View.OnClickListener {
                 int countWestern = dataSnapshot.child("count_Western").getValue(Integer.class);
                 int countStar = dataSnapshot.child("count_Star").getValue(Integer.class);
                 idUser.setText("id:"+value);
+                uri_profile = dataSnapshot.child("uri_profile").getValue().toString();
+                uri_background = dataSnapshot.child("uri_background").getValue().toString();
                 nameUser.setText(name);
                 captionUser.setText("("+caption+")");
                 northernUser.setText(" : "+countNorthern);
@@ -135,7 +140,21 @@ public class FriendProfile extends Fragment implements View.OnClickListener {
 
             }
         });
-        String url_img1 = "img_profile/uImg/"+friendID+"/profile.png";
+
+        Picasso.with(getActivity())
+                .load(uri_profile)
+                .placeholder(R.mipmap.ic_launcher)
+                .fit()
+                .centerCrop()
+                .into(profile);
+        Picasso.with(getActivity())
+                .load(uri_background)
+                .placeholder(R.mipmap.ic_launcher)
+                .fit()
+                .centerCrop()
+                .into(background);
+
+        /*String url_img1 = "img_profile/uImg/"+friendID+"/profile.png";
         mStorage.child(url_img1).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
@@ -170,7 +189,7 @@ public class FriendProfile extends Fragment implements View.OnClickListener {
             public void onFailure(@NonNull Exception e) {
 
             }
-        });
+        });*/
 
         buttonNorth.setOnClickListener(this);
         buttonCentral.setOnClickListener(this);

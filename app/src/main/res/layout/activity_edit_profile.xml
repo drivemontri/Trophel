@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:id="@+id/my_profile"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:background="@color/White"
+tools:context="com.example.bhurivatmontri.trophel.EditProfile">
+
+<android.support.v4.widget.NestedScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/edit_profile_in"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="hideKeyBoard"
+        android:orientation="vertical">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar_edit_profile"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/colorApp1"
+            app:layout_scrollFlags="scroll|enterAlways"
+            app:popupTheme="@style/AppTheme.PopupOverlay">
+        </android.support.v7.widget.Toolbar>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/cover_background_edit"
+                android:layout_width="400dp"
+                android:layout_height="200dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/profile_default_cover" />
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/img_Profile_edit"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                app:civ_border_width="2dp"
+                app:civ_border_color="#FFFFFF"
+                android:layout_below="@+id/cover_background_edit"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="-60dp"
+                android:src="@drawable/profile_default_people" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/name_Profile_edit"
+                android:layout_width="220dp"
+                android:layout_height="50dp"
+                android:layout_centerHorizontal="true"
+                android:gravity="center"
+                android:layout_marginTop="10dp"
+                android:maxLength="18"
+                android:inputType="text"
+                android:hint="input name :"
+                android:text="input name :"
+                android:textColor="@color/Black"
+                android:textColorHint="#CFD8DC"
+                android:textSize="20dp"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/caption_Profile_edit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/name_Profile_edit"
+                android:layout_centerHorizontal="true"
+                android:layout_marginLeft="50dp"
+                android:layout_marginRight="50dp"
+                android:gravity="center"
+                android:hint="input detail of yourself :"
+                android:maxLength="25"
+                android:inputType="text"
+                android:minWidth="170dp"
+                android:text="(Meme)"
+                android:textColor="@color/colorPrimaryDark"
+                android:textColorHint="#CFD8DC"
+                android:textSize="15dp"
+                android:textStyle="italic" />
+
+            <EditText
+                android:layout_width="130dp"
+                android:gravity="center"
+                android:layout_height="wrap_content"
+                android:textColorHint="#CFD8DC"
+                android:id="@+id/id_Profile_edit"
+                android:textColor="@color/Cyan500"
+                android:textSize="15dp"
+                android:inputType="text"
+                android:textStyle="italic"
+                android:layout_centerHorizontal="true"
+                android:layout_marginRight="50dp"
+                android:layout_marginLeft="50dp"
+                android:layout_below="@+id/caption_Profile_edit"
+                android:maxLength="15"
+                android:hint="input id :"
+                android:text="id12345678912"
+                android:visibility="invisible"/>
+
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="50dp">
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/button_accept_edit_my_profile"
+                android:layout_width="80dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+                android:text="Accept"
+                android:textSize="10dp"
+                android:textColor="@color/White"
+                android:layout_marginRight="30dp"
+                android:backgroundTint="@color/colorApp2"/>
+
+            <Button
+                android:id="@+id/button_cancel_edit_my_profile"
+                android:layout_width="80dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+                android:text="Cancel"
+                android:textSize="10dp"
+                android:textColor="@color/White"
+                android:layout_marginLeft="30dp"
+                android:backgroundTint="@color/colorApp2"/>
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="50dp">
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</android.support.v4.widget.NestedScrollView>
+
+</FrameLayout>

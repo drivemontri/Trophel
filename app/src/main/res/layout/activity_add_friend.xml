@@ -4,14 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/White"
+    android:background="#FAFAFA"
+    android:onClick="hideKeyBoard"
     tools:context="com.example.bhurivatmontri.trophel.AddFriend">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar_add_friend"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="@color/Cyan500"
+        android:background="@color/colorApp1"
         app:layout_scrollFlags="scroll|enterAlways"
         app:popupTheme="@style/AppTheme.PopupOverlay">
 
@@ -20,7 +21,7 @@
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="280dp"
-        android:background="@color/Cyan700"
+        android:background="#FAFAFA"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintBottom_toBottomOf="parent">
@@ -31,8 +32,8 @@
         android:id="@+id/layout_add_friend1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@color/Cyan200"
-        android:elevation="16dp"
+        android:background="#FFFFFF"
+        android:elevation="50dp"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         android:layout_marginTop="16dp"
@@ -57,7 +58,7 @@
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:src="@drawable/ic_add_friend_144dp"
-                android:tint="@color/White"
+                android:tint="@color/colorApp2"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
                 android:layout_marginTop="16dp"
@@ -86,8 +87,9 @@
                 android:layout_marginBottom="16dp"
                 android:ems="12"
                 android:hint="id"
-                android:textColor="@color/White"
-                android:backgroundTint="@color/White"
+                android:textColorHint="#BDBDBD"
+                android:textColor="@color/colorTextDetail"
+                android:backgroundTint="#BDBDBD"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -96,16 +98,17 @@
                 android:id="@+id/bottom_add_friend"
                 android:layout_width="80dp"
                 android:layout_height="wrap_content"
-                android:backgroundTint="@color/Cyan500"
-                android:textColor="@color/White"
-                android:text="Add"
+                android:layout_marginBottom="16dp"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
-                android:layout_marginBottom="16dp"
+                android:layout_marginTop="8dp"
+                android:backgroundTint="@color/colorApp2"
+                android:text="Add"
+                android:textColor="@color/White"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/edit_add_freind"
-                app:layout_constraintBottom_toBottomOf="parent"/>
+                app:layout_constraintTop_toBottomOf="@+id/edit_add_freind" />
         </android.support.constraint.ConstraintLayout>
 
     </android.support.constraint.ConstraintLayout>

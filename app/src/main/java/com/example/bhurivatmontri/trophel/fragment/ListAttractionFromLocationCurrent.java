@@ -2,6 +2,7 @@ package com.example.bhurivatmontri.trophel.fragment;
 
 
 import android.Manifest;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
@@ -33,6 +34,8 @@ import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 
+import static android.content.Context.MODE_WORLD_WRITEABLE;
+
 /**
  * A simple {@link Fragment} subclass.
  */
@@ -52,6 +55,10 @@ public class ListAttractionFromLocationCurrent extends Fragment implements Googl
     ArrayList<String> keyName = new ArrayList<>();
     ArrayList<EndangeredItem> listAttractions = new ArrayList<>();
 
+    protected SharedPreferences settings;
+    protected int select_language_position;
+    protected String name_language = "";
+
     public ListAttractionFromLocationCurrent() {
         // Required empty public constructor
     }
@@ -59,6 +66,14 @@ public class ListAttractionFromLocationCurrent extends Fragment implements Googl
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        settings = this.getActivity().getSharedPreferences("Trophel",MODE_WORLD_WRITEABLE);
+        select_language_position = settings.getInt("select_language_position",-1);
+        switch (select_language_position){
+            case -1: name_language = "name_Eng";break;
+            case 0:  name_language = "name_Eng";break;
+            case 1:  name_language = "name_Eng";break;
+            case 2:  name_language = "name_Thai";break;
+        }
         setHasOptionsMenu(true);
     }
 
@@ -147,7 +162,7 @@ public class ListAttractionFromLocationCurrent extends Fragment implements Googl
                     Double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
                     Double distance = 6371e3 * c / 1000.0;
                     if(distance <= 2){
-                        name.add(item_attrs.child("name_Eng").getValue().toString());
+                        name.add(item_attrs.child(name_language).getValue().toString());
                         uriImg.add(item_attrs.child("uri_img").getValue().toString());
                         keyName.add(item_attrs.getKey().toString());
                     }

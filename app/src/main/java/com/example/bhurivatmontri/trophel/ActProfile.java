@@ -47,6 +47,10 @@ public class ActProfile extends AppCompatActivity implements View.OnClickListene
     protected Button buttonWestern;
     protected Button buttonSouthern;
     protected Button buttonEastern;
+    protected Button buttonEditMyProfile;
+
+    protected String uri_profile ="";
+    protected String uri_background = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,6 +80,7 @@ public class ActProfile extends AppCompatActivity implements View.OnClickListene
         buttonWestern = (Button) findViewById(R.id.button_act_western);
         buttonSouthern = (Button) findViewById(R.id.button_act_southern);
         buttonEastern = (Button) findViewById(R.id.button_act_eastern);
+        buttonEditMyProfile = (Button) findViewById(R.id.button_edit_my_profile);
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
         final StorageReference mStorage = storage.getReference();
@@ -93,18 +98,33 @@ public class ActProfile extends AppCompatActivity implements View.OnClickListene
                 int countEastern = dataSnapshot.child("count_Eastern").getValue(Integer.class);
                 int countWestern = dataSnapshot.child("count_Western").getValue(Integer.class);
                 int countStar = dataSnapshot.child("count_Star").getValue(Integer.class);
+                uri_profile = dataSnapshot.child("uri_profile").getValue().toString();
+                uri_background = dataSnapshot.child("uri_background").getValue().toString();
+
                 idUser.setText("id:"+value);
                 nameUser.setText(name);
                 captionUser.setText("("+caption+")");
                 northernUser.setText(" : "+countNorthern);
                 northeasternUser.setText(" : "+countNortheastern);
-                centralUser.setText(" : " +
-                        ""+countCentral);
+                centralUser.setText(" : " +countCentral);
                 southernUser.setText(" : "+countSouthern);
                 easternUser.setText(" : "+countEastern);
                 westernUser.setText(" : "+countWestern);
                 starUser.setText(" : "+countStar);
                 //idUser.setText();
+
+                Picasso.with(getApplicationContext())
+                        .load(uri_profile)
+                        .placeholder(R.mipmap.ic_launcher)
+                        .fit()
+                        .centerCrop()
+                        .into(profile);
+                Picasso.with(getApplicationContext())
+                        .load(uri_background)
+                        .placeholder(R.mipmap.ic_launcher)
+                        .fit()
+                        .centerCrop()
+                        .into(background);
             }
 
             @Override
@@ -113,7 +133,7 @@ public class ActProfile extends AppCompatActivity implements View.OnClickListene
             }
         });
 
-        mStorage.child("img_profile/uImg/drive/profile.jpg").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+        /*mStorage.child("img_profile/uImg/drive/profile.jpg").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
                 Log.d("onDataChange","onSuccess");
@@ -147,7 +167,7 @@ public class ActProfile extends AppCompatActivity implements View.OnClickListene
             public void onFailure(@NonNull Exception e) {
 
             }
-        });
+        });*/
 
         buttonNorth.setOnClickListener(this);
         buttonCentral.setOnClickListener(this);
@@ -155,11 +175,13 @@ public class ActProfile extends AppCompatActivity implements View.OnClickListene
         buttonWestern.setOnClickListener(this);
         buttonSouthern.setOnClickListener(this);
         buttonEastern.setOnClickListener(this);
+        buttonEditMyProfile.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v){
         Intent intent = new Intent(ActProfile.this,ActListTrophy.class);
+        Intent intent2 = new Intent(ActProfile.this,EditProfile.class);
         switch (v.getId()){
             case R.id.button_act_northern:
                 intent.putExtra("Region","1");
@@ -185,6 +207,19 @@ public class ActProfile extends AppCompatActivity implements View.OnClickListene
                 intent.putExtra("Region","6");
                 startActivity(intent);
                 break;
+            case R.id.button_edit_my_profile:
+                startActivity(intent2);
+                break;
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == 123){
+            if(resultCode == RESULT_OK){
+
+            }
         }
     }
 }

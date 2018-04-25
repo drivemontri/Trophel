@@ -2,6 +2,7 @@ package com.example.bhurivatmontri.trophel;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -29,13 +30,29 @@ public class DetailAttraction extends AppCompatActivity {
     String keyOfAttraction = null;
     String keyOfRegion = null;
     String keyOfUriImgAttraction = null;
+    String nameOfAttractionEng = null;
+    String nameOfAttractionThai = null;
     int keyOfCountAttraction ;
     int countOfSubAttraction ;
 
+    protected SharedPreferences settings;
+    protected int select_language_position;
+    protected String name_language = "";
+    protected String info_language = "";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail_attraction);
+
+        settings = this.getSharedPreferences("Trophel",MODE_WORLD_WRITEABLE);
+        select_language_position = settings.getInt("select_language_position",-1);
+        Log.d("onDataChange",""+select_language_position);
+        switch (select_language_position){
+            case -1: name_language = "name_Eng";info_language = "info_Eng";break;
+            case 0:  name_language = "name_Eng";info_language = "info_Eng";break;
+            case 1:  name_language = "name_Eng";info_language = "info_Eng";break;
+            case 2:  name_language = "name_Thai";info_language = "info_Thai";break;
+        }
 
         Bundle extras = getIntent().getExtras();
         if(extras == null) {
@@ -50,6 +67,8 @@ public class DetailAttraction extends AppCompatActivity {
             keyOfUriImgAttraction = extras.getString("keyOfUriImgAttraction");
             keyOfCountAttraction = extras.getInt("keyOfCountAttraction");
             countOfSubAttraction = extras.getInt("countOfSubAttraction");
+            nameOfAttractionEng = extras.getString("nameOfAttractionEng");
+            nameOfAttractionThai = extras.getString("nameOfAttractionThai");
         }
 
         Toolbar toolbarDetailAttr = (Toolbar) findViewById(R.id.toolbar_detail_attraction);
@@ -76,8 +95,8 @@ public class DetailAttraction extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Log.d("onDataChange","DetailAttraction1 : "+dataSnapshot.getKey().toString());
-                String name = dataSnapshot.child("name_Eng").getValue().toString();
-                String info = dataSnapshot.child("info_Eng").getValue().toString();
+                String name = dataSnapshot.child(name_language).getValue().toString();
+                String info = "     "+dataSnapshot.child(info_language).getValue().toString();//6 ตัวอักษรย่อหน้า
                 String uri_img = dataSnapshot.child("uri_img").getValue().toString();
 
                 nameDetailAttraction.setText(name);
@@ -109,6 +128,8 @@ public class DetailAttraction extends AppCompatActivity {
                 intent.putExtra("keyOfUriImgAttraction",keyOfUriImgAttraction);
                 intent.putExtra("keyOfCountAttraction",keyOfCountAttraction);
                 intent.putExtra("countOfSubAttraction",countOfSubAttraction);
+                intent.putExtra("nameOfAttractionEng",nameOfAttractionEng);
+                intent.putExtra("nameOfAttractionThai",nameOfAttractionThai);
                 startActivity(intent);
             }
         });

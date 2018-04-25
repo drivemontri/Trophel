@@ -1,6 +1,7 @@
 package com.example.bhurivatmontri.trophel.fragment;
 
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -29,6 +30,8 @@ import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import static android.content.Context.MODE_WORLD_WRITEABLE;
 
 
 /**
@@ -63,6 +66,10 @@ public class ListTrophy extends Fragment {
     protected TextView tv_count_star_all;
     protected TextView tv_count_trophy_all;
 
+    protected SharedPreferences settings;
+    protected int select_language_position;
+    protected String name_language = "";
+
     public ListTrophy() {
         // Required empty public constructor
     }
@@ -71,6 +78,15 @@ public class ListTrophy extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Bundle bundle = getArguments();
+        settings = this.getActivity().getSharedPreferences("Trophel",MODE_WORLD_WRITEABLE);
+        select_language_position = settings.getInt("select_language_position",-1);
+        Log.d("onDataChange",""+select_language_position);
+        switch (select_language_position){
+            case -1: name_language = "name_Eng";break;
+            case 0:  name_language = "name_Eng";break;
+            case 1:  name_language = "name_Eng";break;
+            case 2:  name_language = "name_Thai";break;
+        }
         rg = bundle.getString("Region");
         friendID = bundle.getString("friendID");
         Log.d("sss_Region",rg);
@@ -95,15 +111,16 @@ public class ListTrophy extends Fragment {
             count_star_all.add(0);
             count_trophy_all.add(0);
         }
-
         mDatabase.child("users").child("uID").child(friendID).child("attractions").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                Log.d("test789",friendID+"555"+dataSnapshot.getValue());
                 for (DataSnapshot attraction : dataSnapshot.getChildren()) {
+                    Log.d("test789",friendID+"666");
                     String reg = attraction.child("region").getValue().toString();
                     int index = regionMap.get(reg);
 
-                    name.get(index).add(attraction.getKey());
+                    name.get(index).add(attraction.child(name_language).getValue().toString());
                     uri_img.get(index).add(attraction.child("uri_img").getValue().toString());
 
                     ArrayList<Integer> star_attraction = new ArrayList<>();

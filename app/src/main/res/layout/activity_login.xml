@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/Cyan200"
+    android:background="#FFCC80"
     android:onClick="hideKeyBoard"
     tools:context="com.example.bhurivatmontri.trophel.Login"
     tools:layout_editor_absoluteX="0dp"
@@ -18,7 +18,7 @@
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="30dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -60,15 +60,15 @@
     </android.support.constraint.ConstraintLayout>
 
     <android.support.constraint.ConstraintLayout
+        android:id="@+id/constraintLayout2"
         android:layout_width="258dp"
         android:layout_height="348dp"
-        android:layout_marginTop="16dp"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout"
         android:layout_marginLeft="8dp"
-        app:layout_constraintLeft_toLeftOf="parent"
         android:layout_marginRight="8dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        android:id="@+id/constraintLayout2">
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout">
 
         <EditText
             android:id="@+id/login_email"
@@ -77,15 +77,15 @@
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
             android:layout_marginTop="8dp"
+            android:backgroundTint="@color/White"
             android:ems="10"
             android:hint="Email"
             android:inputType="textEmailAddress"
             android:textColor="@color/White"
-            android:backgroundTint="@color/White"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintHorizontal_bias="0.0" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <EditText
             android:id="@+id/login_password"
@@ -94,11 +94,11 @@
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
             android:layout_marginTop="13dp"
+            android:backgroundTint="@color/White"
             android:ems="10"
             android:hint="password"
             android:inputType="textPassword"
             android:textColor="@color/White"
-            android:backgroundTint="@color/White"
             app:layout_constraintHorizontal_bias="0.518"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
@@ -112,7 +112,7 @@
             android:layout_marginRight="16dp"
             android:layout_marginTop="15dp"
             android:alpha="0.75"
-            android:backgroundTint="@color/Cyan500"
+            android:backgroundTint="@color/colorApp0"
             android:text="Login"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
@@ -120,42 +120,55 @@
 
         <com.facebook.login.widget.LoginButton
             android:id="@+id/login_btnFacebook"
-            android:layout_width="0dp"
-            android:layout_height="40dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
+            android:layout_width="220dp"
+            android:layout_height="80dp"
+            android:layout_marginLeft="4dp"
+            android:layout_marginRight="4dp"
             android:layout_marginTop="8dp"
             app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintLeft_toLeftOf="@+id/login_btnTrophel"
+            app:layout_constraintRight_toRightOf="@+id/login_btnTrophel"
             app:layout_constraintTop_toBottomOf="@+id/login_btnTrophel" />
 
+        <com.google.android.gms.common.SignInButton
+            android:id="@+id/sign_in_button"
+            android:layout_width="226dp"
+            android:layout_height="46dp"
+            android:layout_gravity="center"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:gravity="center"
+            app:layout_constraintEnd_toEndOf="@+id/login_btnTrophel"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="@+id/login_btnTrophel"
+            app:layout_constraintTop_toBottomOf="@+id/login_btnFacebook" />
 
 
         <TextView
             android:id="@+id/login_signUp"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Create new account"
+            android:layout_height="15dp"
             android:layout_marginTop="12dp"
-            android:layout_marginLeft="8dp"
-            app:layout_constraintTop_toBottomOf="@+id/login_btnFacebook"
-            app:layout_constraintLeft_toLeftOf="@+id/login_btnFacebook" />
+            android:text="Create new account"
+            app:layout_constraintLeft_toLeftOf="@+id/login_btnFacebook"
+            app:layout_constraintTop_toBottomOf="@+id/sign_in_button" />
 
         <TextView
             android:id="@+id/login_Forget"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
             android:text="Forget your password?"
-            android:layout_marginTop="8dp"
-            android:layout_marginLeft="8dp"
+            android:textSize="20dp"
+            app:layout_constraintLeft_toLeftOf="@+id/login_btnFacebook"
             app:layout_constraintTop_toBottomOf="@+id/login_signUp"
-            app:layout_constraintLeft_toLeftOf="@+id/login_btnFacebook" />
+            android:visibility="invisible"/>
+
         <ProgressBar
+            android:id="@+id/progress_bar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/progress_bar"
-            android:visibility="gone"/>
+            android:visibility="gone" />
 
     </android.support.constraint.ConstraintLayout>
 

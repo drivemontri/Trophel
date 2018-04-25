@@ -239,9 +239,9 @@ public class ListFriend extends Fragment implements SearchView.OnQueryTextListen
         mDatabase.child("users").child("uID").child("drive").child("friend_id").orderByChild("count_Star").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                Log.d("test200","sss");
                 setDataSnapshot(dataSnapshot);
             }
-
             @Override
             public void onCancelled(DatabaseError databaseError) {
 
@@ -269,8 +269,10 @@ public class ListFriend extends Fragment implements SearchView.OnQueryTextListen
         re_count_Star = new ArrayList<>();
     }
 
-    private void setDataSnapshot(DataSnapshot dataSnapshot){
+    protected void setDataSnapshot(DataSnapshot dataSnapshot){
         for(DataSnapshot item_friend : dataSnapshot.getChildren()){
+            Log.d("test200","friend_id = "+item_friend.getKey());
+            Log.d("test200","count_Star"+item_friend.child("count_Star"));
             re_friendID.add(item_friend.getKey().toString());
             re_name.add(item_friend.child("name").getValue().toString());
             re_detail.add(item_friend.child("caption").getValue().toString());

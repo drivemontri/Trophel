@@ -1,6 +1,7 @@
 package com.example.bhurivatmontri.trophel.fragment;
 
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
@@ -25,6 +26,8 @@ import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 
+import static android.content.Context.MODE_WORLD_WRITEABLE;
+
 /**
  * A simple {@link Fragment} subclass.
  */
@@ -41,6 +44,10 @@ public class ListAttractionFromRegion extends Fragment {
     ArrayList<String> keyName = new ArrayList<>();
     ArrayList<EndangeredItem> listAttractions = new ArrayList<>();
 
+    protected SharedPreferences settings;
+    protected int select_language_position;
+    protected String name_language = "";
+
     String rg = "";
 
     public ListAttractionFromRegion() {
@@ -50,6 +57,7 @@ public class ListAttractionFromRegion extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         Bundle bundle = getArguments();
         rg = bundle.getString("Region");
         initDatabase();
@@ -62,6 +70,16 @@ public class ListAttractionFromRegion extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_list_attraction_from_region, container, false);
+
+        settings = this.getActivity().getSharedPreferences("Trophel",MODE_WORLD_WRITEABLE);
+        select_language_position = settings.getInt("select_language_position",-1);
+        switch (select_language_position){
+            case -1: name_language = "name_Eng";break;
+            case 0:  name_language = "name_Eng";break;
+            case 1:  name_language = "name_Eng";break;
+            case 2:  name_language = "name_Thai";break;
+        }
+        Log.d("test555",""+select_language_position);
 
         mRecyclerView = (RecyclerView) view.findViewById(R.id.recyclerView_ListAttractionFromRegion);
         mRecyclerView.setHasFixedSize(true);
@@ -102,8 +120,8 @@ public class ListAttractionFromRegion extends Fragment {
                     Log.d("onDataChange","555"+item_attrs.getValue().toString());
                     Log.d("onDataChange","666"+item_attrs.child("region_Eng").getValue());
                     //friendID.add(item_friend.getKey().toString());
-                    if(item_attrs.child("region_Eng").getValue().toString().equals("Northern")){
-                        name.add(item_attrs.child("name_Eng").getValue().toString());
+                    if(item_attrs.child("region").getValue().toString().equals("Northern")){
+                        name.add(item_attrs.child(name_language).getValue().toString());
                         uriImg.add(item_attrs.child("uri_img").getValue().toString());
                         keyName.add(item_attrs.getKey().toString());
                     }
