@@ -23,6 +23,8 @@ import com.example.bhurivatmontri.trophel.adapter.CustomAdapter;
 import com.example.bhurivatmontri.trophel.adapter.Friend;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -38,6 +40,7 @@ import java.util.ArrayList;
  * A simple {@link Fragment} subclass.
  */
 public class ListFriend extends Fragment implements SearchView.OnQueryTextListener {
+
     private static final String TAG = "RecyclerViewFragment";
     private static final String KEY_LAYOUT_MANAGER = "layoutManager";
     private static final int SPAN_COUNT = 2;
@@ -53,6 +56,10 @@ public class ListFriend extends Fragment implements SearchView.OnQueryTextListen
     protected RecyclerView mRecyclerView;
     protected CustomAdapter mAdapter;
     protected RecyclerView.LayoutManager mLayoutManager;
+
+    private FirebaseAuth mAuth;
+    private FirebaseAuth.AuthStateListener firebaseAuthListener;
+    protected String user_Id;
 
     protected DatabaseReference mDatabase;
     protected FirebaseStorage storage = FirebaseStorage.getInstance();
@@ -79,13 +86,31 @@ public class ListFriend extends Fragment implements SearchView.OnQueryTextListen
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        // Initialize dataset, this data would usually come from a local content provider or
-        // remote server.
-        initDatabase();
-        initDataset();
+        /*firebaseAuthListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(FirebaseAuth firebaseAuth) {
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                if (user != null) {
+                    // User is signed in
+                    user_Id = user.getUid();
+                    Log.d(TAG, "onAuthStateChanged: "+user_Id);
+                    initDatabase();
+                    initDataset();
+                } else {
+                    // User is signed out
+                }
+                // ...
+            }
+        };*/
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            // User is signed in
+            user_Id = user.getUid();
+            Log.d(TAG, "onAuthStateChanged: "+user_Id);
+            initDatabase();
+            initDataset();
+        }
         setHasOptionsMenu(true);
-
     }
 
     @Override
@@ -186,10 +211,7 @@ public class ListFriend extends Fragment implements SearchView.OnQueryTextListen
     private void initDatabase(){
         mDatabase = FirebaseDatabase.getInstance().getReference();
         final StorageReference mStorage = storage.getReference();
-
-        //mDatabase.child("users").child("uID").child("drive").child("friend_id").keepSynced(true);
-
-        mDatabase.child("users").child("uID").child("drive").child("friend_id").orderByChild("count_Star").addListenerForSingleValueEvent(new ValueEventListener() {
+        mDatabase.child("users").child("uID").child(user_Id).child("friend_id").orderByChild("count_Star").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Log.d("onDataChange",""+dataSnapshot.getChildrenCount());
@@ -236,7 +258,7 @@ public class ListFriend extends Fragment implements SearchView.OnQueryTextListen
         mDatabase = FirebaseDatabase.getInstance().getReference();
         final StorageReference mStorage = storage.getReference();
 
-        mDatabase.child("users").child("uID").child("drive").child("friend_id").orderByChild("count_Star").addListenerForSingleValueEvent(new ValueEventListener() {
+        mDatabase.child("users").child("uID").child(user_Id).child("friend_id").orderByChild("count_Star").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Log.d("test200","sss");

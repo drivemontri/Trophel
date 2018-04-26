@@ -69,7 +69,8 @@
         <activity android:name=".AddFriend" />
         <activity android:name=".DetailAttraction2" />
         <activity android:name=".SettingApp" />
-        <activity android:name=".EditProfile"></activity>
+        <activity android:name=".EditProfile" />
+        <activity android:name=".AboutUs"></activity>
     </application>
 
 </manifest>

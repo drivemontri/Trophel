@@ -4,6 +4,7 @@ package com.example.bhurivatmontri.trophel.fragment;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
@@ -23,6 +24,8 @@ import com.example.bhurivatmontri.trophel.HomeFragment;
 import com.example.bhurivatmontri.trophel.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -37,6 +40,10 @@ import com.squareup.picasso.Picasso;
  * A simple {@link Fragment} subclass.
  */
 public class FriendProfile extends Fragment implements View.OnClickListener {
+
+    private FirebaseAuth mAuth;
+    private FirebaseAuth.AuthStateListener firebaseAuthListener;
+    protected String user_Id;
 
     protected DatabaseReference mDatabase;
     protected FirebaseStorage storage = FirebaseStorage.getInstance();
@@ -69,6 +76,10 @@ public class FriendProfile extends Fragment implements View.OnClickListener {
         setHasOptionsMenu(true);
     }
 
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -100,7 +111,13 @@ public class FriendProfile extends Fragment implements View.OnClickListener {
         buttonSouthern = (Button) view.findViewById(R.id.button_southern_friend);
         buttonEastern = (Button) view.findViewById(R.id.button_eastern_friend);
         buttonUnfollow = (Button) view.findViewById(R.id.button_unfollow_friend);
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            // User is signed in
+            user_Id = user.getUid();
+            Log.d("d", "onAuthStateChanged: "+user_Id);
 
+        }
         mDatabase = FirebaseDatabase.getInstance().getReference();
         final StorageReference mStorage = storage.getReference();
 
@@ -122,6 +139,10 @@ public class FriendProfile extends Fragment implements View.OnClickListener {
                 idUser.setText("id:"+value);
                 uri_profile = dataSnapshot.child("uri_profile").getValue().toString();
                 uri_background = dataSnapshot.child("uri_background").getValue().toString();
+
+                Log.d("checkUri","profile:"+uri_profile);
+                Log.d("checkUri","background:"+uri_background);
+
                 nameUser.setText(name);
                 captionUser.setText("("+caption+")");
                 northernUser.setText(" : "+countNorthern);
@@ -133,6 +154,19 @@ public class FriendProfile extends Fragment implements View.OnClickListener {
                 westernUser.setText(" : "+countWestern);
                 starUser.setText(" : "+countStar);
                 //idUser.setText();
+
+                Picasso.with(getActivity().getApplicationContext())
+                        .load(uri_profile)
+                        .placeholder(R.drawable.profile_default_people)
+                        .fit()
+                        .centerCrop()
+                        .into(profile);
+                Picasso.with(getActivity().getApplicationContext())
+                        .load(uri_background)
+                        .placeholder(R.drawable.profile_default_cover)
+                        .fit()
+                        .centerCrop()
+                        .into(background);
             }
 
             @Override
@@ -140,19 +174,6 @@ public class FriendProfile extends Fragment implements View.OnClickListener {
 
             }
         });
-
-        Picasso.with(getActivity())
-                .load(uri_profile)
-                .placeholder(R.mipmap.ic_launcher)
-                .fit()
-                .centerCrop()
-                .into(profile);
-        Picasso.with(getActivity())
-                .load(uri_background)
-                .placeholder(R.mipmap.ic_launcher)
-                .fit()
-                .centerCrop()
-                .into(background);
 
         /*String url_img1 = "img_profile/uImg/"+friendID+"/profile.png";
         mStorage.child(url_img1).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
@@ -267,7 +288,7 @@ public class FriendProfile extends Fragment implements View.OnClickListener {
         Log.d("onDataChange","btn_unfollow");
         /*FragmentManager manager = ((AppCompatActivity)getContext()).getSupportFragmentManager();
         manager.popBackStack();*/
-        mDatabase.child("users").child("uID").child("drive").child("friend_id").child(friendID).removeValue();
+        mDatabase.child("users").child("uID").child(user_Id).child("friend_id").child(friendID).removeValue();
         getActivity().onBackPressed();
     }
 

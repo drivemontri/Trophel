@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.constraint.solver.widgets.Snapshot;
 import android.support.v4.app.ActivityCompat;
@@ -37,6 +38,8 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
@@ -63,6 +66,10 @@ public class Map extends Fragment implements OnMapReadyCallback, GoogleApiClient
     int checktime = 20;
     boolean statusOk = false;
 
+    private FirebaseAuth mAuth;
+    private FirebaseAuth.AuthStateListener firebaseAuthListener;
+    protected String user_Id;
+
     HashMap<String,String> keyOfAttractionMap = new HashMap<>();
     HashMap<String,String> keyOfSubAttractionMap = new HashMap<>();
     HashMap<String,String> keyOfRegionMap = new HashMap<>();
@@ -78,6 +85,7 @@ public class Map extends Fragment implements OnMapReadyCallback, GoogleApiClient
     HashMap<String,Double> longitudeOfSubAttractionMap = new HashMap<>();
     HashMap<String,String> everOfSubAttractionMap = new HashMap<>();
     HashMap<String,String> markerIconOfSubAttractionMap = new HashMap<>();
+    HashMap<String,String> uriImageGameRotateSubAttractionMap = new HashMap<>();
 
     ArrayList<String> allKeySubAttraction;
 
@@ -97,7 +105,15 @@ public class Map extends Fragment implements OnMapReadyCallback, GoogleApiClient
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            user_Id = user.getUid();
+            // User is signed in
+        }
+
         settings = this.getActivity().getSharedPreferences("Trophel",MODE_WORLD_WRITEABLE);
+
     }
 
     @Override
@@ -153,6 +169,7 @@ public class Map extends Fragment implements OnMapReadyCallback, GoogleApiClient
                 intent.putExtra("countOfSubAttraction",countOfSubAttraction.get(marker.getTitle()));
                 intent.putExtra("nameOfAttractionEng",nameOfAttractionEngMap.get(marker.getTitle()));
                 intent.putExtra("nameOfAttractionThai",nameOfAttractionThaiMap.get(marker.getTitle()));
+                intent.putExtra("uriImageGameRotateSubAttraction",uriImageGameRotateSubAttractionMap.get(marker.getTitle()));
                 startActivity(intent);
             }
         });
@@ -205,7 +222,8 @@ public class Map extends Fragment implements OnMapReadyCallback, GoogleApiClient
         mmMarker.remove();
         mmMarker = mGoogleMap.addMarker(new MarkerOptions().position(new LatLng(latitude, longitude)).title("Location Current").snippet("I am coding myProject").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ROSE)));
         try {
-            FirebaseDatabase.getInstance().getReference().child("users").child("uID").child("drive").child("attractions").addListenerForSingleValueEvent(new ValueEventListener() {
+
+            FirebaseDatabase.getInstance().getReference().child("users").child("uID").child(user_Id).child("attractions").addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     Log.d("statusOk","+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
@@ -301,6 +319,7 @@ public class Map extends Fragment implements OnMapReadyCallback, GoogleApiClient
                         latitudeOfSubAttractionMap.put(keyname,(double)snapshot2.child("latitude").getValue());
                         longitudeOfSubAttractionMap.put(keyname,(double)snapshot2.child("longitude").getValue());
                         markerIconOfSubAttractionMap.put(keyname,snapshot2.child("marker_icon").getValue().toString());
+                        uriImageGameRotateSubAttractionMap.put(keyname,snapshot2.child("uri_img_game_rotate").getValue().toString());
                         Log.d("statusOk","ieie");
                         allKeySubAttraction.add(keyname);
                     }
@@ -333,6 +352,7 @@ public class Map extends Fragment implements OnMapReadyCallback, GoogleApiClient
         latitudeOfSubAttractionMap.clear();
         longitudeOfSubAttractionMap.clear();
         markerIconOfSubAttractionMap.clear();
+        uriImageGameRotateSubAttractionMap.clear();
         allKeySubAttraction = new ArrayList<String>();
         everOfSubAttractionMap.clear();
     }

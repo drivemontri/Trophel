@@ -10,12 +10,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
+import com.example.bhurivatmontri.trophel.AboutUs;
 import com.example.bhurivatmontri.trophel.ActProfile;
 import com.example.bhurivatmontri.trophel.AddFriend;
 import com.example.bhurivatmontri.trophel.Login;
 import com.example.bhurivatmontri.trophel.R;
 import com.example.bhurivatmontri.trophel.SettingApp;
 import com.facebook.login.LoginManager;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.firebase.auth.FirebaseAuth;
 
 
@@ -31,6 +35,7 @@ public class AppMenu extends Fragment implements View.OnClickListener{
     protected LinearLayout btn_setting;
     protected LinearLayout btn_about_us;
     protected LinearLayout btn_logout;
+    private GoogleSignInClient mGoogleSignInClient;
 
     public AppMenu() {
         // Required empty public constructor
@@ -55,6 +60,12 @@ public class AppMenu extends Fragment implements View.OnClickListener{
         btn_about_us.setOnClickListener(this);
         btn_logout.setOnClickListener(this);
 
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build();
+        mGoogleSignInClient = GoogleSignIn.getClient(getActivity(), gso);
+
         return view;
     }
 
@@ -75,6 +86,8 @@ public class AppMenu extends Fragment implements View.OnClickListener{
                 startActivity(intent);
                 break;
             case R.id.menu_about_us:
+                intent = new Intent(getActivity(),AboutUs.class);
+                startActivity(intent);
                 break;
             case R.id.menu_logout:
                 Logout();
@@ -85,6 +98,8 @@ public class AppMenu extends Fragment implements View.OnClickListener{
     public void Logout() {
         FirebaseAuth.getInstance().signOut();
         LoginManager.getInstance().logOut();
+        mGoogleSignInClient.signOut();
+        mGoogleSignInClient.revokeAccess();
         Intent intent = new Intent(this.getActivity(), Login.class);
         intent.addFlags(intent.FLAG_ACTIVITY_CLEAR_TOP | intent.FLAG_ACTIVITY_CLEAR_TASK | intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);

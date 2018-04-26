@@ -20,6 +20,8 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -37,6 +39,10 @@ public class EditProfile extends AppCompatActivity implements View.OnClickListen
     private Uri mImageUri;
     private Uri mImageUriProfile;
     private Uri mImageUriBackground;
+
+    private FirebaseAuth mAuth;
+    private FirebaseAuth.AuthStateListener firebaseAuthListener;
+    protected String user_Id;
 
     protected DatabaseReference mDatabase;
     protected FirebaseStorage storage = FirebaseStorage.getInstance();
@@ -85,8 +91,13 @@ public class EditProfile extends AppCompatActivity implements View.OnClickListen
         captionUser.setOnClickListener(this);
         button_accept.setOnClickListener(this);
         button_cancel.setOnClickListener(this);
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            // User is signed in
+            user_Id = user.getUid();
+        }
 
-        mDatabase.child("users").child("uID").child("drive").addListenerForSingleValueEvent(new ValueEventListener() {
+        mDatabase.child("users").child("uID").child(user_Id).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 String value = dataSnapshot.child("id").getValue().toString();
@@ -228,13 +239,13 @@ public class EditProfile extends AppCompatActivity implements View.OnClickListen
 
     private void uploadFileProfile(){
         if(mImageUriProfile != null){
-            StorageReference fileRefference = mStorage.child("img_profile/"+"drive"+ "." +  getFileExtension(mImageUriProfile));
+            StorageReference fileRefference = mStorage.child("img_profile/"+user_Id+ "." +  getFileExtension(mImageUriProfile));
 
             fileRefference.putFile(mImageUriProfile).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                     Toast.makeText(EditProfile.this,"Upload successful",Toast.LENGTH_SHORT).show();
-                    mDatabase.child("users").child("uID").child("drive").child("uri_profile").setValue(taskSnapshot.getDownloadUrl().toString());
+                    mDatabase.child("users").child("uID").child(user_Id).child("uri_profile").setValue(taskSnapshot.getDownloadUrl().toString());
                     chk_edit_img_profile_success = true;
                     uri_profile = taskSnapshot.getDownloadUrl().toString();
                     FirebaseDatabase.getInstance().getReference("users").child("uID").addListenerForSingleValueEvent(new ValueEventListener() {
@@ -242,9 +253,9 @@ public class EditProfile extends AppCompatActivity implements View.OnClickListen
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             for (DataSnapshot dataSnapshot2 : dataSnapshot.getChildren()) {
                                 for (DataSnapshot datasnapshot3 : dataSnapshot2.child("friend_id").getChildren()) {
-                                    if(datasnapshot3.getKey().equals("drive")){
+                                    if(datasnapshot3.getKey().equals(user_Id)){
                                         mDatabase.child("users").child("uID").child(dataSnapshot2.getKey())
-                                                .child("friend_id").child("drive").child("uri_profile").setValue(uri_profile);
+                                                .child("friend_id").child(user_Id).child("uri_profile").setValue(uri_profile);
                                     }
                                 }
                             }
@@ -272,13 +283,13 @@ public class EditProfile extends AppCompatActivity implements View.OnClickListen
 
     private void uploadFileBackground(){
         if(mImageUriBackground != null){
-            StorageReference fileRefference = mStorage.child("img_background/"+"drive"+ "." +  getFileExtension(mImageUriBackground));
+            StorageReference fileRefference = mStorage.child("img_background/"+user_Id+ "." +  getFileExtension(mImageUriBackground));
 
             fileRefference.putFile(mImageUriBackground).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                     Toast.makeText(EditProfile.this,"Upload successful",Toast.LENGTH_SHORT).show();
-                    mDatabase.child("users").child("uID").child("drive").child("uri_background").setValue(taskSnapshot.getDownloadUrl().toString());
+                    mDatabase.child("users").child("uID").child(user_Id).child("uri_background").setValue(taskSnapshot.getDownloadUrl().toString());
                     chk_edit_img_background_success = true;
                     if(chk_edit_img_profile_success && chk_edit_img_background_success){
                         EditProfile.this.finish();
@@ -301,19 +312,19 @@ public class EditProfile extends AppCompatActivity implements View.OnClickListen
     }
 
     public void uploadInfo(){
-        mDatabase.child("users").child("uID").child("drive").child("name").setValue(nameUser.getText().toString());
-        mDatabase.child("users").child("uID").child("drive").child("caption").setValue(captionUser.getText().toString());
-        mDatabase.child("users").child("uID").child("drive").child("id").setValue(idUser.getText().toString());
+        mDatabase.child("users").child("uID").child(user_Id).child("name").setValue(nameUser.getText().toString());
+        mDatabase.child("users").child("uID").child(user_Id).child("caption").setValue(captionUser.getText().toString());
+        mDatabase.child("users").child("uID").child(user_Id).child("id").setValue(idUser.getText().toString());
         FirebaseDatabase.getInstance().getReference("users").child("uID").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot dataSnapshot2 : dataSnapshot.getChildren()) {
                     for (DataSnapshot datasnapshot3 : dataSnapshot2.child("friend_id").getChildren()) {
-                        if(datasnapshot3.getKey().equals("drive")){
+                        if(datasnapshot3.getKey().equals(user_Id)){
                             mDatabase.child("users").child("uID").child(dataSnapshot2.getKey())
-                                    .child("friend_id").child("drive").child("name").setValue(nameUser.getText().toString());
+                                    .child("friend_id").child(user_Id).child("name").setValue(nameUser.getText().toString());
                             mDatabase.child("users").child("uID").child(dataSnapshot2.getKey())
-                                    .child("friend_id").child("drive").child("caption").setValue(captionUser.getText().toString());
+                                    .child("friend_id").child(user_Id).child("caption").setValue(captionUser.getText().toString());
                         }
                     }
                 }

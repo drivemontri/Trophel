@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -39,6 +40,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
     public static class ViewHolder extends RecyclerView.ViewHolder{
         private final TextView textView,textView2,count_Star;
         private final ImageView icon;
+        private RelativeLayout layout;
         public ViewHolder(View v){
             super(v);
             v.setOnClickListener(new View.OnClickListener(){
@@ -55,6 +57,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
             textView2 = (TextView) v.findViewById(R.id.detail_Friend);
             icon = (ImageView) v.findViewById(R.id.icon_Friend);
             count_Star = (TextView) v.findViewById(R.id.count_Star_Friend) ;
+            layout = (RelativeLayout) v.findViewById(R.id.layer_out_list_Friend);
         }
         public TextView getTextView() {
             return textView;
@@ -66,6 +69,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
             return icon;
         }
         public TextView gettextView3() {return count_Star;}
+        public RelativeLayout getLayout() {return layout;}
     }
 
     /*public CustomAdapter(String[] dataSet,String[] dataSet2,int[] dataSet3){
@@ -98,7 +102,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
                 .fit()
                 .centerCrop()
                 .into(viewHolder.getImageView());
-        viewHolder.getImageView().setOnClickListener(new View.OnClickListener(){
+        viewHolder.getLayout().setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
                 Toast.makeText(v.getContext(), "-->" + listFriend.get(position).getName() + "<--", Toast.LENGTH_SHORT).show();

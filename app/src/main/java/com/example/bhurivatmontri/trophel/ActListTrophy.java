@@ -1,6 +1,7 @@
 package com.example.bhurivatmontri.trophel;
 
 import android.content.SharedPreferences;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -10,6 +11,8 @@ import android.util.Log;
 import android.widget.TextView;
 
 import com.example.bhurivatmontri.trophel.adapter.GridAdapter2;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -29,6 +32,10 @@ public class ActListTrophy extends AppCompatActivity {
     RecyclerView.Adapter mAdapter;
 
     String rg;
+
+    private FirebaseAuth mAuth;
+    private FirebaseAuth.AuthStateListener firebaseAuthListener;
+    protected String user_Id;
 
     protected DatabaseReference mDatabase;
     protected FirebaseStorage storage = FirebaseStorage.getInstance();
@@ -67,6 +74,11 @@ public class ActListTrophy extends AppCompatActivity {
             case 1:  name_language = "name_Eng";break;
             case 2:  name_language = "name_Thai";break;
         }
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            // User is signed in
+            user_Id = user.getUid();
+        }
 
         rg = null;
         Bundle extras = getIntent().getExtras();
@@ -93,7 +105,7 @@ public class ActListTrophy extends AppCompatActivity {
             count_trophy_all.add(0);
         }
 
-        mDatabase.child("users").child("uID").child("drive").child("attractions").addListenerForSingleValueEvent(new ValueEventListener() {
+        mDatabase.child("users").child("uID").child(user_Id).child("attractions").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot attraction : dataSnapshot.getChildren()) {

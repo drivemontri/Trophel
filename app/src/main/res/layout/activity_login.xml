@@ -12,17 +12,14 @@
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/constraintLayout"
-        android:layout_width="220dp"
-        android:layout_height="150dp"
-        android:layout_marginEnd="8dp"
+        android:layout_width="250dp"
+        android:layout_height="250dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="72dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:layout_editor_absoluteX="85dp">
+        app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
             android:id="@+id/login_logo"
@@ -45,17 +42,28 @@
             android:id="@+id/login_appAame"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
-            android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:text="TROPHEL"
             android:textColor="@color/White"
-            android:textSize="24sp"
+            android:textSize="45sp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/login_logo" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="12dp"
+            android:text="Application for Travel"
+            android:textColor="@color/White"
+            android:textSize="20sp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/login_appAame" />
 
     </android.support.constraint.ConstraintLayout>
 
@@ -65,7 +73,7 @@
         android:layout_height="348dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="48dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout">
@@ -82,6 +90,7 @@
             android:hint="Email"
             android:inputType="textEmailAddress"
             android:textColor="@color/White"
+            android:visibility="gone"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
@@ -99,6 +108,7 @@
             android:hint="password"
             android:inputType="textPassword"
             android:textColor="@color/White"
+            android:visibility="gone"
             app:layout_constraintHorizontal_bias="0.518"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
@@ -114,6 +124,7 @@
             android:alpha="0.75"
             android:backgroundTint="@color/colorApp0"
             android:text="Login"
+            android:visibility="gone"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/login_password" />
@@ -122,25 +133,24 @@
             android:id="@+id/login_btnFacebook"
             android:layout_width="220dp"
             android:layout_height="80dp"
-            android:layout_marginLeft="4dp"
-            android:layout_marginRight="4dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintLeft_toLeftOf="@+id/login_btnTrophel"
-            app:layout_constraintRight_toRightOf="@+id/login_btnTrophel"
-            app:layout_constraintTop_toBottomOf="@+id/login_btnTrophel" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <com.google.android.gms.common.SignInButton
             android:id="@+id/sign_in_button"
             android:layout_width="226dp"
             android:layout_height="46dp"
             android:layout_gravity="center"
+            android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:gravity="center"
-            app:layout_constraintEnd_toEndOf="@+id/login_btnTrophel"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toStartOf="@+id/login_btnTrophel"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/login_btnFacebook" />
 
 
@@ -150,6 +160,7 @@
             android:layout_height="15dp"
             android:layout_marginTop="12dp"
             android:text="Create new account"
+            android:visibility="invisible"
             app:layout_constraintLeft_toLeftOf="@+id/login_btnFacebook"
             app:layout_constraintTop_toBottomOf="@+id/sign_in_button" />
 
@@ -160,9 +171,9 @@
             android:layout_marginTop="20dp"
             android:text="Forget your password?"
             android:textSize="20dp"
+            android:visibility="invisible"
             app:layout_constraintLeft_toLeftOf="@+id/login_btnFacebook"
-            app:layout_constraintTop_toBottomOf="@+id/login_signUp"
-            android:visibility="invisible"/>
+            app:layout_constraintTop_toBottomOf="@+id/login_signUp" />
 
         <ProgressBar
             android:id="@+id/progress_bar"

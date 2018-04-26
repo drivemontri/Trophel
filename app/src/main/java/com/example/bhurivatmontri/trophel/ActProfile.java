@@ -15,6 +15,8 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -25,6 +27,10 @@ import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
 public class ActProfile extends AppCompatActivity implements View.OnClickListener {
+
+    private FirebaseAuth mAuth;
+    private FirebaseAuth.AuthStateListener firebaseAuthListener;
+    protected String user_Id;
 
     protected DatabaseReference mDatabase;
     protected FirebaseStorage storage = FirebaseStorage.getInstance();
@@ -61,7 +67,11 @@ public class ActProfile extends AppCompatActivity implements View.OnClickListene
         setSupportActionBar(toolbarActProfile);
         getSupportActionBar().setTitle("My Profile");
 
-        String [] img_type = {"profile.jpg","background.jpg"};
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            // User is signed in
+            user_Id = user.getUid();
+        }
         profile = (ImageView) findViewById(R.id.img_Profile);
         background = (ImageView) findViewById(R.id.cover_background);
         idUser = (TextView) findViewById(R.id.id_Profile);
@@ -85,7 +95,7 @@ public class ActProfile extends AppCompatActivity implements View.OnClickListene
         mDatabase = FirebaseDatabase.getInstance().getReference();
         final StorageReference mStorage = storage.getReference();
 
-        mDatabase.child("users").child("uID").child("drive").addValueEventListener(new ValueEventListener() {
+        mDatabase.child("users").child("uID").child(user_Id).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 String value = dataSnapshot.child("id").getValue().toString();
@@ -101,9 +111,9 @@ public class ActProfile extends AppCompatActivity implements View.OnClickListene
                 uri_profile = dataSnapshot.child("uri_profile").getValue().toString();
                 uri_background = dataSnapshot.child("uri_background").getValue().toString();
 
-                idUser.setText("id:"+value);
+                idUser.setText(value);
                 nameUser.setText(name);
-                captionUser.setText("("+caption+")");
+                captionUser.setText(caption);
                 northernUser.setText(" : "+countNorthern);
                 northeasternUser.setText(" : "+countNortheastern);
                 centralUser.setText(" : " +countCentral);
@@ -115,13 +125,13 @@ public class ActProfile extends AppCompatActivity implements View.OnClickListene
 
                 Picasso.with(getApplicationContext())
                         .load(uri_profile)
-                        .placeholder(R.mipmap.ic_launcher)
+                        .placeholder(R.drawable.profile_default_people)
                         .fit()
                         .centerCrop()
                         .into(profile);
                 Picasso.with(getApplicationContext())
                         .load(uri_background)
-                        .placeholder(R.mipmap.ic_launcher)
+                        .placeholder(R.drawable.profile_default_cover)
                         .fit()
                         .centerCrop()
                         .into(background);

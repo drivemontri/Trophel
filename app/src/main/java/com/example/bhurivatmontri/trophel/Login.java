@@ -66,8 +66,8 @@ public class Login extends AppCompatActivity implements View.OnClickListener{
     private LoginButton loginButton;
     private CallbackManager callbackManager;
     private FirebaseAuth mAuth;
-    private static final String TAG = "LoginActivity";
     private FirebaseAuth.AuthStateListener firebaseAuthListener;
+    private static final String TAG = "LoginActivity";
     private ProgressBar progressBar;
     private static final int RC_SIGN_IN = 45;
     private DatabaseReference mDatabase;
@@ -157,38 +157,125 @@ public class Login extends AppCompatActivity implements View.OnClickListener{
                 final FirebaseUser User = firebaseAuth.getCurrentUser();
                 if(User != null)
                 {
-                    FirebaseDatabase.getInstance().getReference()
+                    FirebaseDatabase.getInstance().getReference().child("users").child("uID").orderByKey().equalTo(User.getUid())
                             .addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(DataSnapshot dataSnapshot) {
-                                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                                        //uploadFile(User.getPhotoUrl(),User.getUid());
-                                        //uploadphoto(User.getPhotoUrl().toString());
-                                        if(!User.getUid().equals(mDatabase.child("users").child("uID").child(User.getUid()).getKey())) {
-                                            mDatabase.child("users").child("uID").child(User.getUid()).child("caption").setValue("0");
-                                            mDatabase.child("users").child("uID").child(User.getUid()).child("count_Central").setValue("0");
-                                            mDatabase.child("users").child("uID").child(User.getUid()).child("count_Eastern").setValue("0");
-                                            mDatabase.child("users").child("uID").child(User.getUid()).child("count_Northeastern").setValue("0");
-                                            mDatabase.child("users").child("uID").child(User.getUid()).child("count_Northern").setValue("0");
-                                            mDatabase.child("users").child("uID").child(User.getUid()).child("count_Southern").setValue("0");
-                                            mDatabase.child("users").child("uID").child(User.getUid()).child("count_Star").setValue("0");
-                                            mDatabase.child("users").child("uID").child(User.getUid()).child("count_Western").setValue("0");
-                                            mDatabase.child("users").child("uID").child(User.getUid()).child("id").setValue("anonymous");
-                                            mDatabase.child("users").child("uID").child(User.getUid()).child("name").setValue(User.getDisplayName());
-                                            //mDatabase.child("users").child("uID").child(User.getUid()).child("uri_profile").setValue(photouri.toString());
-                                        }
 
+                                    if(dataSnapshot.getChildrenCount() == 0) {
+                                        Log.d(TAG, "onDataChange:"+dataSnapshot.getKey()+"    "+User.getUid());
+                                        mDatabase.child("users").child("uID").child(User.getUid()).child("caption").setValue("---");
+                                        mDatabase.child("users").child("uID").child(User.getUid()).child("count_Central").setValue(0);
+                                        mDatabase.child("users").child("uID").child(User.getUid()).child("count_Eastern").setValue(0);
+                                        mDatabase.child("users").child("uID").child(User.getUid()).child("count_Northeastern").setValue(0);
+                                        mDatabase.child("users").child("uID").child(User.getUid()).child("count_Northern").setValue(0);
+                                        mDatabase.child("users").child("uID").child(User.getUid()).child("count_Southern").setValue(0);
+                                        mDatabase.child("users").child("uID").child(User.getUid()).child("count_Star").setValue(0);
+                                        mDatabase.child("users").child("uID").child(User.getUid()).child("count_Western").setValue(0);
+                                        mDatabase.child("users").child("uID").child(User.getUid()).child("id").setValue("user_"+dataSnapshot.getChildrenCount());
+                                        mDatabase.child("users").child("uID").child(User.getUid()).child("name").setValue(User.getDisplayName());
+                                        mDatabase.child("users").child("uID").child(User.getUid()).child("uri_profile").setValue(User.getPhotoUrl().toString());
+                                        mDatabase.child("users").child("uID").child(User.getUid()).child("uri_background").setValue("xxx");
                                     }
+                                    goHomescreen();
                                 }
                                 @Override
                                 public void onCancelled(DatabaseError databaseError) {
                                 }
                             });
-                    goHomescreen();
                 }
             }
         };
     }
+//    public void uploadphoto(String url)
+//    {
+//        Bitmap bitmap = null;
+//        InputStream is = null;
+//        BufferedInputStream bis = null;
+//        try
+//        {
+//            Log.d(TAG, "uploadphoto: come?");
+//            URLConnection conn = new URL(url).openConnection();
+//            conn.connect();
+//            is = conn.getInputStream();
+//            bis = new BufferedInputStream(is, 8192);
+//            bitmap = BitmapFactory.decodeStream(bis);
+//            FirebaseStorage storage = FirebaseStorage.getInstance();
+//            StorageReference storageRef = storage.getReference();
+//            StorageReference photoref = storageRef.child("photo.jpg");
+//            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+//            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+//            byte[] data = baos.toByteArray();
+//            UploadTask uploadTask = photoref.putBytes(data);
+//            uploadTask.addOnFailureListener(new OnFailureListener() {
+//                @Override
+//                public void onFailure(@NonNull Exception exception) {
+//                    // Handle unsuccessful uploads
+//                    Log.d(TAG, "onFailure: unsuccess");
+//                }
+//            }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+//                @Override
+//                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+//                    // taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
+//                    Uri downloadUrl = taskSnapshot.getDownloadUrl();
+//                    Log.d(TAG, "onSuccess: success??");
+//                }
+//            });
+//
+//        }
+//        catch (Exception e)
+//        {
+//            e.printStackTrace();
+//        }
+//        finally {
+//            if (bis != null)
+//            {
+//                try
+//                {
+//                    bis.close();
+//                }
+//                catch (IOException e)
+//                {
+//                    e.printStackTrace();
+//                }
+//            }
+//            if (is != null)
+//            {
+//                try
+//                {
+//                    is.close();
+//                }
+//                catch (IOException e)
+//                {
+//                    e.printStackTrace();
+//                }
+//            }
+//        }
+//    }
+
+//    public void uploadFile(final Uri imagUri, String uid) {
+//        Log.d(TAG, "uploadFile: test");
+//        FirebaseStorage storage = FirebaseStorage.getInstance();
+//        StorageReference storageRef = storage.getReference();
+//        if (imagUri != null) {
+//            Log.d(TAG, "uploadFile: imagurinotnull");
+//            StorageReference photoref = storageRef.child("photo.jpg");
+//            photoref.putFile(imagUri).addOnFailureListener(new OnFailureListener() {
+//                @Override
+//                public void onFailure(@NonNull Exception exception) {
+//                    // Handle unsuccessful uploads
+//                    Log.d(TAG, "onFailure: error??");
+//                }
+//            }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+//                @Override
+//                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+//                    // taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
+//                    Uri downloadUrl = taskSnapshot.getDownloadUrl();
+//                }
+//            });
+//
+//        }
+//    }
 
     @Override
     public void onClick(View v) {

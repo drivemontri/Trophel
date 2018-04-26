@@ -32,6 +32,7 @@ public class DetailAttraction extends AppCompatActivity {
     String keyOfUriImgAttraction = null;
     String nameOfAttractionEng = null;
     String nameOfAttractionThai = null;
+    String uriImageGameRotateSubAttraction = null;
     int keyOfCountAttraction ;
     int countOfSubAttraction ;
 
@@ -69,6 +70,7 @@ public class DetailAttraction extends AppCompatActivity {
             countOfSubAttraction = extras.getInt("countOfSubAttraction");
             nameOfAttractionEng = extras.getString("nameOfAttractionEng");
             nameOfAttractionThai = extras.getString("nameOfAttractionThai");
+            uriImageGameRotateSubAttraction = extras.getString("uriImageGameRotateSubAttraction");
         }
 
         Toolbar toolbarDetailAttr = (Toolbar) findViewById(R.id.toolbar_detail_attraction);
@@ -130,6 +132,7 @@ public class DetailAttraction extends AppCompatActivity {
                 intent.putExtra("countOfSubAttraction",countOfSubAttraction);
                 intent.putExtra("nameOfAttractionEng",nameOfAttractionEng);
                 intent.putExtra("nameOfAttractionThai",nameOfAttractionThai);
+                intent.putExtra("uriImageGameRotateSubAttraction",uriImageGameRotateSubAttraction);
                 startActivity(intent);
             }
         });

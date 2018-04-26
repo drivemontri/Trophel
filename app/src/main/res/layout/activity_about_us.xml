@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/my_profile"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/White"
+    tools:context="com.example.bhurivatmontri.trophel.AboutUs">
+
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar_aboutus"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="@color/colorApp1"
+                app:layout_scrollFlags="scroll|enterAlways"
+                app:popupTheme="@style/AppTheme.PopupOverlay">
+            </android.support.v7.widget.Toolbar>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:id="@+id/layout_aboutus_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Developer"
+                        android:layout_gravity="center"
+                        android:textStyle="italic"
+                        android:layout_marginTop="25dp"
+                        android:layout_marginBottom="25dp"
+                        android:textSize="35dp"
+                        android:textColor="@color/colorTextDetail"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Thatchapon Wongsri"
+                        android:layout_gravity="center"
+                        android:textStyle="italic"
+                        android:layout_marginTop="25dp"
+                        android:layout_marginBottom="10dp"
+                        android:textSize="20dp"
+                        android:textColor="@color/colorTextDetail"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="570610578"
+                        android:layout_gravity="center"
+                        android:layout_marginBottom="25dp"
+                        android:textSize="15dp"
+                        android:textColor="@color/colorTextDetail"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Bhurivat Montri"
+                        android:layout_gravity="center"
+                        android:textStyle="italic"
+                        android:layout_marginTop="25dp"
+                        android:layout_marginBottom="10dp"
+                        android:textSize="20dp"
+                        android:textColor="@color/colorTextDetail"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="570610594"
+                        android:layout_gravity="center"
+                        android:layout_marginBottom="25dp"
+                        android:textSize="15dp"
+                        android:textColor="@color/colorTextDetail"/>
+
+                </LinearLayout>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/layout_aboutus_2"
+                android:layout_width="match_parent"
+                android:layout_height="230dp"
+                android:layout_below="@id/layout_aboutus_1"
+                android:background="@drawable/andriod_dev_logo">
+
+                <Button
+                    android:id="@+id/button_back_aboutus"
+                    android:layout_width="80dp"
+                    android:layout_height="50dp"
+                    android:layout_gravity="center"
+                    android:backgroundTint="@color/colorApp2"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:text="Back"
+                    android:textColor="@color/White"
+                    android:textSize="10dp" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_below="@id/layout_aboutus_2"
+                android:background="#7CB342">
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+    </android.support.v4.widget.NestedScrollView>
+
+</FrameLayout>

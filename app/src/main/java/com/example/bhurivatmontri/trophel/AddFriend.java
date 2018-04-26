@@ -1,6 +1,7 @@
 package com.example.bhurivatmontri.trophel;
 
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -10,6 +11,8 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -20,6 +23,10 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 public class AddFriend extends AppCompatActivity {
+
+    private FirebaseAuth mAuth;
+    private FirebaseAuth.AuthStateListener firebaseAuthListener;
+    protected String user_Id;
 
     protected DatabaseReference mDatabase;
     protected DatabaseReference mDatabase2;
@@ -36,6 +43,12 @@ public class AddFriend extends AppCompatActivity {
         Toolbar toolbarAddFriend = (Toolbar) findViewById(R.id.toolbar_add_friend);
         setSupportActionBar(toolbarAddFriend);
         getSupportActionBar().setTitle("Add to Following");
+
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            user_Id = user.getUid();
+            // User is signed in
+        }
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
         mDatabase2 = FirebaseDatabase.getInstance().getReference();
@@ -74,18 +87,17 @@ public class AddFriend extends AppCompatActivity {
                             Log.d("onDataChange",name);
                             Log.d("onDataChange",uri_profile);
                             chk = true;
-                            mDatabase2.child("users").child("uID").child("drive").child("friend_id").child(uId)
+                            mDatabase2.child("users").child("uID").child(user_Id).child("friend_id").child(uId)
                                     .child("caption").setValue(caption);
-                            mDatabase2.child("users").child("uID").child("drive").child("friend_id").child(uId)
+                            mDatabase2.child("users").child("uID").child(user_Id).child("friend_id").child(uId)
                                     .child("count_Star").setValue(count_Star);
-                            mDatabase2.child("users").child("uID").child("drive").child("friend_id").child(uId)
+                            mDatabase2.child("users").child("uID").child(user_Id).child("friend_id").child(uId)
                                     .child("id").setValue(id);
-                            mDatabase2.child("users").child("uID").child("drive").child("friend_id").child(uId)
+                            mDatabase2.child("users").child("uID").child(user_Id).child("friend_id").child(uId)
                                     .child("name").setValue(name);
-                            mDatabase2.child("users").child("uID").child("drive").child("friend_id").child(uId)
+                            mDatabase2.child("users").child("uID").child(user_Id).child("friend_id").child(uId)
                                     .child("uri_profile").setValue(uri_profile);
-                            /*mDatabase2.child("users").child("uID").child("drive").child("friend_id").child(uId)
-                                    .setValue(new AddFriendObj(caption, count_Star, id, name, uri_profile));*/
+
                             HomeFragment.getListFriendInstance().reListFriend();
                             AddFriend.this.finish();
                         }else{
@@ -99,10 +111,7 @@ public class AddFriend extends AppCompatActivity {
                 });
 
                 if(chk == true){
-                    /*mDatabase2.child("users").child("uID").child("drive").child("friend_id").child("aon")
-                            .child("count_Star").setValue(101);*/
-                            //.setValue(new AddFriendObj(caption, count_Star, id, name, uri_profile));
-                    //mDatabase2.child("users").child("uID").child("aon").child("zzz").setValue("aaa");
+
                 }
             }
         });

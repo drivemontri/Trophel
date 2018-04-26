@@ -62,6 +62,9 @@ import static com.facebook.FacebookSdk.getApplicationContext;
 
 public class Home extends AppCompatActivity {
 
+    private FirebaseAuth mAuth;
+    private FirebaseAuth.AuthStateListener firebaseAuthListener;
+
     private Toolbar toolbar;
     private ViewPager mViewPager;
     private TabLayout tabLayout;
